@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/bean/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/bean/Recipe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/bean/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/MongoDBDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/MongoDBDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/Neo4jDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/Neo4jDriver.java" afterDir="false" />
     </list>
@@ -47,7 +43,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1640694268024</updated>
-      <workItem from="1640694269435" duration="4387000" />
+      <workItem from="1640694269435" duration="4776000" />
     </task>
     <servers />
   </component>

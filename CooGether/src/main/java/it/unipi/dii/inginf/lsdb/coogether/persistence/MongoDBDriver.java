@@ -2,6 +2,8 @@ package it.unipi.dii.inginf.lsdb.coogether.persistence;
 
 import com.mongodb.client.*;
 import com.mongodb.ConnectionString;
+import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
+import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
 import org.bson.Document;
 import org.bson.*;
 import org.bson.conversions.Bson;
@@ -44,29 +46,34 @@ public class MongoDBDriver implements DatabaseDriver{
     //                              CRUD OPERATIONS
     //******************************************************************************************************************
 
-    public boolean addRecipe(){
+    public boolean addRecipe(Recipe r){
         return false;
     }
 
-    public boolean updateRecipe(){
+    public boolean updateRecipe(Recipe r){
         return false;
     }
 
-    public boolean deleteRecipe(){
+    public boolean deleteRecipe(Recipe r){
         return false;
     }
 
-    public boolean addComment(){
+    public boolean addComment(Recipe r, Comment c){
         return false;
     }
 
-    public boolean updateComment(){
+    public boolean updateComment(Recipe r, Comment c){
         return false;
     }
 
-    public boolean deleteComment(){
+    public boolean deleteComment(Recipe r, Comment c){
         return false;
     }
+
+    //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
+    //public boolean deleteRecipesUser(User u){
+        //return false;
+    //}
 
     //******************************************************************************************************************
     //                              ANALYTICS
