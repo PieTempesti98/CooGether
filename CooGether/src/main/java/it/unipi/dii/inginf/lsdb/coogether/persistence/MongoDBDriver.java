@@ -1,26 +1,26 @@
 package it.unipi.dii.inginf.lsdb.coogether.persistence;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.mongodb.client.*;
-import com.mongodb.ConnectionString;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import com.mongodb.client.*;
+import com.mongodb.ConnectionString;
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Accumulators.*;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Sorts.*;
+
 import org.bson.Document;
-import org.bson.*;
 import org.bson.conversions.Bson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
-import java.util.function.Consumer;
-
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Accumulators.*;
-import static com.mongodb.client.model.Projections.*;
-import static com.mongodb.client.model.Filters.*;
-import  static com.mongodb.client.model.Sorts.*;
 
 public class MongoDBDriver implements DatabaseDriver{
 
@@ -55,33 +55,68 @@ public class MongoDBDriver implements DatabaseDriver{
     //******************************************************************************************************************
 
     public boolean addRecipe(Recipe r){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     public boolean updateRecipe(Recipe r){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     public boolean deleteRecipe(Recipe r){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     public boolean addComment(Recipe r, Comment c){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     public boolean updateComment(Recipe r, Comment c){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     public boolean deleteComment(Recipe r, Comment c){
-        return false;
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
     }
 
     //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
-    //public boolean deleteRecipesOfAUser(User u){
-        //return false;
-    //}
+    /*public boolean deleteRecipesOfAUser(User u){
+        try{
+
+        }catch(Exception ex){
+            return false;
+        }
+        return true;
+    }*/
 
     public List<Recipe> getAllRecipes(){
         List<Recipe> recipes = new ArrayList<>();
