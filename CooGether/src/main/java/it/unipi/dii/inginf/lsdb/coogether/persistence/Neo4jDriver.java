@@ -5,6 +5,9 @@ import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
 import it.unipi.dii.inginf.lsdb.coogether.bean.User;
 import org.neo4j.driver.*;
 import org.neo4j.driver.Record;
+
+import java.util.List;
+
 import static org.neo4j.driver.Values.parameters;
 
 public class Neo4jDriver implements DatabaseDriver{
@@ -74,6 +77,10 @@ public class Neo4jDriver implements DatabaseDriver{
 
     public boolean deleteUser(User u){
         return false;
+    }
+
+    public List<User> getUsers(){
+
     }
 
     //******************************************************************************************************************
