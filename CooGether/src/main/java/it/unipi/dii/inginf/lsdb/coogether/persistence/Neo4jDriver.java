@@ -6,12 +6,11 @@ import it.unipi.dii.inginf.lsdb.coogether.bean.User;
 
 import org.neo4j.driver.*;
 import org.neo4j.driver.Record;
-import static org.neo4j.driver.Values.parameters;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.neo4j.driver.Values.parameters;
+import static org.neo4j.driver.Values.NULL;
+
+import java.util.*;
 
 public class Neo4jDriver implements DatabaseDriver{
 
@@ -193,16 +192,31 @@ public class Neo4jDriver implements DatabaseDriver{
         return users;
     }
 
-    public List<Comment> getComments(Recipe r){
+    public List<Comment> getComments(String idRecipe){
         List<Comment> comments= new ArrayList<>();
 
         try(Session session= driver.session()){
 
+            session.readTransaction(tx->{
+                Result result = tx.run("match (r:Recipe)" +
+                                          "match (c:Comment)<-[h:HAS]-(r)" +
+                                          "where r.id=$recipeId" +
+                                          "return r, c, h",
+                        parameters("recipeId", idRecipe));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    String text = r.get("c.text").asString();
+                    //String username = r.get("");
+                    Comment comment= new Comment();
+                    comments.add(comment);
+                }
+                return comments;
+            });
         }catch(Exception ex){
             ex.printStackTrace();
             return null;
         }
-
         return comments;
     }
 
