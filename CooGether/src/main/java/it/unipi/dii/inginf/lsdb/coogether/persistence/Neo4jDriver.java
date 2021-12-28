@@ -30,4 +30,28 @@ public class Neo4jDriver implements DatabaseDriver{
             System.out.println("Impossible close connection with Neo4j");
         }
     }
+
+    public boolean addRecipe(){
+        return false;
+    }
+
+    public boolean updateRecipe(){
+        return false;
+    }
+
+    public boolean deleteRecipe(){
+        return false;
+    }
+
+    public boolean addComment(){
+        return false;
+    }
+
+    public boolean updateComment(){
+        return false;
+    }
+
+    public boolean deleteComment(){
+        return false;
+    }
 }

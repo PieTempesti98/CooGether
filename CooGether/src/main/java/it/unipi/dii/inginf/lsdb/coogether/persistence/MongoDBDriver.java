@@ -39,4 +39,36 @@ public class MongoDBDriver implements DatabaseDriver{
             System.out.println("Impossible close connection with MongoDB");
         }
     }
+
+    //******************************************************************************************************************
+    //                              CRUD OPERATIONS
+    //******************************************************************************************************************
+
+    public boolean addRecipe(){
+        return false;
+    }
+
+    public boolean updateRecipe(){
+        return false;
+    }
+
+    public boolean deleteRecipe(){
+        return false;
+    }
+
+    public boolean addComment(){
+        return false;
+    }
+
+    public boolean updateComment(){
+        return false;
+    }
+
+    public boolean deleteComment(){
+        return false;
+    }
+
+    //******************************************************************************************************************
+    //                              ANALYTICS
+    //******************************************************************************************************************
 }
