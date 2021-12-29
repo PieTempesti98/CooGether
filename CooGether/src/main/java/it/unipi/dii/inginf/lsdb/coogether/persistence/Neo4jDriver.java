@@ -200,15 +200,17 @@ public class Neo4jDriver implements DatabaseDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (r:Recipe)" +
                                           "match (c:Comment)<-[h:HAS]-(r)" +
+                                          "match (u:User)-[w:WRITES]->(c)" +
                                           "where r.id=$recipeId" +
-                                          "return r, c, h",
+                                          "return r, c, h, u, w",
                         parameters("recipeId", idRecipe));
 
                 while(result.hasNext()){
                     Record r= result.next();
+                    String id = r.get("c.id").asString();
                     String text = r.get("c.text").asString();
-                    //String username = r.get("");
-                    Comment comment= new Comment();
+                    String username = r.get("u.username").asString();
+                    Comment comment= new Comment(id, text, username);
                     comments.add(comment);
                 }
                 return comments;
