@@ -33,6 +33,10 @@ public class Recipe {
     public Recipe(){
     }
 
+    public Recipe(String name){
+        this.name=name;
+    }
+
     public Recipe(String id, String name, String authorId, String authorName, int cookTime, int prepTime, Date pub,
                   String desc, List<String> img, String category, List<Gson> ing, List<Comment> comm, double cal,
                   double fat, double satFat, double sodium, double carb, double fiber, double sugar, double protein,

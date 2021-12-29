@@ -231,6 +231,22 @@ public class Neo4jDriver implements DatabaseDriver{
 
         try(Session session= driver.session()){
 
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User)-[f:FOLLOWS]->(u2:User)" +
+                                "match (r:Recipe)<-[a:ADDS]-(u2)" +
+                                "where u.id=$userId" +
+                                "return r, u, u2, f, a",
+                        parameters("userId", userId));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    String name = r.get("r.name").asString();
+                    Recipe rec= new Recipe(name);
+                    recipes.add(rec);
+                }
+                return recipes;
+            });
+
         }catch(Exception ex){
             ex.printStackTrace();
             return null;
