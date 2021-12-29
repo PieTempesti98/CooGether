@@ -19,4 +19,80 @@ public class Comment {
         this.text = text;
         this.authorId = name;
     }
+
+    public Comment(String id, String authorId, String authorName, int stars, Date pub, Date mod, String text){
+        this.commentId=id;
+        this.authorId=authorId;
+        this.authorName=authorName;
+        this.rating=stars;
+        this.datePublished=pub;
+        this.dateModified=mod;
+        this.text=text;
+    }
+
+    public String getCommentId(){
+        return commentId;
+    }
+
+    public String getAuthorId(){
+        return authorId;
+    }
+
+    public String getAuthorName(){
+        return authorName;
+    }
+
+    public String getText(){
+        return text;
+    }
+
+    public int getRating(){
+        return rating;
+    }
+
+    public Date getDatePublished(){
+        return datePublished;
+    }
+
+    public Date getDateModified(){
+        return  dateModified;
+    }
+
+    public void setCommentId(String id){
+        this.commentId=id;
+    }
+
+    public void setAuthorId(String id){
+        this.authorId= id;
+    }
+
+    public void setAuthorName(String name){
+        this.authorName=name;
+    }
+
+    public void setDatePublished(Date pub){
+        this.datePublished=pub;
+    }
+
+    public void setRating(int stars){
+        this.rating=stars;
+    }
+
+    public void setDateModified(Date mod){
+        this.dateModified=mod;
+    }
+
+    public void setText(String text){
+        this.text=text;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "authorUsername='" + authorName + '\'' +
+                ", rating='" + rating + '\'' +
+                ", text='" + text + '\'' +
+                ", creationTime=" + datePublished +
+                '}';
+    }
 }

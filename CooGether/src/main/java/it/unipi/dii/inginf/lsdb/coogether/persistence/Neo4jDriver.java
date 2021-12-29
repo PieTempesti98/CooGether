@@ -240,8 +240,9 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r= result.next();
+                    String id= r.get("r.id").asString();
                     String name = r.get("r.name").asString();
-                    Recipe rec= new Recipe(name);
+                    Recipe rec= new Recipe(id, name);
                     recipes.add(rec);
                 }
                 return recipes;

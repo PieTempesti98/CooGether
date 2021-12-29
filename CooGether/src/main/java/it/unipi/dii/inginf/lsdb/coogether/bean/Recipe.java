@@ -33,7 +33,8 @@ public class Recipe {
     public Recipe(){
     }
 
-    public Recipe(String name){
+    public Recipe(String id, String name){
+        this.recipeId=id;
         this.name=name;
     }
 
@@ -250,24 +251,24 @@ public class Recipe {
     public String toString() {
         return "Recipe{" +
                 "title='" + name + '\'' +
-                ", category=" + category +
-                ", cookTime=" + cookTime +
-                ", recipeServings=" + recipeServings +
-                ", prepTime=" + prepTime +
+                ", category=" + category + '\'' +
+                ", cookTime=" + cookTime + '\'' +
+                ", recipeServings=" + recipeServings + '\'' +
+                ", prepTime=" + prepTime +'\'' +
                 ", authorUsername='" + authorName + '\'' +
                 ", description='" + description + '\'' +
                 ", instructions='" + instructions + '\'' +
-                ", ingredients=" + ingredients +
-                ", calories=" + calories +
-                ", fatContent=" + fatContent +
-                ", saturatedFatContent=" + saturatedFatContent +
-                ", sodiumContent=" + sodiumContent +
-                ", carbohydrateContent=" + carbohydrateContent +
-                ", fiberContent=" + fiberContent +
-                ", sugarContent=" + sugarContent +
-                ", proteinContent=" + proteinContent +
-                ", carbs=" + carbohydrateContent +
-                ", creationTime=" + datePublished +
+                ", ingredients=" + ingredients + '\'' +
+                ", calories=" + calories + '\'' +
+                ", fatContent=" + fatContent + '\'' +
+                ", saturatedFatContent=" + saturatedFatContent + '\'' +
+                ", sodiumContent=" + sodiumContent + '\'' +
+                ", carbohydrateContent=" + carbohydrateContent + '\'' +
+                ", fiberContent=" + fiberContent + '\'' +
+                ", sugarContent=" + sugarContent + '\'' +
+                ", proteinContent=" + proteinContent + '\'' +
+                ", carbs=" + carbohydrateContent + '\'' +
+                ", creationTime=" + datePublished + '\'' +
                 ", comments=" + comments +
                 '}';
     }
