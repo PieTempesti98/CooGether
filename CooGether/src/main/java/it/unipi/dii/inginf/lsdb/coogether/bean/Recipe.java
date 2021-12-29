@@ -2,6 +2,7 @@ package it.unipi.dii.inginf.lsdb.coogether.bean;
 
 import org.bson.conversions.Bson;
 
+import java.util.Date;
 import java.util.List;
 
 public class Recipe {
@@ -12,7 +13,7 @@ public class Recipe {
     private String authorName;
     private int cookTime;
     private int prepTime;
-    private int datePublished;
+    private Date datePublished;
     private String description;
     private List<String> images;
     private String category;
@@ -28,4 +29,7 @@ public class Recipe {
     private double proteinContent;
     private int recipeServings;
     private List<String> instructions;
+
+    public Recipe(){
+    }
 }
