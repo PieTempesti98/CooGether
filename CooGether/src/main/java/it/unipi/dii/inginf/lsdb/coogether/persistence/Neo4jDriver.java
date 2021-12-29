@@ -45,6 +45,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
     //ogni volta che si elimina un nodo, ricordarsi di eliminare anche i relativi archi
 
+    //da implementare
     public boolean addRecipe(Recipe r){
         try(Session session= driver.session()){
 
@@ -55,6 +56,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean updateRecipe(Recipe r){
         try(Session session= driver.session()){
 
@@ -65,14 +67,23 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
+    //oltre alla ricetta vanno cancellati tutti i commenti della ricetta
     public boolean deleteRecipe(Recipe r){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MATCH (r:Recipe)-[h:HAS]->(c:Comment) " +
+                                "WHERE r.id=$id " +
+                                "DETACH DELETE r, c",
+                        parameters( "id", r.getRecipeId()) );
+                return null;
+            });
+            return true;
 
         }catch(Exception ex){
             ex.printStackTrace();
             return false;
         }
-        return true;
     }
 
     //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
@@ -86,6 +97,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }*/
 
+    //da implementare
     public boolean addComment(Recipe r, Comment c){
         try(Session session= driver.session()){
 
@@ -96,6 +108,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean updateComment(Recipe r, Comment c){
         try(Session session= driver.session()){
 
@@ -106,16 +119,23 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    public boolean deleteComment(Recipe r, Comment c){
+    public boolean deleteComment(Comment c){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MATCH (c:Comment) WHERE c.id=$id DETACH DELETE c",
+                        parameters( "id", c.getCommentId()) );
+                return null;
+            });
+            return true;
 
         }catch(Exception ex){
             ex.printStackTrace();
             return false;
         }
-        return true;
     }
 
+    //da implementare
     public boolean addUser(User u){
         try(Session session= driver.session()){
 
@@ -126,6 +146,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean updateUser(User u){
         try(Session session= driver.session()){
 
@@ -139,13 +160,20 @@ public class Neo4jDriver implements DatabaseDriver{
     public boolean deleteUser(User u){
         try(Session session= driver.session()){
 
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MATCH (u:User) WHERE u.id=$id DETACH DELETE u",
+                        parameters( "id", u.getUserId()) );
+                return null;
+            });
+            return true;
+
         }catch(Exception ex){
             ex.printStackTrace();
             return false;
         }
-        return true;
     }
 
+    //da implementare
     public boolean follow(){
         try(Session session= driver.session()){
 
@@ -156,6 +184,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean unfollow(){
         try(Session session= driver.session()){
 
@@ -171,6 +200,20 @@ public class Neo4jDriver implements DatabaseDriver{
 
         try(Session session= driver.session()){
 
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User)" +
+                                "return u");
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    String id = r.get("u.id").asString();
+                    String username = r.get("u.username").asString();
+                    User user= new User(id, username);
+                    users.add(user);
+                }
+                return users;
+            });
+
         }catch(Exception ex){
             ex.printStackTrace();
             return null;
@@ -184,11 +227,25 @@ public class Neo4jDriver implements DatabaseDriver{
 
         try(Session session= driver.session()){
 
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User)" +
+                                          "where u1.id = $userId"+
+                                           "return u2", parameters("userId", u.getUserId()));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    String id = r.get("u2.id").asString();
+                    String username = r.get("u2.username").asString();
+                    User user= new User(id, username);
+                    users.add(user);
+                }
+                return users;
+            });
+
         }catch(Exception ex){
             ex.printStackTrace();
             return null;
         }
-
         return users;
     }
 

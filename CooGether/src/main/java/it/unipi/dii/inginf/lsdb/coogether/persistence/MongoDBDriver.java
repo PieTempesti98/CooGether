@@ -100,6 +100,7 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean updateRecipe(Recipe r){
         try{
 
@@ -118,6 +119,7 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean addComment(Recipe r, Comment c){
         try{
 
@@ -127,6 +129,7 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean updateComment(Recipe r, Comment c){
         try{
 
@@ -136,6 +139,7 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
+    //da implementare
     public boolean deleteComment(Recipe r, Comment c){
         try{
 
