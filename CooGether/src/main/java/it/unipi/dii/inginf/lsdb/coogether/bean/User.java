@@ -11,4 +11,20 @@ public class User {
         this.userId= id;
         this.username= name;
     }
+
+    public String getUserId(){
+        return userId;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public void setUserId(String id){
+        this.userId=id;
+    }
+
+    public void setUsername(String name){
+        this.username=name;
+    }
 }
