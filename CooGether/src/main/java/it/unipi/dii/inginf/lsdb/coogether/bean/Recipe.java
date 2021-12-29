@@ -1,6 +1,5 @@
 package it.unipi.dii.inginf.lsdb.coogether.bean;
 
-import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import com.google.gson.Gson;
 
 import java.util.Date;
