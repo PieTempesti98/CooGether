@@ -57,6 +57,43 @@ public class MongoDBDriver implements DatabaseDriver{
     public boolean addRecipe(Recipe r){
         try{
 
+            Document doc= new Document();
+            doc.append("recipeId", r.getRecipeId());
+            doc.append("name", r.getName());
+            doc.append("authorId", r.getAuthorId());
+            doc.append("authorName", r.getAuthorName());
+            if(r.getCookTime() != -1)
+                doc.append("cookTime", r.getCookTime());
+            if(r.getPrepTime()!=-1)
+                doc.append("prepTime", r.getPrepTime());
+            doc.append("datePublished", r.getDatePublished());
+            doc.append("description", r.getDescription());
+            doc.append("images", r.getImages());
+            doc.append("recipeCategory", r.getCategory());
+            doc.append("ingredients", r.getIngredients());
+            doc.append("comments", r.getComments());
+            if(r.getCalories()!=-1)
+                doc.append("calories", r.getCalories());
+            if(r.getFatContent()!=-1)
+                doc.append("fatContent", r.getFatContent());
+            if(r.getSaturatedFatContent()!=-1)
+                doc.append("saturatedFatContent", r.getSaturatedFatContent());
+            if(r.getSodiumContent()!=-1)
+                doc.append("sodiumContent", r.getSodiumContent());
+            if(r.getCarbohydrateContent()!=-1)
+                doc.append("carbohydrateContent", r.getCarbohydrateContent());
+            if(r.getFiberContent()!=-1)
+                doc.append("fiberContent", r.getFiberContent());
+            if(r.getSugarContent()!=-1)
+                doc.append("sugarContent", r.getSugarContent());
+            if(r.getProteinContent()!=-1)
+                doc.append("proteinContent", r.getProteinContent());
+            if(r.getRecipeServings()!=-1)
+                doc.append("recipeServings", r.getRecipeServings());
+            doc.append("recipeInstructions", r.getInstructions());
+
+            collection.insertOne(doc);
+
         }catch(Exception ex){
             return false;
         }
@@ -74,7 +111,7 @@ public class MongoDBDriver implements DatabaseDriver{
 
     public boolean deleteRecipe(Recipe r){
         try{
-
+            collection.deleteOne(eq("recipeId", r.getRecipeId()));
         }catch(Exception ex){
             return false;
         }
