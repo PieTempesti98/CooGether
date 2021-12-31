@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/MongoDBDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/MongoDBDriver.java" afterDir="false" />
-    </list>
+    <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +43,7 @@
       <workItem from="1640694269435" duration="13435000" />
       <workItem from="1640763396988" duration="12250000" />
       <workItem from="1640796759612" duration="2629000" />
-      <workItem from="1640940855235" duration="2327000" />
+      <workItem from="1640940855235" duration="2442000" />
     </task>
     <servers />
   </component>
