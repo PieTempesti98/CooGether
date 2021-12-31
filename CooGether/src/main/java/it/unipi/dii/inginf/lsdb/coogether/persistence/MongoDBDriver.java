@@ -14,6 +14,9 @@ import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.*;
 
+import it.unipi.dii.inginf.lsdb.coogether.bean.User;
+import org.bson.BsonArray;
+import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -333,6 +336,55 @@ public class MongoDBDriver implements DatabaseDriver{
 
         results=(List<Document>)collection.aggregate(Arrays.asList(m1, u, g, s))
                 .into(new ArrayList<>());
+
+        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
+        recipes = gson.fromJson(gson.toJson(results), recipeListType);
+
+        return recipes;
+    }
+
+    public List<User> userRankingSystem(int k){
+        List<User> users= new ArrayList<>();
+        List<Document> results= new ArrayList<>();
+        Gson gson= new Gson();
+
+        Bson unwind_comments = unwind("$comments");
+        Bson group1 = new Document("$group", new Document("_id",
+                	                                        new Document("recipe", "$recipeId")
+                                                            .append("author", "$authorId"))
+        	                                                .append("avgRating", new Document("$avg", "$comments.rating")));
+        Bson group2 = group("$_id.author", avg("avgRating", "$avgRating"));
+        Bson sort_by_rating = sort(descending("avgRating"));
+        Bson limitResults = limit(k);
+
+        results= (List<Document>) collection.aggregate(Arrays.asList(unwind_comments, group1, group2,
+                 sort_by_rating, limitResults)).into(new ArrayList<>());
+
+        Type userListType = new TypeToken<ArrayList<User>>(){}.getType();
+        users = gson.fromJson(gson.toJson(results), userListType);
+
+        return users;
+    }
+
+    public List<Recipe> searchHighestLifespanRecipes(int k){
+        List<Recipe> recipes= new ArrayList<>();
+        List<Document> results = new ArrayList<>();
+        Gson gson = new Gson();
+
+        Bson unwind_comments = unwind("$comments");
+        Bson group1 = new Document("$group", new Document("_id", "$recipeId")
+        	                .append("mostRecentComment", new Document("$max", "$comments.dateModified"))
+        	                .append("leastRecentComment",new Document("$min", "$comments.dateModified")));
+        BsonArray operands = new BsonArray();
+        operands.add(new BsonString("$mostRecentComment"));
+        operands.add(new BsonString("$leastRecentComment"));
+        Bson project_lifespan = project(fields(excludeId(), include("_id"),
+                	        new Document("lifespan", new Document("$subtract", operands))));
+        Bson sort_by_lifespan = sort(descending("lifespan"));
+        Bson limitResults = limit(k);
+
+        results= (List<Document>) collection.aggregate(Arrays.asList(unwind_comments, group1,
+                	project_lifespan, sort_by_lifespan, limitResults)).into(new ArrayList<>());
 
         Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
         recipes = gson.fromJson(gson.toJson(results), recipeListType);
