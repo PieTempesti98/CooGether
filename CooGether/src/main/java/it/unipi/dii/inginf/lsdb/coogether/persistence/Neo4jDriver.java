@@ -312,4 +312,61 @@ public class Neo4jDriver implements DatabaseDriver{
 
         return recipes;
     }
+
+    public List<User> mostFollowedUsers(int limit){
+        ArrayList<User> users = new ArrayList<>();
+
+        try ( Session session = driver.session() ) {
+            session.readTransaction( tx -> {Result result = tx.run("match (u:User)<-[f:FOLLOWS]-(:User) " +
+                                                                      "return u.id, u.username, count(DISTINCT f) as follower " +
+                                                                      "order by follower desc " +
+                                                                      "limit $l",
+                                                            parameters( "l", limit) );
+
+                while(result.hasNext()){
+                    Record r = result.next();
+                    String id= r.get("u.id").asString();
+                    String name= r.get("u.username").asString();
+                    int followers= r.get("follower").asInt();
+                    User u= new User(id, name, followers);
+
+                    users.add(u);
+                }
+
+                return users;
+            });
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return users;
+    }
+
+    public List<User> getMostActiveUsers(int k){
+        List<User> users = new ArrayList<>();
+
+        try(Session session = driver.session()){
+            session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe)" +
+                          			                                  "return user, count(x)" +
+                            			                              "order by count(x)" +
+                           				                              "limit $k",
+                			                                parameters("k", k) );
+
+                while(result.hasNext()){
+                    Record r = result.next();
+                    String id = r.get("user.id").asString();
+               		String username = r.get("user.username").asString();
+                    User u = new User(id, username);
+               		users.add(u);
+                }
+           		return users;
+            });
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return users;
+    }
+
+
 }
