@@ -8,7 +8,6 @@ public class Comment {
     private String authorName;
     private int rating;
     private Date datePublished;
-    private Date dateModified;
     private String text;
 
     public Comment(){
@@ -20,13 +19,12 @@ public class Comment {
         this.authorId = name;
     }
 
-    public Comment(String id, String authorId, String authorName, int stars, Date pub, Date mod, String text){
+    public Comment(String id, String authorId, String authorName, int stars, Date pub, String text){
         this.commentId=id;
         this.authorId=authorId;
         this.authorName=authorName;
         this.rating=stars;
         this.datePublished=pub;
-        this.dateModified=mod;
         this.text=text;
     }
 
@@ -54,10 +52,6 @@ public class Comment {
         return datePublished;
     }
 
-    public Date getDateModified(){
-        return  dateModified;
-    }
-
     public void setCommentId(String id){
         this.commentId=id;
     }
@@ -76,10 +70,6 @@ public class Comment {
 
     public void setRating(int stars){
         this.rating=stars;
-    }
-
-    public void setDateModified(Date mod){
-        this.dateModified=mod;
     }
 
     public void setText(String text){

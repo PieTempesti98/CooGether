@@ -15,17 +15,13 @@ public class Recipe {
     private int prepTime;
     private Date datePublished;
     private String description;
-    private List<String> images;
+    private String image;
     private String category;
-    private List<Gson> ingredients;
+    private List<String> ingredients;
     private List<Comment> comments;
     private double calories;
     private double fatContent;
-    private double saturatedFatContent;
     private double sodiumContent;
-    private double carbohydrateContent;
-    private double fiberContent;
-    private double sugarContent;
     private double proteinContent;
     private int recipeServings;
     private List<String> instructions;
@@ -39,9 +35,8 @@ public class Recipe {
     }
 
     public Recipe(String id, String name, String authorId, String authorName, int cookTime, int prepTime, Date pub,
-                  String desc, List<String> img, String category, List<Gson> ing, List<Comment> comm, double cal,
-                  double fat, double satFat, double sodium, double carb, double fiber, double sugar, double protein,
-                  int serving, List<String> instructions){
+                  String desc, String img, String category, List<String> ing, List<Comment> comm, double cal,
+                  double fat, double sodium, double protein, int serving, List<String> instructions){
 
         this.recipeId= id;
         this.name= name;
@@ -51,17 +46,13 @@ public class Recipe {
         this.prepTime=prepTime;
         this.datePublished=pub;
         this.description=desc;
-        this.images= img;
+        this.image= img;
         this.category= category;
         this.ingredients=ing;
         this.comments=comm;
         this.calories= cal;
         this.fatContent= fat;
-        this.saturatedFatContent=satFat;
         this.sodiumContent=sodium;
-        this.carbohydrateContent=carb;
-        this.fiberContent=fiber;
-        this.sugarContent=sugar;
         this.proteinContent=protein;
         this.recipeServings=serving;
         this.instructions=instructions;
@@ -99,15 +90,15 @@ public class Recipe {
         return description;
     }
 
-    public List<String> getImages(){
-        return images;
+    public String getImage(){
+        return image;
     }
 
     public String getCategory(){
         return category;
     }
 
-    public List<Gson> getIngredients(){
+    public List<String> getIngredients(){
         return ingredients;
     }
 
@@ -123,24 +114,8 @@ public class Recipe {
         return fatContent;
     }
 
-    public double getSaturatedFatContent(){
-        return  saturatedFatContent;
-    }
-
     public double getSodiumContent(){
         return sodiumContent;
-    }
-
-    public double getCarbohydrateContent(){
-        return carbohydrateContent;
-    }
-
-    public double getFiberContent(){
-        return fiberContent;
-    }
-
-    public double getSugarContent(){
-        return sugarContent;
     }
 
     public double getProteinContent(){
@@ -187,15 +162,15 @@ public class Recipe {
         this.description=desc;
     }
 
-    public void setImages(List<String> img){
-        this.images=img;
+    public void setImages(String img){
+        this.image=img;
     }
 
     public void setCategory(String cat){
         this.category=cat;
     }
 
-    public void setIngredients(List<Gson> ing){
+    public void setIngredients(List<String> ing){
         this.ingredients=ing;
     }
 
@@ -211,24 +186,8 @@ public class Recipe {
         this.fatContent=f;
     }
 
-    public void setSaturatedFatContent(double sat){
-        this.saturatedFatContent=sat;
-    }
-
     public void setSodiumContent(double sod){
         this.sodiumContent=sod;
-    }
-
-    public void setCarbohydrateContent(double carb){
-        this.carbohydrateContent=carb;
-    }
-
-    public void setFiberContent(double fiber){
-        this.fiberContent=fiber;
-    }
-
-    public void setSugarContent(double sugar){
-        this.sugarContent=sugar;
     }
 
     public void setProteinContent(double pro){
@@ -261,13 +220,8 @@ public class Recipe {
                 ", ingredients=" + ingredients + '\'' +
                 ", calories=" + calories + '\'' +
                 ", fatContent=" + fatContent + '\'' +
-                ", saturatedFatContent=" + saturatedFatContent + '\'' +
                 ", sodiumContent=" + sodiumContent + '\'' +
-                ", carbohydrateContent=" + carbohydrateContent + '\'' +
-                ", fiberContent=" + fiberContent + '\'' +
-                ", sugarContent=" + sugarContent + '\'' +
                 ", proteinContent=" + proteinContent + '\'' +
-                ", carbs=" + carbohydrateContent + '\'' +
                 ", creationTime=" + datePublished + '\'' +
                 ", comments=" + comments +
                 '}';

@@ -71,7 +71,7 @@ public class MongoDBDriver implements DatabaseDriver{
                 doc.append("prepTime", r.getPrepTime());
             doc.append("datePublished", r.getDatePublished());
             doc.append("description", r.getDescription());
-            doc.append("images", r.getImages());
+            doc.append("image", r.getImage());
             doc.append("recipeCategory", r.getCategory());
             doc.append("ingredients", r.getIngredients());
             doc.append("comments", r.getComments());
@@ -79,16 +79,8 @@ public class MongoDBDriver implements DatabaseDriver{
                 doc.append("calories", r.getCalories());
             if(r.getFatContent()!=-1)
                 doc.append("fatContent", r.getFatContent());
-            if(r.getSaturatedFatContent()!=-1)
-                doc.append("saturatedFatContent", r.getSaturatedFatContent());
             if(r.getSodiumContent()!=-1)
                 doc.append("sodiumContent", r.getSodiumContent());
-            if(r.getCarbohydrateContent()!=-1)
-                doc.append("carbohydrateContent", r.getCarbohydrateContent());
-            if(r.getFiberContent()!=-1)
-                doc.append("fiberContent", r.getFiberContent());
-            if(r.getSugarContent()!=-1)
-                doc.append("sugarContent", r.getSugarContent());
             if(r.getProteinContent()!=-1)
                 doc.append("proteinContent", r.getProteinContent());
             if(r.getRecipeServings()!=-1)
@@ -243,22 +235,16 @@ public class MongoDBDriver implements DatabaseDriver{
         Bson m = match(eq("recipeCategory", category));
         Bson m1 = match(exists("calories", true));
         Bson m2 = match(exists("fatContent", true));
-        Bson m3 = match(exists("saturatedFatContent", true));
-        Bson m4 = match(exists("cholesterolContent", true));
-        Bson m5 = match(exists("sugarContent", true));
-        Bson m6 = match(exists("sodiumContent", true));
-        Bson m7 = match(exists("proteinContent", true));
+        Bson m3 = match(exists("sodiumContent", true));
+        Bson m4 = match(exists("proteinContent", true));
         Bson s= sort(ascending("calories"));
         Bson s1= sort(ascending("fatContent"));
-        Bson s2= sort(ascending("saturatedFatContent"));
-        Bson s3= sort(ascending("cholesterolContent"));
-        Bson s4= sort(ascending("sugarContent"));
-        Bson s5= sort(ascending("sodiumContent"));
-        Bson s6= sort(descending("proteinContent"));
+        Bson s2= sort(ascending("sodiumContent"));
+        Bson s3= sort(descending("proteinContent"));
         Bson l=limit(k);
 
-        results=(List<Document>) collection.aggregate(Arrays.asList(m, m1, m2, m3, m4, m5, m6, m7, s, s2, s3, s4, s5,
-                        s6, l)).into(new ArrayList<>());
+        results=(List<Document>) collection.aggregate(Arrays.asList(m, m1, m2, m3, m4, s, s1,
+                        s2, s3, l)).into(new ArrayList<>());
 
         Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
         recipes = gson.fromJson(gson.toJson(results), recipeListType);
