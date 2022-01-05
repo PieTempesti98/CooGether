@@ -1,15 +1,13 @@
 package it.unipi.dii.inginf.lsdb.coogether.bean;
 
-import com.google.gson.Gson;
-
 import java.util.Date;
 import java.util.List;
 
 public class Recipe {
 
-    private String recipeId;
+    private int recipeId;
     private String name;
-    private String authorId;
+    private int authorId;
     private String authorName;
     private int cookTime;
     private int prepTime;
@@ -29,12 +27,12 @@ public class Recipe {
     public Recipe(){
     }
 
-    public Recipe(String id, String name){
+    public Recipe(int id, String name){
         this.recipeId=id;
         this.name=name;
     }
 
-    public Recipe(String id, String name, String authorId, String authorName, int cookTime, int prepTime, Date pub,
+    public Recipe(int id, String name, int authorId, String authorName, int cookTime, int prepTime, Date pub,
                   String desc, String img, String category, List<String> ing, List<Comment> comm, double cal,
                   double fat, double sodium, double protein, int serving, List<String> instructions){
 
@@ -58,7 +56,7 @@ public class Recipe {
         this.instructions=instructions;
     }
 
-    public String getRecipeId(){
+    public int getRecipeId(){
         return recipeId;
     }
 
@@ -66,7 +64,7 @@ public class Recipe {
         return name;
     }
 
-    public String getAuthorId(){
+    public int getAuthorId(){
         return authorId;
     }
 
@@ -130,7 +128,7 @@ public class Recipe {
         return instructions;
     }
 
-    public void setRecipeId(String id){
+    public void setRecipeId(int id){
         this.recipeId=id;
     }
 
@@ -138,7 +136,7 @@ public class Recipe {
         this.name=name;
     }
 
-    public void setAuthorId(String id){
+    public void setAuthorId(int id){
         this.authorId=id;
     }
 

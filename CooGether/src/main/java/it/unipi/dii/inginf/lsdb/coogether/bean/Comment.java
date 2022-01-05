@@ -3,8 +3,8 @@ package it.unipi.dii.inginf.lsdb.coogether.bean;
 import java.util.Date;
 
 public class Comment {
-    private String commentId;
-    private String authorId;
+    private int commentId;
+    private int authorId;
     private String authorName;
     private int rating;
     private Date datePublished;
@@ -13,13 +13,13 @@ public class Comment {
     public Comment(){
     }
 
-    public Comment( String id, String text, String name){
+    public Comment(int id, String text, String name){
         this.commentId = id;
         this.text = text;
-        this.authorId = name;
+        this.authorName = name;
     }
 
-    public Comment(String id, String authorId, String authorName, int stars, Date pub, String text){
+    public Comment(int id, int authorId, String authorName, int stars, Date pub, String text){
         this.commentId=id;
         this.authorId=authorId;
         this.authorName=authorName;
@@ -28,11 +28,11 @@ public class Comment {
         this.text=text;
     }
 
-    public String getCommentId(){
+    public int getCommentId(){
         return commentId;
     }
 
-    public String getAuthorId(){
+    public int getAuthorId(){
         return authorId;
     }
 
@@ -52,11 +52,11 @@ public class Comment {
         return datePublished;
     }
 
-    public void setCommentId(String id){
+    public void setCommentId(int id){
         this.commentId=id;
     }
 
-    public void setAuthorId(String id){
+    public void setAuthorId(int id){
         this.authorId= id;
     }
 

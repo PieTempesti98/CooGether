@@ -1,7 +1,7 @@
 package it.unipi.dii.inginf.lsdb.coogether.bean;
 
 public class User {
-    private String userId;
+    private int userId;
     private String username;
     private String fullname;
     private String email;
@@ -12,18 +12,18 @@ public class User {
     public User(){
     }
 
-    public User(String id, String name ){
+    public User(int id, String name ){
         this.userId= id;
         this.username= name;
     }
 
-    public User(String id, String name, int followers ){
+    public User(int id, String name, int followers ){
         this.userId= id;
         this.username= name;
         this.followers=followers;
     }
 
-    public User(String id, String name, String full, String email, String pass, int followers, int following){
+    public User(int id, String name, String full, String email, String pass, int followers, int following){
         this.userId=id;
         this.username=name;
         this.fullname=full;
@@ -33,7 +33,7 @@ public class User {
         this.following=following;
     }
 
-    public String getUserId(){
+    public int getUserId(){
         return userId;
     }
 
@@ -55,7 +55,7 @@ public class User {
         return following;
     }
 
-    public void setUserId(String id){
+    public void setUserId(int id){
         this.userId=id;
     }
 

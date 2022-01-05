@@ -2,6 +2,7 @@ package it.unipi.dii.inginf.lsdb.coogether.persistence;
 
 import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
+import it.unipi.dii.inginf.lsdb.coogether.bean.User;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,7 +15,7 @@ import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.*;
 
-import it.unipi.dii.inginf.lsdb.coogether.bean.User;
+
 import org.bson.BsonArray;
 import org.bson.BsonString;
 import org.bson.Document;

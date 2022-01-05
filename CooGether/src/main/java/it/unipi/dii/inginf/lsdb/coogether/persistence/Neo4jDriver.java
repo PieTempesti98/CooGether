@@ -1,16 +1,14 @@
 package it.unipi.dii.inginf.lsdb.coogether.persistence;
 
-import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
 import it.unipi.dii.inginf.lsdb.coogether.bean.User;
-
-import org.neo4j.driver.*;
 import org.neo4j.driver.Record;
+import org.neo4j.driver.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
-import static org.neo4j.driver.Values.NULL;
-
-import java.util.*;
 
 public class Neo4jDriver implements DatabaseDriver{
 
@@ -167,7 +165,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r= result.next();
-                    String id = r.get("u.id").asString();
+                    int id = r.get("u.id").asInt();
                     String username = r.get("u.username").asString();
                     User user= new User(id, username);
                     users.add(user);
@@ -195,7 +193,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r= result.next();
-                    String id = r.get("u2.id").asString();
+                    int id = r.get("u2.id").asInt();
                     String username = r.get("u2.username").asString();
                     User user= new User(id, username);
                     users.add(user);
@@ -228,7 +226,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r= result.next();
-                    String id= r.get("r.id").asString();
+                    int id= r.get("r.id").asInt();
                     String name = r.get("r.name").asString();
                     Recipe rec= new Recipe(id, name);
                     recipes.add(rec);
@@ -256,7 +254,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r = result.next();
-                    String id= r.get("u.id").asString();
+                    int id= r.get("u.id").asInt();
                     String name= r.get("u.username").asString();
                     int followers= r.get("follower").asInt();
                     User u= new User(id, name, followers);
@@ -285,7 +283,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
                 while(result.hasNext()){
                     Record r = result.next();
-                    String id = r.get("user.id").asString();
+                    int id = r.get("user.id").asInt();
                		String username = r.get("user.username").asString();
                     User u = new User(id, username);
                		users.add(u);
