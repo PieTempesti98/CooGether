@@ -67,14 +67,13 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    //oltre alla ricetta vanno cancellati tutti i commenti della ricetta
     public boolean deleteRecipe(Recipe r){
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run( "MATCH (r:Recipe)-[h:HAS]->(c:Comment) " +
+                tx.run( "MATCH (r:Recipe) " +
                                 "WHERE r.id=$id " +
-                                "DETACH DELETE r, c",
+                                "DETACH DELETE r",
                         parameters( "id", r.getRecipeId()) );
                 return null;
             });
@@ -96,44 +95,6 @@ public class Neo4jDriver implements DatabaseDriver{
         }
         return true;
     }*/
-
-    //da implementare
-    public boolean addComment(Recipe r, Comment c){
-        try(Session session= driver.session()){
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    //da implementare
-    public boolean updateComment(Recipe r, Comment c){
-        try(Session session= driver.session()){
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean deleteComment(Comment c){
-        try(Session session= driver.session()){
-
-            session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run( "MATCH (c:Comment) WHERE c.id=$id DETACH DELETE c",
-                        parameters( "id", c.getCommentId()) );
-                return null;
-            });
-            return true;
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
 
     //da implementare
     public boolean addUser(User u){
@@ -247,36 +208,6 @@ public class Neo4jDriver implements DatabaseDriver{
             return null;
         }
         return users;
-    }
-
-    public List<Comment> getComments(String idRecipe){
-        List<Comment> comments= new ArrayList<>();
-
-        try(Session session= driver.session()){
-
-            session.readTransaction(tx->{
-                Result result = tx.run("match (r:Recipe)" +
-                                          "match (c:Comment)<-[h:HAS]-(r)" +
-                                          "match (u:User)-[w:WRITES]->(c)" +
-                                          "where r.id=$recipeId" +
-                                          "return r, c, h, u, w",
-                        parameters("recipeId", idRecipe));
-
-                while(result.hasNext()){
-                    Record r= result.next();
-                    String id = r.get("c.id").asString();
-                    String text = r.get("c.text").asString();
-                    String username = r.get("u.username").asString();
-                    Comment comment= new Comment(id, text, username);
-                    comments.add(comment);
-                }
-                return comments;
-            });
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
-        return comments;
     }
 
     //******************************************************************************************************************
