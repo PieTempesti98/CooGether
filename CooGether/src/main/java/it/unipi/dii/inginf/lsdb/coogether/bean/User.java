@@ -3,11 +3,12 @@ package it.unipi.dii.inginf.lsdb.coogether.bean;
 public class User {
     private int userId;
     private String username;
-    private String fullname;
+    private String fullName;
     private String email;
     private String password;
     private  int followers;
     private int following;
+    private int role;
 
     public User(){
     }
@@ -23,14 +24,15 @@ public class User {
         this.followers=followers;
     }
 
-    public User(int id, String name, String full, String email, String pass, int followers, int following){
+    public User(int id, String name, String full, String email, String pass, int followers, int following, int role){
         this.userId=id;
         this.username=name;
-        this.fullname=full;
+        this.fullName=full;
         this.email=email;
         this.password=pass;
         this.followers=followers;
         this.following=following;
+        this.role=role;
     }
 
     public int getUserId(){
@@ -41,7 +43,7 @@ public class User {
         return username;
     }
 
-    public String getFullname(){ return fullname;}
+    public String getFullName(){ return fullName;}
 
     public String getEmail(){ return email;}
 
@@ -55,6 +57,8 @@ public class User {
         return following;
     }
 
+    public int getRole(){return role;}
+
     public void setUserId(int id){
         this.userId=id;
     }
@@ -63,7 +67,7 @@ public class User {
         this.username=name;
     }
 
-    public void setFullname(String name){ this.fullname=name;}
+    public void setFullName(String name){ this.fullName=name;}
 
     public void setEmail(String email){this.email=email;}
 
@@ -76,4 +80,6 @@ public class User {
     public void setFollowing(int foll){
         this.following=foll;
     }
+
+    public void setRole(int role){this.role=role;}
 }
