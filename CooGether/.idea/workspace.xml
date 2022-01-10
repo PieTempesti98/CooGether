@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="update some wrong types">
+      <change afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/config/ConfigurationParameters.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/bean/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/bean/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +19,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Tag Library Descriptor" />
         <option value="Class" />
       </list>
     </option>
@@ -53,7 +56,9 @@
       <workItem from="1641405407492" duration="1164000" />
       <workItem from="1641406633981" duration="124000" />
       <workItem from="1641407450760" duration="1022000" />
-      <workItem from="1641572024842" duration="3384000" />
+      <workItem from="1641572024842" duration="3569000" />
+      <workItem from="1641629919281" duration="1094000" />
+      <workItem from="1641831641499" duration="1958000" />
     </task>
     <servers />
   </component>
