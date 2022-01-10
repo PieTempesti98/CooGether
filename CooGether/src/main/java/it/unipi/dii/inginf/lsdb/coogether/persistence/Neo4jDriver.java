@@ -97,6 +97,11 @@ public class Neo4jDriver implements DatabaseDriver{
     //da implementare
     public boolean addUser(User u){
         try(Session session= driver.session()){
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ("CREATE (u:User {u.id: $id, u.username: $username, u.fullname: $fullname, u.email: $email, u.password: $password})",
+                parameters("id", u.getUserId(), "username", u.getUsername(), "fullname", u.getFullName(), "email", u.getEmail(), "password", u.getPassword()));
+                return null;
+            } );
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -133,8 +138,16 @@ public class Neo4jDriver implements DatabaseDriver{
     }
 
     //da implementare
-    public boolean follow(){
+    public boolean follow(int following, int follower){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ("match (a:User) where a.id= $usera" +
+                           "match (b:User) where b.id=$userb" +
+                           "merge (a)-[:FOLLOWS]->(b)",
+                        parameters("usera", following, "userb", follower));
+                return null;
+            } );
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -144,8 +157,15 @@ public class Neo4jDriver implements DatabaseDriver{
     }
 
     //da implementare
-    public boolean unfollow(){
+    public boolean unfollow(int following, int follower){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ("match (a:User {a.id: $usera}) -[f:FOLLOWS]-> (b:User {b.id:$userb})" +
+                           "delete f",
+                        parameters("usera", following, "userb", follower));
+                return null;
+            } );
 
         }catch(Exception ex){
             ex.printStackTrace();

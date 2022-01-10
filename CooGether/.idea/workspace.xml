@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="update some wrong types">
-      <change afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.xsd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/config/ConfigurationParameters.java" afterDir="false" />
+    <list default="true" id="f9e0209d-5b50-4292-bea3-1069e641407d" name="Changes" comment="add config files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/Neo4jDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/unipi/dii/inginf/lsdb/coogether/persistence/Neo4jDriver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,8 +56,16 @@
       <workItem from="1641407450760" duration="1022000" />
       <workItem from="1641572024842" duration="3569000" />
       <workItem from="1641629919281" duration="1094000" />
-      <workItem from="1641831641499" duration="1958000" />
+      <workItem from="1641831641499" duration="3890000" />
     </task>
+    <task id="LOCAL-00001" summary="add config files">
+      <created>1641834588705</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1641834588705</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -79,6 +85,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update some wrong types" />
-    <option name="LAST_COMMIT_MESSAGE" value="update some wrong types" />
+    <MESSAGE value="add config files" />
+    <option name="LAST_COMMIT_MESSAGE" value="add config files" />
   </component>
 </project>
