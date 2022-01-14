@@ -211,18 +211,21 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson myMatch_1=match(eq("ingredients.name", ing1));
-        Bson myMatch_2=match(eq("ingredients.name", ing2));
+        String pattern1=".*" + ing1 +".*";
+        String pattern2=".*" + ing2 +".*";
+        Bson myMatch_1=match(regex("ingredients", pattern1));
+        Bson myMatch_2=match(regex("ingredients", pattern2));
         Bson projection=project(fields(excludeId(), include("name", "ingredients")));
 
-        results=(List<Document>) collection.aggregate(Arrays.asList(myMatch_1,myMatch_2, projection))
-                .into(new ArrayList<>());
+        results=(List<Document>) collection.aggregate(Arrays.asList(myMatch_1,myMatch_2,
+               	 projection)).into(new ArrayList<>());
 
         Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
         recipes = gson.fromJson(gson.toJson(results), recipeListType);
 
         return recipes;
     }
+
 
     //******************************************************************************************************************
     //                              ANALYTICS
