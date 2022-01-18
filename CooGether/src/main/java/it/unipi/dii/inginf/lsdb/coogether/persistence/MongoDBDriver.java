@@ -1,5 +1,7 @@
 package it.unipi.dii.inginf.lsdb.coogether.persistence;
 
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
 import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
 import it.unipi.dii.inginf.lsdb.coogether.bean.User;
@@ -115,9 +117,20 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
     public boolean addComment(Recipe r, Comment c){
         try{
+
+            Document com = new Document("reviewId", c.getCommentId())
+                    .append("authorId", c.getAuthorId())
+                    .append("rating", c.getRating())
+                    .append("authorName", c.getAuthorName())
+                    .append("comment", c.getText())
+                    .append("datePublished", c.getDatePublished());
+
+            Bson filter = Filters.eq( "recipeId", r.getRecipeId() ); //get the parent-document
+            Bson setUpdate = Updates.push("comments", com);
+
+            collection.updateOne(filter, setUpdate);
 
         }catch(Exception ex){
             return false;
@@ -135,9 +148,12 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
     public boolean deleteComment(Recipe r, Comment c){
         try{
+
+            Bson studentFilter = Filters.eq( "recipeId", r.getRecipeId() );
+            Bson delete = Updates.pull("comments", new Document("reviewId", c.getCommentId()));
+            collection.updateOne(studentFilter, delete);
 
         }catch(Exception ex){
             return false;
