@@ -98,9 +98,22 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
+    //delete the recipe and add the modified recipe
     public boolean updateRecipe(Recipe r){
         try{
+            boolean res=deleteRecipe(r);
+            if(!res)
+            {
+                System.out.println("A problem has occurred in modify recipe");
+                return false;
+            }
+
+            res= addRecipe(r);
+            if(!res)
+            {
+                System.out.println("A problem has occurred in modify recipe");
+                return false;
+            }
 
         }catch(Exception ex){
             return false;
@@ -138,9 +151,21 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
+    //delete the comment and add the modified comment
     public boolean updateComment(Recipe r, Comment c){
         try{
+            boolean res=deleteComment(r,c);
+            if(!res)
+            {
+                System.out.println("A problem has occurred in modify comment");
+                return false;
+            }
+            res=addComment(r,c);
+            if(!res)
+            {
+                System.out.println("A problem has occurred in modify modify");
+                return false;
+            }
 
         }catch(Exception ex){
             return false;
