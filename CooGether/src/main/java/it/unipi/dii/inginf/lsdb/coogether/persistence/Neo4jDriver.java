@@ -106,7 +106,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }*/
 
-    //da implementare
+
     public boolean addUser(User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
@@ -157,7 +157,7 @@ public class Neo4jDriver implements DatabaseDriver{
         }
     }
 
-    //da implementare
+
     public boolean follow(int following, int follower){
         try(Session session= driver.session()){
 
@@ -176,7 +176,7 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
+
     public boolean unfollow(int following, int follower){
         try(Session session= driver.session()){
 
