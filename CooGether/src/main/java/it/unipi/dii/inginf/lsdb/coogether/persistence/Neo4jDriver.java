@@ -43,10 +43,15 @@ public class Neo4jDriver implements DatabaseDriver{
 
     //ogni volta che si elimina un nodo, ricordarsi di eliminare anche i relativi archi
 
-    //da implementare
     public boolean addRecipe(Recipe r){
         try(Session session= driver.session()){
 
+            session.writeTransaction((TransactionWork<Void>) tx ->{
+                tx.run("match (u:User) where u.id=$usId CREATE (r:Recipe {id:$recId, name:$title}), (u)-[:ADDS]->(r)",
+                        parameters("usId", r.getAuthorId(),"recId", r.getRecipeId(), "title", r.getName()));
+
+                return null;
+            });
         }catch(Exception ex){
             ex.printStackTrace();
             return false;
@@ -54,9 +59,16 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
+    //change the title of one recipe
     public boolean updateRecipe(Recipe r){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx ->{
+                tx.run("match(r:Recipe {id:$recId}) set r.name=$newName",
+                        parameters("recId", r.getRecipeId(), "newName", r.getName()));
+
+                return null;
+            });
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -110,9 +122,17 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    //da implementare
+    //modify all the parameters
     public boolean updateUser(User u){
         try(Session session= driver.session()){
+
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ( "match (u:User {id:1234})" +
+                                "set u.email=$email, u.fullname=$fullName, u.password=$pass, u.username=$userName",
+                        parameters("email", u.getEmail(), "fullName", u.getFullName(), "pass",
+                                u.getPassword(), "userName", u.getUsername()));
+                return null;
+            } );
 
         }catch(Exception ex){
             ex.printStackTrace();
