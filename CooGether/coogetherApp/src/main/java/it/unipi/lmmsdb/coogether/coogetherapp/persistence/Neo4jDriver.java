@@ -7,6 +7,7 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
@@ -277,9 +278,33 @@ public class Neo4jDriver{
     }
 
     public ArrayList<Recipe> getRecipes(int skip, int limit){
-        //Skip is the number to recipes to skip
-        //MUST BE IMPLEMENTED
-        return null;
+        ArrayList<Recipe> recipes= new ArrayList<>();
+
+        /*try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (r:Recipe)" +
+                                          "return r" +
+                                          "limit $toLimit" +
+                                          "skip $toSkip", Values.parameters("toLimit",limit, "toSkip", skip));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    int id = r.get("r.recipeId").asInt();
+                    String name = r.get("r.name").asString();
+                    Date date = r.get("r.datePublished").asLocalDate();
+                    String category = r.get("r.category").asString();
+                    Recipe recipe= new Recipe(id, name, date, category);
+                    recipes.add(recipe);
+                }
+                return recipes;
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }*/
+        return recipes;
     }
 
     //******************************************************************************************************************
