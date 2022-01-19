@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RecipeViewController  implements Initializable {
+public class RecipeViewController implements Initializable {
 
     @FXML private ImageView goBack;
     @FXML private ImageView log;
@@ -35,22 +35,24 @@ public class RecipeViewController  implements Initializable {
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
 
+    Recipe recipe;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*Recipe recipe= MongoDBDriver.getRecipesFromId();
+        recipe= MongoDBDriver.getRecipesFromId(recipe.getRecipeId());
         recipeTitle.setText(recipe.getName());
         recipeAuthorName.setText(recipe.getAuthorName());
         Image img = new Image(recipe.getImage());
         recipeImg.setImage(img);
         recipeCategory.setText(recipe.getCategory());
         recipeDescription.setText(recipe.getDescription());
-        recipeCookTime.setText(recipe.getCookTime());
-        recipePrep.setText(recipe.getPrepTime());
-        recipeKal.setText(recipe.getCalories());
-        recipeFat.setText(recipe.getFatContent());
-        recipeServings.setText(recipe.getRecipeServings());
-        recipeSodium.setText(recipe.getSodiumContent());
-        recipeProtein.setText(recipe.getProteinContent());
+        recipeCookTime.setText(String.valueOf(recipe.getCookTime()));
+        recipePrep.setText(String.valueOf(recipe.getPrepTime()));
+        recipeKal.setText(String.valueOf(recipe.getCalories()));
+        recipeFat.setText(String.valueOf(recipe.getFatContent()));
+        recipeServings.setText(String.valueOf(recipe.getRecipeServings()));
+        recipeSodium.setText(String.valueOf(recipe.getSodiumContent()));
+        recipeProtein.setText(String.valueOf(recipe.getProteinContent()));
 
         for (String s : recipe.getIngredients()){
             Text text = new Text();
@@ -80,5 +82,9 @@ public class RecipeViewController  implements Initializable {
             text.setText(c.getText());
             comments.getChildren().addAll(box, text);
         }
-   */ }
+   }
+
+    public void setRecipeId(int id) {
+        this.recipe.setRecipeId(id);
+    }
 }

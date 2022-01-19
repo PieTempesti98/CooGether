@@ -2,6 +2,8 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.w3c.dom.events.MouseEvent;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -58,7 +61,7 @@ public class HelloController implements Initializable {
             recContainer.getChildren().add(title);
             recContainer.getChildren().add(category);
             recContainer.getChildren().add(datePublished);
-            recContainer.setOnMouseClicked(mouseEvent -> {goToRecipe(r);});
+            recContainer.setOnMouseClicked(mouseEvent -> {goToRecipe(r, (MouseEvent) mouseEvent);});
             recContainer.setSpacing(10);
 
             recipeContainer.getChildren().add(recContainer);
@@ -69,7 +72,10 @@ public class HelloController implements Initializable {
 
     }
 
-    private void goToRecipe(Recipe r){
+    private void goToRecipe(Recipe r, MouseEvent mouseEvent){
+        RecipeViewController recipeViewController =
+                (RecipeViewController) Utils.changeScene("/recipe-view.fxml", (Event) mouseEvent);
 
+        recipeViewController.setRecipeId(r.getRecipeId());
     }
 }
