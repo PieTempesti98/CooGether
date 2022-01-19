@@ -22,6 +22,18 @@ public class UserHandler {
             return null;
         }
     }
+
+    public static ArrayList<FollowDTO> parseFollows(String path){
+        InputStream input = FollowListDTO.class.getResourceAsStream(path);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            FollowListDTO container =  objectMapper.readValue(input, FollowListDTO.class);
+            return container.getData();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public static ArrayList<User> convertToUsers(ArrayList<UserDTO> dto){
         ArrayList<User> list = new ArrayList<>();
         for(UserDTO elem: dto){

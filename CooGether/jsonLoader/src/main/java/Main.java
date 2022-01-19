@@ -1,3 +1,5 @@
+import dbConnections.GraphConn;
+import dbConnections.MongoConn;
 import dto.*;
 import entities.Comment;
 import entities.Recipe;
@@ -55,6 +57,8 @@ public class Main {
         userList = UserHandler.parseUsers("/download-7.json", userList);
         userList = UserHandler.parseUsers("/download-8.json", userList);
 
+        ArrayList<FollowDTO> followList = UserHandler.parseFollows("/follow.json");
+
         ArrayList<User> users = UserHandler.convertToUsers(userList);
         users = UserHandler.fixUserId(users, userIDs, usernames);
 
@@ -62,9 +66,15 @@ public class Main {
         ArrayList<NewRecipeDTO> newList = new ArrayList<>(newRecipes.getData().subList(0,10000));
         ArrayList<Recipe >recipesToPrint = RecipeHandler.convertNewRecipes(recipes, newList, users);
 
-        UserHandler.toJson(users);
-        RecipeHandler.toJson(recipesToPrint);
-        CommentHandler.toJson(comments);
+        //MongoConn.insertRecipes(recipesToPrint);
+        GraphConn graphConn = new GraphConn();
+        //graphConn.addUsers(users);
+        //graphConn.connectUsers(followList);
+        graphConn.addRecipes(recipesToPrint);
+
+//        UserHandler.toJson(users);
+//        RecipeHandler.toJson(recipesToPrint);
+//        CommentHandler.toJson(comments);
 
 
     }
