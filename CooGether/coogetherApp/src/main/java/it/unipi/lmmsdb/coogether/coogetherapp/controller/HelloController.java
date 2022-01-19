@@ -1,4 +1,4 @@
-package it.unipi.lmmsdb.coogether.coogetherapp;
+package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

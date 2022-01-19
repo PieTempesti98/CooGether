@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.lsdb.coogether.bean;
+package it.unipi.lmmsdb.coogether.coogetherapp.bean;
 
 public class User {
     private int userId;

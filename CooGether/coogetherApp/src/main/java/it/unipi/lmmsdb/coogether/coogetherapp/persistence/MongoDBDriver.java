@@ -1,10 +1,9 @@
-package it.unipi.dii.inginf.lsdb.coogether.persistence;
+package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-import it.unipi.dii.inginf.lsdb.coogether.bean.Comment;
-import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
-import it.unipi.dii.inginf.lsdb.coogether.bean.User;
+import com.mongodb.client.model.*;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -123,7 +122,7 @@ public class MongoDBDriver implements DatabaseDriver{
 
     public boolean deleteRecipe(Recipe r){
         try{
-            collection.deleteOne(eq("recipeId", r.getRecipeId()));
+            collection.deleteOne(Filters.eq("recipeId", r.getRecipeId()));
         }catch(Exception ex){
             return false;
         }
@@ -199,8 +198,8 @@ public class MongoDBDriver implements DatabaseDriver{
     public List<Recipe> getAllRecipes(){
         List<Recipe> recipes = new ArrayList<>();
 
-        Bson sort = sort(descending("datePublished"));
-        Bson proj = project(fields(excludeId(), include("name", "authorName","datePublished")));
+        Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
+        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
 
         List<Document> results = (List<Document>) collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList());
 
@@ -216,9 +215,9 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson myMatch = match(eq("authorName", username));
-        Bson mySort = sort(descending("datePublished"));
-        Bson projection = project( fields(excludeId(), include("name", "authorName","datePublished")));
+        Bson myMatch = Aggregates.match(Filters.eq("authorName", username));
+        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
+        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
 
         results= (List<Document>) collection.aggregate(Arrays.asList(myMatch, mySort, projection))
                 .into(new ArrayList<>());
@@ -234,9 +233,9 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson myMatch = match(eq("recipeCategory", category));
-        Bson mySort = sort(descending("datePublished"));
-        Bson projection=project(fields(excludeId(), include("name", "authorName", "recipeCategory", "datePublished")));
+        Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
+        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName", "recipeCategory", "datePublished")));
 
         results=(List<Document>) collection.aggregate(Arrays.asList(myMatch,mySort, projection))
                 .into(new ArrayList<>());
@@ -254,9 +253,9 @@ public class MongoDBDriver implements DatabaseDriver{
 
         String pattern1=".*" + ing1 +".*";
         String pattern2=".*" + ing2 +".*";
-        Bson myMatch_1=match(regex("ingredients", pattern1));
-        Bson myMatch_2=match(regex("ingredients", pattern2));
-        Bson projection=project(fields(excludeId(), include("name", "ingredients")));
+        Bson myMatch_1= Aggregates.match(Filters.regex("ingredients", pattern1));
+        Bson myMatch_2= Aggregates.match(Filters.regex("ingredients", pattern2));
+        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "ingredients")));
 
         results=(List<Document>) collection.aggregate(Arrays.asList(myMatch_1,myMatch_2,
                	 projection)).into(new ArrayList<>());
@@ -277,16 +276,16 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson m = match(eq("recipeCategory", category));
-        Bson m1 = match(exists("calories", true));
-        Bson m2 = match(exists("fatContent", true));
-        Bson m3 = match(exists("sodiumContent", true));
-        Bson m4 = match(exists("proteinContent", true));
-        Bson s= sort(ascending("calories"));
-        Bson s1= sort(ascending("fatContent"));
-        Bson s2= sort(ascending("sodiumContent"));
-        Bson s3= sort(descending("proteinContent"));
-        Bson l=limit(k);
+        Bson m = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson m1 = Aggregates.match(Filters.exists("calories", true));
+        Bson m2 = Aggregates.match(Filters.exists("fatContent", true));
+        Bson m3 = Aggregates.match(Filters.exists("sodiumContent", true));
+        Bson m4 = Aggregates.match(Filters.exists("proteinContent", true));
+        Bson s= Aggregates.sort(Sorts.ascending("calories"));
+        Bson s1= Aggregates.sort(Sorts.ascending("fatContent"));
+        Bson s2= Aggregates.sort(Sorts.ascending("sodiumContent"));
+        Bson s3= Aggregates.sort(Sorts.descending("proteinContent"));
+        Bson l= Aggregates.limit(k);
 
         results=(List<Document>) collection.aggregate(Arrays.asList(m, m1, m2, m3, m4, s, s1,
                         s2, s3, l)).into(new ArrayList<>());
@@ -302,12 +301,12 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson myMatch_1 = match(eq("recipeCategory", category));
-        Bson myUnwind = unwind("$comments");
-        Bson myMatch_2 = match(eq("comments.rating", 5));
-        Bson myGroup = group("$recipeId", sum("count", 1));
-        Bson mySort = sort(descending("count"));
-        Bson myLimit = limit(k);
+        Bson myMatch_1 = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson myUnwind = Aggregates.unwind("$comments");
+        Bson myMatch_2 = Aggregates.match(Filters.eq("comments.rating", 5));
+        Bson myGroup = Aggregates.group("$recipeId", Accumulators.sum("count", 1));
+        Bson mySort = Aggregates.sort(Sorts.descending("count"));
+        Bson myLimit = Aggregates.limit(k);
 
         results=(List<Document>) collection.aggregate(Arrays.asList(myMatch_1,myUnwind,myMatch_2,myGroup,mySort,myLimit)).
                 into(new ArrayList<>());
@@ -323,8 +322,8 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson myMatch = match(eq("recipeCategory", category));
-        Bson mySort = sort(descending("datePublished"));
+        Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
 
         results=(List<Document>)collection.aggregate(Arrays.asList(myMatch,mySort))
              .into(new ArrayList<>());
@@ -340,11 +339,11 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson m1 = match(eq("recipeCategory", category));
-        Bson m2 = match(exists("cookTime", true));
-        Bson m3 = match(exists("prepTime", true));
-        Bson s1 = sort(ascending("cookTime"));
-        Bson s2 = sort(ascending("prepTime"));
+        Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson m2 = Aggregates.match(Filters.exists("cookTime", true));
+        Bson m3 = Aggregates.match(Filters.exists("prepTime", true));
+        Bson s1 = Aggregates.sort(Sorts.ascending("cookTime"));
+        Bson s2 = Aggregates.sort(Sorts.ascending("prepTime"));
 
         results=(List<Document>)collection.aggregate(Arrays.asList(m1, m2, m3, s1, s2))
                 .into(new ArrayList<>());
@@ -360,10 +359,10 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson m1 = match(eq("recipeCategory", category));
-        Bson u= unwind("$ingredients");
-        Bson g=group("$recipeId", sum("numberOfIngredients", 1));
-        Bson s= sort(ascending("numberOfIngredients"));
+        Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
+        Bson u= Aggregates.unwind("$ingredients");
+        Bson g= Aggregates.group("$recipeId", Accumulators.sum("numberOfIngredients", 1));
+        Bson s= Aggregates.sort(Sorts.ascending("numberOfIngredients"));
 
         results=(List<Document>)collection.aggregate(Arrays.asList(m1, u, g, s))
                 .into(new ArrayList<>());
@@ -379,14 +378,14 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results= new ArrayList<>();
         Gson gson= new Gson();
 
-        Bson unwind_comments = unwind("$comments");
+        Bson unwind_comments = Aggregates.unwind("$comments");
         Bson group1 = new Document("$group", new Document("_id",
                 	                                        new Document("recipe", "$recipeId")
                                                             .append("author", "$authorId"))
         	                                                .append("avgRating", new Document("$avg", "$comments.rating")));
-        Bson group2 = group("$_id.author", avg("avgRating", "$avgRating"));
-        Bson sort_by_rating = sort(descending("avgRating"));
-        Bson limitResults = limit(k);
+        Bson group2 = Aggregates.group("$_id.author", Accumulators.avg("avgRating", "$avgRating"));
+        Bson sort_by_rating = Aggregates.sort(Sorts.descending("avgRating"));
+        Bson limitResults = Aggregates.limit(k);
 
         results= (List<Document>) collection.aggregate(Arrays.asList(unwind_comments, group1, group2,
                  sort_by_rating, limitResults)).into(new ArrayList<>());
@@ -402,17 +401,17 @@ public class MongoDBDriver implements DatabaseDriver{
         List<Document> results = new ArrayList<>();
         Gson gson = new Gson();
 
-        Bson unwind_comments = unwind("$comments");
+        Bson unwind_comments = Aggregates.unwind("$comments");
         Bson group1 = new Document("$group", new Document("_id", "$recipeId")
         	                .append("mostRecentComment", new Document("$max", "$comments.dateModified"))
         	                .append("leastRecentComment",new Document("$min", "$comments.dateModified")));
         BsonArray operands = new BsonArray();
         operands.add(new BsonString("$mostRecentComment"));
         operands.add(new BsonString("$leastRecentComment"));
-        Bson project_lifespan = project(fields(excludeId(), include("_id"),
+        Bson project_lifespan = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("_id"),
                 	        new Document("lifespan", new Document("$subtract", operands))));
-        Bson sort_by_lifespan = sort(descending("lifespan"));
-        Bson limitResults = limit(k);
+        Bson sort_by_lifespan = Aggregates.sort(Sorts.descending("lifespan"));
+        Bson limitResults = Aggregates.limit(k);
 
         results= (List<Document>) collection.aggregate(Arrays.asList(unwind_comments, group1,
                 	project_lifespan, sort_by_lifespan, limitResults)).into(new ArrayList<>());

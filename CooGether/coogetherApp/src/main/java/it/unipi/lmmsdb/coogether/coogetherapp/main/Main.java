@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.lsdb.coogether.main;
+package it.unipi.lmmsdb.coogether.coogetherapp.main;
 
 public class Main {
 

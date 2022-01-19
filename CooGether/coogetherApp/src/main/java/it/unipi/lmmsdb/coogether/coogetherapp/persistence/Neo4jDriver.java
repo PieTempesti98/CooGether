@@ -1,7 +1,7 @@
-package it.unipi.dii.inginf.lsdb.coogether.persistence;
+package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
-import it.unipi.dii.inginf.lsdb.coogether.bean.Recipe;
-import it.unipi.dii.inginf.lsdb.coogether.bean.User;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.*;
 
@@ -48,7 +48,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
                 tx.run("match (u:User) where u.id=$usId CREATE (r:Recipe {id:$recId, name:$title}), (u)-[:ADDS]->(r)",
-                        parameters("usId", r.getAuthorId(),"recId", r.getRecipeId(), "title", r.getName()));
+                        Values.parameters("usId", r.getAuthorId(),"recId", r.getRecipeId(), "title", r.getName()));
 
                 return null;
             });
@@ -65,7 +65,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
                 tx.run("match(r:Recipe {id:$recId}) set r.name=$newName",
-                        parameters("recId", r.getRecipeId(), "newName", r.getName()));
+                        Values.parameters("recId", r.getRecipeId(), "newName", r.getName()));
 
                 return null;
             });
@@ -84,7 +84,7 @@ public class Neo4jDriver implements DatabaseDriver{
                 tx.run( "MATCH (r:Recipe) " +
                                 "WHERE r.id=$id " +
                                 "DETACH DELETE r",
-                        parameters( "id", r.getRecipeId()) );
+                        Values.parameters( "id", r.getRecipeId()) );
                 return null;
             });
             return true;
@@ -111,7 +111,7 @@ public class Neo4jDriver implements DatabaseDriver{
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 tx.run ("CREATE (u:User {u.id: $id, u.username: $username, u.fullname: $fullname, u.email: $email, u.password: $password})",
-                parameters("id", u.getUserId(), "username", u.getUsername(), "fullname", u.getFullName(), "email", u.getEmail(), "password", u.getPassword()));
+                Values.parameters("id", u.getUserId(), "username", u.getUsername(), "fullname", u.getFullName(), "email", u.getEmail(), "password", u.getPassword()));
                 return null;
             } );
 
@@ -129,7 +129,7 @@ public class Neo4jDriver implements DatabaseDriver{
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 tx.run ( "match (u:User {id:1234})" +
                                 "set u.email=$email, u.fullname=$fullName, u.password=$pass, u.username=$userName",
-                        parameters("email", u.getEmail(), "fullName", u.getFullName(), "pass",
+                        Values.parameters("email", u.getEmail(), "fullName", u.getFullName(), "pass",
                                 u.getPassword(), "userName", u.getUsername()));
                 return null;
             } );
@@ -146,7 +146,7 @@ public class Neo4jDriver implements DatabaseDriver{
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 tx.run( "MATCH (u:User) WHERE u.id=$id DETACH DELETE u",
-                        parameters( "id", u.getUserId()) );
+                        Values.parameters( "id", u.getUserId()) );
                 return null;
             });
             return true;
@@ -165,7 +165,7 @@ public class Neo4jDriver implements DatabaseDriver{
                 tx.run ("match (a:User) where a.id= $usera" +
                            "match (b:User) where b.id=$userb" +
                            "merge (a)-[:FOLLOWS]->(b)",
-                        parameters("usera", following, "userb", follower));
+                        Values.parameters("usera", following, "userb", follower));
                 return null;
             } );
 
@@ -183,7 +183,7 @@ public class Neo4jDriver implements DatabaseDriver{
             session.writeTransaction((TransactionWork<Void>) tx -> {
                 tx.run ("match (a:User {a.id: $usera}) -[f:FOLLOWS]-> (b:User {b.id:$userb})" +
                            "delete f",
-                        parameters("usera", following, "userb", follower));
+                        Values.parameters("usera", following, "userb", follower));
                 return null;
             } );
 
@@ -229,7 +229,7 @@ public class Neo4jDriver implements DatabaseDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User)" +
                                           "where u1.id = $userId"+
-                                           "return u2", parameters("userId", u.getUserId()));
+                                           "return u2", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
@@ -262,7 +262,7 @@ public class Neo4jDriver implements DatabaseDriver{
                                 "match (r:Recipe)<-[a:ADDS]-(u2)" +
                                 "where u.id=$userId" +
                                 "return r, u, u2, f, a",
-                        parameters("userId", userId));
+                        Values.parameters("userId", userId));
 
                 while(result.hasNext()){
                     Record r= result.next();
@@ -290,7 +290,7 @@ public class Neo4jDriver implements DatabaseDriver{
                                                                       "return u.id, u.username, count(DISTINCT f) as follower " +
                                                                       "order by follower desc " +
                                                                       "limit $l",
-                                                            parameters( "l", limit) );
+                                                            Values.parameters( "l", limit) );
 
                 while(result.hasNext()){
                     Record r = result.next();
@@ -319,7 +319,7 @@ public class Neo4jDriver implements DatabaseDriver{
                           			                                  "return user, count(x)" +
                             			                              "order by count(x)" +
                            				                              "limit $k",
-                			                                parameters("k", k) );
+                			                                Values.parameters("k", k) );
 
                 while(result.hasNext()){
                     Record r = result.next();

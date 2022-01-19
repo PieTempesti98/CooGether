@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.lsdb.coogether.config;
+package it.unipi.lmmsdb.coogether.coogetherapp.config;
 
 /**
  * Class used to store the configuration parameters retrieved from the config.xml

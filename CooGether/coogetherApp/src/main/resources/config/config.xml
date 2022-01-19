@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <it.unipi.dii.inginf.lsdb.coogether.config.ConfigurationParameters>
     <mongoFirstIp>172.16.4.51</mongoFirstIp>
-    <mongoFirstPort>27017</mongoFirstPort>
+    <mongoFirstPort>27018</mongoFirstPort>
     <mongoSecondIp>172.16.4.52</mongoSecondIp>
-    <mongoSecondPort>27017</mongoSecondPort>
+    <mongoSecondPort>27018</mongoSecondPort>
     <mongoThirdIp>172.16.4.53</mongoThirdIp>
-    <mongoThirdPort>27017</mongoThirdPort>
+    <mongoThirdPort>27018</mongoThirdPort>
     <mongoUsername></mongoUsername>
     <mongoPassword></mongoPassword>
     <mongoDbName>CooGether</mongoDbName>

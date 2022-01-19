@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.lsdb.coogether.persistence;
+package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
 public interface DatabaseDriver {
     public boolean openConnection();

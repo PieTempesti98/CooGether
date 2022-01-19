@@ -17,3 +17,4 @@ jsonLoader/src/main/resources/download-8.json
 jsonLoader/src/main/resources/follow.json
 jsonLoader/src/main/resources/full-format-recipes.json
 jsonLoader/src/main/resources/recipes.json
+/.idea/
