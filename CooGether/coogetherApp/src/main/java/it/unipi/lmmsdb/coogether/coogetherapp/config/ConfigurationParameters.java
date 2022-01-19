@@ -32,7 +32,7 @@ public class ConfigurationParameters {
         try {
             // creating a constructor of file class and
             // parsing an XML file
-            File file = new File("/config/config.xml");
+            File file = new File("CooGether/coogetherApp/src/main/resources/config/config.xml");
 
 
             // Defines a factory API that enables

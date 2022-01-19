@@ -48,7 +48,8 @@ public class GraphConn implements AutoCloseable{
     public void addRecipes(ArrayList<Recipe> list){
         for(Recipe r: list) {
             try (Session session = driver.session()) {
-                session.run("MERGE (r: Recipe {id: $id, name: $name, category: $category, datePublished: $date})",
+                session.run("MERGE (r: Recipe {id: $id}) " +
+                                "ON CREATE SET r.name = $name, r.category = $category, r.datePublished = $date",
                         parameters(
                                 "id", r.getRecipeId(),
                                 "name", r.getName(),
@@ -58,7 +59,7 @@ public class GraphConn implements AutoCloseable{
                 session.run(
                         "MATCH (u:User) WHERE u.id = $uid " +
                         "MATCH (r:Recipe) WHERE r.id = $rid " +
-                        "CREATE (u)-[:ADDS]->(r)",
+                        "MERGE (u)-[:ADDS]->(r)",
                         parameters("uid", r.getAuthorId(), "rid", r.getRecipeId())
                 );
             }
@@ -69,12 +70,11 @@ public class GraphConn implements AutoCloseable{
     public void connectUsers(ArrayList<FollowDTO> list){
         for(FollowDTO f: list){
             try (Session session = driver.session()){
-                for(int i: f.getFollow()){
+                for(int i = 0; i < 4; i++){
                     session.run(
-                            "MATCH (u1:User) WHERE u1.id = $user1 " +
-                                    "MATCH (u2:User) WHERE u2.id = $user2 " +
-                                    "CREATE (u1)-[:FOLLOWS]->(u2)",
-                            parameters("user1", f.getUserId(), "user2", i)
+                            "MATCH (u1:User) WHERE u1.id = $user1 " + "MATCH (u2:User) WHERE u2.id = $user2 " +
+                                    "MERGE (u1)-[:FOLLOWS]->(u2)",
+                            parameters("user1", f.getUserId(), "user2", f.getFollow().get(i))
                     );
                 }
             }

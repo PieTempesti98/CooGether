@@ -12,7 +12,7 @@
         <children>
           <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Welcome to CooGether!" textAlignment="CENTER" wrappingWidth="410.1054992675781">
             <font>
-               <Font name="Comic Sans MS" size="36.0" />
+               <Font name="Avenir" size="36.0" />
             </font>
           </Text>
            <ImageView fitHeight="104.0" fitWidth="115.0" layoutX="536.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
@@ -25,16 +25,12 @@
            </ImageView>
        </children>
    </Pane>
-   <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="354.0" prefWidth="380.0">
-     <content>
-       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="366.0" prefWidth="385.0">
-            <children>
-                <VBox fx:id="recipeContainer" alignment="CENTER" layoutX="-20.0" layoutY="-7.0" opacity="0.0" prefHeight="326.0" prefWidth="393.0">
+   <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
+       <AnchorPane minHeight="0.0" minWidth="0.0" >
+                <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10" >
 
                 </VBox>
-            </children>
          </AnchorPane>
-     </content>
    </ScrollPane>
    <Pane layoutX="417.0" layoutY="149.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="5.6843418860808015E-14">
       <children>

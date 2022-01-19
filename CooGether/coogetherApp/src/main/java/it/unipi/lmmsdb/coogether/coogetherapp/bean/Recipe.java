@@ -32,7 +32,7 @@ public class Recipe {
         this.name=name;
     }
 
-    public Recipe(int id, String name, int authorId, String authorName, Date datePublished, String category){
+    public Recipe(int id, String name, Date datePublished, String category){
         this.recipeId= id;
         this.name= name;
         this.datePublished=datePublished;
