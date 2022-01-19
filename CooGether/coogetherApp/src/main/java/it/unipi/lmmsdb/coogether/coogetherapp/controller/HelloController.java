@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.w3c.dom.events.MouseEvent;
@@ -22,6 +23,11 @@ public class HelloController implements Initializable {
 
     @FXML
     private VBox recipeContainer;
+
+    @FXML private Button signIn;
+    @FXML private Button signUp;
+    @FXML private TextField email;
+    @FXML private TextField password;
 
     private int skip = 0;
 

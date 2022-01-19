@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.LoginViewController">
+
+        <children>
+            <VBox layoutX="106.0" layoutY="58.0" prefHeight="283.0" prefWidth="388.0">
+            <HBox spacing="10.0">
+                <Label layoutX="172.0" layoutY="54.0" text="Email:">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <TextField fx:id="email" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+               <HBox.margin>
+                  <Insets left="100.0" />
+               </HBox.margin></TextField>
+            <padding>
+               <Insets top="10.0" />
+            </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label layoutX="172.0" layoutY="99.0" text="Password:">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+
+                <TextField fx:id="password" layoutX="300.0" layoutY="100.0" prefHeight="22.0" prefWidth="110.0">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin></TextField>
+            <padding>
+               <Insets top="10.0" />
+            </padding>
+            </HBox>
+            <Button fx:id="signIn" alignment="CENTER" contentDisplay="CENTER" layoutX="244.0" layoutY="160.0" mnemonicParsing="false" text="Sign in" textAlignment="CENTER" textFill="#596cc2">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+            <VBox.margin>
+               <Insets left="150.0" top="10.0" />
+            </VBox.margin></Button>
+                <Line endX="152.60000610351562" layoutX="312.0" layoutY="227.0" startX="-177.39999389648438" stroke="#596cc2">
+            <VBox.margin>
+               <Insets left="20.0" top="20.0" />
+            </VBox.margin></Line>
+            <HBox spacing="10.0">
+                <Label text="Do you not have an account?" textAlignment="CENTER" textFill="#596cc2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="1.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets top="2.0" />
+               </padding></Label>
+                <Button fx:id="signUp" layoutX="358.0" layoutY="256.0" mnemonicParsing="false" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font></Button>
+            <padding>
+               <Insets top="10.0" />
+            </padding>
+            <VBox.margin>
+               <Insets left="10.0" top="20.0" />
+            </VBox.margin>
+            </HBox>
+
+
+        </VBox>
+        </children>
+</AnchorPane>

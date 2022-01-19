@@ -6,8 +6,11 @@ import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -34,11 +37,15 @@ public class RecipeViewController implements Initializable {
     @FXML private Text recipeProtein;
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
+    @FXML private Spinner starSpinner;
+    @FXML private Button addCommennt;
 
     Recipe recipe;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        goBack.setOnMouseClicked(mouseEvent -> clickOnBackToChangePage(mouseEvent));
+        log.setOnMouseClicked(mouseEvent -> clickOnUserToChangePage(mouseEvent));
         recipe= MongoDBDriver.getRecipesFromId(recipe.getRecipeId());
         recipeTitle.setText(recipe.getName());
         recipeAuthorName.setText(recipe.getAuthorName());
@@ -82,7 +89,20 @@ public class RecipeViewController implements Initializable {
             text.setText(c.getText());
             comments.getChildren().addAll(box, text);
         }
+        addCommennt.setOnMouseClicked(mouseEvent -> clickOnAddComment(mouseEvent));
    }
+
+    private void clickOnAddComment(MouseEvent mouseEvent) {
+        //deve controllare se lo user e loggato prima di aggiungere il commento
+    }
+
+    private void clickOnUserToChangePage(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+    }
+
+    private void clickOnBackToChangePage(MouseEvent mouseEvent) {
+        //torna alla hello page
+    }
 
     public void setRecipeId(int id) {
         this.recipe.setRecipeId(id);

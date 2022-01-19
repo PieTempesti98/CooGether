@@ -184,31 +184,16 @@
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </Label>
-                        <HBox>
-                            <Text fx:id="commentAuthor" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                                <font>
-                                    <Font size="16.0" />
-                                </font>
-                            </Text>
-                            <ImageView fitHeight="37.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                                <image>
-                                    <Image url="@img/star.png" />
-                                </image>
-                                <BorderPane.margin>
-                                    <Insets left="20.0" />
-                                </BorderPane.margin>
-                            </ImageView>
-                        </HBox>
-                        <Text fx:id="commentText" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
                     </VBox>
-                    <HBox>
+                    <VBox>
+                        <Label text="Add a comment"></Label>
+                        <HBox>
+                            <Label text="Add a rating from 0 to 5:"></Label>
+                            <Spinner fx:id="starSpinner" editable="true" />
+                        </HBox>
                         <TextArea layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
-                        <Button layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Add" textAlignment="CENTER" textFill="#596cc2"></Button>
-                    </HBox>
+                        <Button fx:id="addComment" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Add" textAlignment="CENTER" textFill="#596cc2" />
+                    </VBox>
                 </VBox>
 
             </AnchorPane>
