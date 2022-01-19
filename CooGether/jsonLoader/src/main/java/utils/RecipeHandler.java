@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RecipeHandler {
-    private final static String path = "/recipes.json";
+    private final static String path = "/uploads/recipes.json";
 
     public static RecipeListDTO parseRecipes(){
         InputStream input = RecipeListDTO.class.getResourceAsStream(path);
@@ -27,7 +27,7 @@ public class RecipeHandler {
     }
 
     public static NewRecipeListDTO parseNewRecipes(){
-        InputStream input = NewRecipeListDTO.class.getResourceAsStream("/full_format_recipes.json");
+        InputStream input = NewRecipeListDTO.class.getResourceAsStream("/uploads/full_format_recipes.json");
         System.out.println(input);
         ObjectMapper objectMapper = new ObjectMapper();
         try {

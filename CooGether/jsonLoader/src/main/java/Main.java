@@ -43,28 +43,28 @@ public class Main {
         }
 
         ArrayList<UserDTO> userList = new ArrayList<>();
-        userList = UserHandler.parseUsers("/download (1).json", userList);
-        userList = UserHandler.parseUsers("/download (2).json", userList);
-        userList = UserHandler.parseUsers("/download (2) (1).json", userList);
-        userList = UserHandler.parseUsers("/download (1) (1).json", userList);
-        userList = UserHandler.parseUsers("/download (2) (2).json", userList);
-        userList = UserHandler.parseUsers("/download.json", userList);
-        userList = UserHandler.parseUsers("/download-2.json", userList);
-        userList = UserHandler.parseUsers("/download-3.json", userList);
-        userList = UserHandler.parseUsers("/download-4.json", userList);
-        userList = UserHandler.parseUsers("/download-5.json", userList);
-        userList = UserHandler.parseUsers("/download-6.json", userList);
-        userList = UserHandler.parseUsers("/download-7.json", userList);
-        userList = UserHandler.parseUsers("/download-8.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download (1).json", userList);
+        userList = UserHandler.parseUsers("/uploads/download (2).json", userList);
+        userList = UserHandler.parseUsers("/uploads/download (2) (1).json", userList);
+        userList = UserHandler.parseUsers("/uploads/download (1) (1).json", userList);
+        userList = UserHandler.parseUsers("/uploads/download (2) (2).json", userList);
+        userList = UserHandler.parseUsers("/uploads/download.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-2.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-3.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-4.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-5.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-6.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-7.json", userList);
+        userList = UserHandler.parseUsers("/uploads/download-8.json", userList);
 
-        ArrayList<FollowDTO> followList = UserHandler.parseFollows("/follow.json");
+        ArrayList<FollowDTO> followList = UserHandler.parseFollows("/uploads/follow.json");
 
         ArrayList<User> users = UserHandler.convertToUsers(userList);
         users = UserHandler.fixUserId(users, userIDs, usernames);
 
         NewRecipeListDTO newRecipes = RecipeHandler.parseNewRecipes();
         ArrayList<NewRecipeDTO> newList = new ArrayList<>(newRecipes.getData().subList(0,10000));
-        ArrayList<Recipe >recipesToPrint = RecipeHandler.convertNewRecipes(recipes, newList, users);
+        ArrayList<Recipe>recipesToPrint = RecipeHandler.convertNewRecipes(recipes, newList, users);
 
         //MongoConn.insertRecipes(recipesToPrint);
         GraphConn graphConn = new GraphConn();

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class CommentHandler {
 
-    private final static String path = "/comments.json";
+    private final static String path = "/uploads/comments.json";
 
     public static CommentListDTO parseComments(){
         InputStream input = CommentListDTO.class.getResourceAsStream(path);

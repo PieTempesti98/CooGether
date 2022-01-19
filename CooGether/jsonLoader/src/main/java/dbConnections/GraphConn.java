@@ -11,6 +11,7 @@ import org.neo4j.driver.Session;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -47,12 +48,12 @@ public class GraphConn implements AutoCloseable{
     public void addRecipes(ArrayList<Recipe> list){
         for(Recipe r: list) {
             try (Session session = driver.session()) {
-                session.run("CREATE (r: Recipe {id: $id, name: $name, category: $category, datePublished: $date})",
+                session.run("MERGE (r: Recipe {id: $id, name: $name, category: $category, datePublished: $date})",
                         parameters(
                                 "id", r.getRecipeId(),
                                 "name", r.getName(),
                                 "category", r.getRecipeCategory(),
-                                "date", r.getDatePublished().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                                "date", ((r.getDatePublished() != null) ? r.getDatePublished().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
                         );
                 session.run(
                         "MATCH (u:User) WHERE u.id = $uid " +

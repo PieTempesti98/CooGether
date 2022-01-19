@@ -6,6 +6,7 @@ module it.unipi.lmmsdb.coogether.coogetherapp {
     requires org.mongodb.driver.core;
     requires com.google.gson;
     requires org.neo4j.driver;
+    requires java.xml;
 
 
     opens it.unipi.lmmsdb.coogether.coogetherapp to javafx.fxml;

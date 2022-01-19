@@ -32,6 +32,13 @@ public class Recipe {
         this.name=name;
     }
 
+    public Recipe(int id, String name, int authorId, String authorName, Date datePublished, String category){
+        this.recipeId= id;
+        this.name= name;
+        this.datePublished=datePublished;
+        this.category= category;
+    }
+
     public Recipe(int id, String name, int authorId, String authorName, int cookTime, int prepTime, Date pub,
                   String desc, String img, String category, List<String> ing, List<Comment> comm, double cal,
                   double fat, double sodium, double protein, int serving, List<String> instructions){

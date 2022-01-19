@@ -17,6 +17,7 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.*;
 
 
+import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
 import org.bson.BsonArray;
 import org.bson.BsonString;
 import org.bson.Document;
@@ -27,18 +28,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-public class MongoDBDriver implements DatabaseDriver{
+public class MongoDBDriver{
 
-    private MongoClient myClient;
-    private MongoDatabase db;
-    private MongoCollection<org.bson.Document> collection;
+    private static MongoClient myClient;
+    private static MongoDatabase db;
+    private static MongoCollection<org.bson.Document> collection;
 
-    private ConnectionString uri= new ConnectionString("mongodb://localhost:27017");
+    private static final String connectionString = "mongodb://" + ConfigurationParameters.getMongoFirstIp() + ":" + ConfigurationParameters.getMongoFirstPort() +
+            "," + ConfigurationParameters.getMongoSecondIp() + ":" + ConfigurationParameters.getMongoSecondPort() +
+            "," + ConfigurationParameters.getMongoThirdIp() + ":" + ConfigurationParameters.getMongoThirdPort() +
+            "/?retryWrites=true&w=3&wtimeoutMS=5000&readPreference=nearest";
 
-    @Override public boolean openConnection(){
+    private static final ConnectionString uri= new ConnectionString(connectionString);
+
+
+    private static boolean openConnection(){
         try{
             myClient= MongoClients.create(uri);
-            db= myClient.getDatabase("CooGether");
+            db= myClient.getDatabase(ConfigurationParameters.getMongoDbName());
             collection= db.getCollection("recipe");
         }catch (Exception ex){
             System.out.println("Impossible open connection with MongoDB");
@@ -47,7 +54,8 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }
 
-    @Override public void closeConnection(){
+
+    private static void closeConnection(){
         try{
             myClient.close();
         }catch (Exception ex){
@@ -59,7 +67,9 @@ public class MongoDBDriver implements DatabaseDriver{
     //                              CRUD OPERATIONS
     //******************************************************************************************************************
 
-    public boolean addRecipe(Recipe r){
+    public static boolean addRecipe(Recipe r){
+        openConnection();
+
         try{
 
             Document doc= new Document();
@@ -92,13 +102,16 @@ public class MongoDBDriver implements DatabaseDriver{
             collection.insertOne(doc);
 
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
     //delete the recipe and add the modified recipe
-    public boolean updateRecipe(Recipe r){
+    public static boolean updateRecipe(Recipe r){
+        openConnection();
         try{
             boolean res=deleteRecipe(r);
             if(!res)
@@ -115,21 +128,27 @@ public class MongoDBDriver implements DatabaseDriver{
             }
 
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
-    public boolean deleteRecipe(Recipe r){
+    public static boolean deleteRecipe(Recipe r){
+        openConnection();
         try{
             collection.deleteOne(Filters.eq("recipeId", r.getRecipeId()));
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
-    public boolean addComment(Recipe r, Comment c){
+    public static boolean addComment(Recipe r, Comment c){
+        openConnection();
         try{
 
             Document com = new Document("reviewId", c.getCommentId())
@@ -145,13 +164,16 @@ public class MongoDBDriver implements DatabaseDriver{
             collection.updateOne(filter, setUpdate);
 
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
     //delete the comment and add the modified comment
-    public boolean updateComment(Recipe r, Comment c){
+    public static boolean updateComment(Recipe r, Comment c){
+        openConnection();
         try{
             boolean res=deleteComment(r,c);
             if(!res)
@@ -162,17 +184,20 @@ public class MongoDBDriver implements DatabaseDriver{
             res=addComment(r,c);
             if(!res)
             {
-                System.out.println("A problem has occurred in modify modify");
+                System.out.println("A problem has occurred in modify comment");
                 return false;
             }
 
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
-    public boolean deleteComment(Recipe r, Comment c){
+    public static boolean deleteComment(Recipe r, Comment c){
+        openConnection();
         try{
 
             Bson studentFilter = Filters.eq( "recipeId", r.getRecipeId() );
@@ -180,8 +205,10 @@ public class MongoDBDriver implements DatabaseDriver{
             collection.updateOne(studentFilter, delete);
 
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
@@ -195,13 +222,14 @@ public class MongoDBDriver implements DatabaseDriver{
         return true;
     }*/
 
-    public List<Recipe> getAllRecipes(){
-        List<Recipe> recipes = new ArrayList<>();
+    public static ArrayList<Recipe> getAllRecipes(){
+        openConnection();
+        ArrayList<Recipe> recipes = new ArrayList<>();
 
         Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
         Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
 
-        List<Document> results = (List<Document>) collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList());
+        ArrayList<Document> results = (ArrayList<Document>) collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList());
 
         Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
         Gson gson = new Gson();

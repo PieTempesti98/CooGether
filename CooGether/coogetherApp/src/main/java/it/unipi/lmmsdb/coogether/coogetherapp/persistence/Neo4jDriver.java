@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
+import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.*;
 
@@ -10,14 +11,32 @@ import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
-public class Neo4jDriver implements DatabaseDriver{
+public class Neo4jDriver{
 
     private Driver driver;
-    private String uri="neo4j://localhost:7687";
-    private String user= "neo4j";
-    private String password= "root";
+    private final String uri;
+    private final String user;
+    private final String password;
 
-    @Override
+    private static Neo4jDriver instance = null;
+
+    private Neo4jDriver()
+    {
+        uri = "neo4j://" + ConfigurationParameters.getNeo4jIp() + ":" + ConfigurationParameters.getNeo4jPort();
+        this.user = ConfigurationParameters.getNeo4jUsername();
+        this.password = ConfigurationParameters.getNeo4jPassword();
+    }
+
+    public static Neo4jDriver getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Neo4jDriver();
+        }
+        return instance;
+    }
+
+
     public boolean openConnection() {
         try {
             driver = GraphDatabase.driver( uri, AuthTokens.basic( user, password ) );
@@ -28,7 +47,6 @@ public class Neo4jDriver implements DatabaseDriver{
         return true;
     }
 
-    @Override
     public void closeConnection() {
         try{
             driver.close();
@@ -37,6 +55,7 @@ public class Neo4jDriver implements DatabaseDriver{
         }
     }
 
+
     //******************************************************************************************************************
     //                              CRUD OPERATIONS
     //******************************************************************************************************************
@@ -44,6 +63,7 @@ public class Neo4jDriver implements DatabaseDriver{
     //ogni volta che si elimina un nodo, ricordarsi di eliminare anche i relativi archi
 
     public boolean addRecipe(Recipe r){
+        openConnection();
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
@@ -54,13 +74,16 @@ public class Neo4jDriver implements DatabaseDriver{
             });
         }catch(Exception ex){
             ex.printStackTrace();
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
     //change the title of one recipe
     public boolean updateRecipe(Recipe r){
+        openConnection();
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
@@ -72,12 +95,15 @@ public class Neo4jDriver implements DatabaseDriver{
 
         }catch(Exception ex){
             ex.printStackTrace();
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
     public boolean deleteRecipe(Recipe r){
+        openConnection();
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
@@ -85,8 +111,10 @@ public class Neo4jDriver implements DatabaseDriver{
                                 "WHERE r.id=$id " +
                                 "DETACH DELETE r",
                         Values.parameters( "id", r.getRecipeId()) );
+                closeConnection();
                 return null;
             });
+            closeConnection();
             return true;
 
         }catch(Exception ex){
@@ -246,6 +274,12 @@ public class Neo4jDriver implements DatabaseDriver{
             return null;
         }
         return users;
+    }
+
+    public ArrayList<Recipe> getRecipes(int skip){
+        //Skip is the number to recipes to skip
+        //MUST BE IMPLEMENTED
+        return null;
     }
 
     //******************************************************************************************************************
