@@ -18,7 +18,7 @@
        </ImageView>
       <ToolBar layoutX="129.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="123.0" prefWidth="471.0">
         <items>
-            <ImageView fitHeight="65.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="log" fitHeight="65.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/user.png" />
                 </image>
@@ -26,7 +26,7 @@
                     <Insets left="20.0" />
                 </BorderPane.margin>
             </ImageView>
-              <ImageView fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+              <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                   <image>
                       <Image url="@img/back.png" />
                   </image>
@@ -57,7 +57,7 @@
                         </Text>
                     </HBox>
                     <HBox>
-              <ImageView fitHeight="147.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+              <ImageView fx:id="recipeImg" fitHeight="147.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                   <image>
                       <!--<Image fx:id="imgRecipe" /> -->
                   </image>
@@ -85,15 +85,12 @@
                                 <Font size="16.0" />
                             </font>
                         </Text>
+                            <VBox fx:id="recipeIngredients">
                             <Label text="Ingredients:">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font></Label>
-                        <Text fx:id="recipeIngredients" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
+                            </VBox>
                         </VBox>
                     </HBox>
                 <VBox>
@@ -114,6 +111,17 @@
                                 <Font name="System Bold" size="18.0" />
                             </font></Label>
                         <Text fx:id="recipePrep" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Text>
+                    </HBox>
+                    <HBox>
+                        <Label text="Servings:">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font></Label>
+                        <Text fx:id="recipeServings" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -163,17 +171,14 @@
                             </font>
                         </Text>
                     </HBox>
+                    <VBox fx:id="recipeInstructions">
                     <Label text="Instructions:">
                         <font>
                             <Font name="System Bold" size="18.0" />
                         </font></Label>
-                    <Text fx:id="recipeInstructions" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                        <font>
-                            <Font size="16.0" />
-                        </font>
-                    </Text>
+                    </VBox>
                 </VBox>
-                    <VBox>
+                    <VBox fx:id="comments">
                         <Label text="Comments:">
                             <font>
                                 <Font name="System Bold" size="18.0" />

@@ -47,7 +47,7 @@ public class HelloController implements Initializable {
     //Adds 20 recipes in the scene and places the show more button
     private void showRecipes(){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        ArrayList<Recipe> recipes = neo4j.getRecipes(skip);
+        ArrayList<Recipe> recipes = neo4j.getRecipes(skip, 20);
 
         for(Recipe r: recipes){
             Label title = new Label(r.getName());

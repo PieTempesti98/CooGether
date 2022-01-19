@@ -223,6 +223,16 @@ public class MongoDBDriver{
         return true;
     }
 
+    public static Recipe getRecipesFromId( int id){
+        openConnection();
+        Recipe recipe= null;
+        Gson gson = new Gson();
+        Document myDoc = (Document) collection.find(eq("recipeId", id));
+        recipe = gson.fromJson(gson.toJson(myDoc), Recipe.class);
+        closeConnection();
+        return recipe;
+    }
+
     public static ArrayList<Recipe> getAllRecipes(){
         openConnection();
         ArrayList<Recipe> recipes;

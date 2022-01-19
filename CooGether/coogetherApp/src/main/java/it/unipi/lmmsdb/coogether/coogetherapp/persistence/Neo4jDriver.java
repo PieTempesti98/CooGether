@@ -6,9 +6,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.*;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
@@ -27,7 +25,6 @@ public class Neo4jDriver{
         uri = "neo4j://" + ConfigurationParameters.getNeo4jIp() + ":" + ConfigurationParameters.getNeo4jPort();
         this.user = ConfigurationParameters.getNeo4jUsername();
         this.password = ConfigurationParameters.getNeo4jPassword();
-        openConnection();
     }
 
     public static Neo4jDriver getInstance()
@@ -40,12 +37,14 @@ public class Neo4jDriver{
     }
 
 
-    private void openConnection() {
+    public boolean openConnection() {
         try {
             driver = GraphDatabase.driver( uri, AuthTokens.basic( user, password ) );
         }catch (Exception ex){
             System.out.println("Impossible open connection with Neo4j");
+            return false;
         }
+        return true;
     }
 
     public void closeConnection() {
@@ -277,34 +276,10 @@ public class Neo4jDriver{
         return users;
     }
 
-    public ArrayList<Recipe> getRecipes(int skip){
-        ArrayList<Recipe> recipes = new ArrayList<>();
-        try(Session session= driver.session()){
-            session.readTransaction(tx->{
-                Result result = tx.run(
-                        "MATCH (r:Recipe) " +
-                        "RETURN r.id, r.name, r.category, r.datePublished ORDER BY r.datePublished DESC " +
-                                "SKIP $skip LIMIT 20 ",
-                        Values.parameters("skip", skip));
-
-                while(result.hasNext()){
-                    Record r= result.next();
-                    int id = r.get("r.id").asInt();
-                    String name = r.get("r.name").asString();
-                    String category = r.get("r.category").asString();
-                    Date date = java.util.Date.from(r.get("r.datePublished").asLocalDate().atStartOfDay()
-                            .atZone(ZoneId.systemDefault()).toInstant());
-                    Recipe rec = new Recipe(id, name, date, category);
-                    recipes.add(rec);
-                }
-                return recipes;
-            });
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
-        return recipes;
+    public ArrayList<Recipe> getRecipes(int skip, int limit){
+        //Skip is the number to recipes to skip
+        //MUST BE IMPLEMENTED
+        return null;
     }
 
     //******************************************************************************************************************
