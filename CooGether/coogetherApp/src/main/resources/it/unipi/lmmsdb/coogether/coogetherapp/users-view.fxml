@@ -6,9 +6,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController"
             prefHeight="400.0" prefWidth="600.0">
 
+    <VBox>
+        <HBox>
+            <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@img/icon.jpeg" />
+                </image>
+            </ImageView>
+            <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="List of Users" textAlignment="CENTER" wrappingWidth="471.1054992675781">
+                <font>
+                    <Font name="Avenir" size="36.0" />
+                </font>
+            </Text>
+            <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                <image>
+                    <Image url="@img/back.png" />
+                </image>
+            </ImageView>
+        </HBox>
+        <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" >
+
+        <VBox fx:id="usersContainer">
+
+        </VBox>
+        </AnchorPane>
+        </ScrollPane>
+    </VBox>
 </AnchorPane>
