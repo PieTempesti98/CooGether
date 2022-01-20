@@ -251,6 +251,7 @@ public class Neo4jDriver{
     }
 
     public User getUsersFromUsername(String username){
+
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
