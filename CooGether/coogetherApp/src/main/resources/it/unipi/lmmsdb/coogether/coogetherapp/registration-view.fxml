@@ -22,7 +22,7 @@
                             <Font name="Avenir" size="36.0" />
                         </font>
                     </Text>
-                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" onMouseClicked="#goBack">
                         <image>
                             <Image url="@img/back.png" />
                         </image>
@@ -33,7 +33,7 @@
                         <font>
                             <Font size="18.0" />
                         </font></Label>
-                    <TextField fx:id="Fname" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
+                    <TextField fx:id="fName" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
                         <HBox.margin>
                             <Insets left="5.0" />
                         </HBox.margin></TextField>
@@ -48,7 +48,7 @@
                             <Font size="18.0" />
                         </font></Label>
 
-                    <TextField fx:id="Lname" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <TextField fx:id="lName" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
                         <HBox.margin>
                             <Insets left="5.0" />
                         </HBox.margin></TextField>
@@ -90,10 +90,10 @@
                             <Font size="18.0" />
                         </font></Label>
 
-                    <TextField fx:id="password" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <PasswordField fx:id="password" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
                         <HBox.margin>
                             <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                        </HBox.margin></PasswordField>
                     <padding>
                         <Insets top="10.0" />
                     </padding>
@@ -104,10 +104,10 @@
                             <Font size="18.0" />
                         </font></Label>
 
-                    <TextField fx:id="conPassword" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <PasswordField fx:id="conPassword" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
                         <HBox.margin>
                             <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                        </HBox.margin></PasswordField>
                     <padding>
                         <Insets top="10.0" />
                     </padding>
@@ -115,7 +115,7 @@
             </VBox>
         </children>
     </Pane>
-   <Button fx:id="submit" alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
+   <Button fx:id="submit" alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" onAction="#register" />
    <Line endX="100.0" layoutX="320.0" layoutY="344.0" startX="-100.0" stroke="#596cc2" />
 
 </AnchorPane>
