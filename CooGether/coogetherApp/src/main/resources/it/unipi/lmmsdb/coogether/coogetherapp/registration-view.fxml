@@ -22,7 +22,7 @@
                             <Font name="Avenir" size="36.0" />
                         </font>
                     </Text>
-                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" onMouseClicked="#goBack">
                         <image>
                             <Image url="@img/back.png" />
                         </image>

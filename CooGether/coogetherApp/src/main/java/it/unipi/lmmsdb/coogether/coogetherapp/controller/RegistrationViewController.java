@@ -79,4 +79,10 @@ public class RegistrationViewController {
         Utils.changeScene("hello-view.fxml", actionEvent);
 
     }
+
+    @FXML
+    public void goBack(MouseEvent mouseEvent) {
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("hello-view.fxml", ae);
+    }
 }
