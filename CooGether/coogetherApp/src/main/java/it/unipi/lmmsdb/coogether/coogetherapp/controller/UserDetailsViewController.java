@@ -95,6 +95,11 @@ public class UserDetailsViewController implements Initializable {
     }
 
     @FXML
+    private void deleteAccount (ActionEvent actionEvent){
+
+    }
+
+    @FXML
     private void goBack(ActionEvent actionEvent){
 
     }

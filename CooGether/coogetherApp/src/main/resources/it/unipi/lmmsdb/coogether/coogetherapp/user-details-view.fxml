@@ -28,10 +28,16 @@
         <VBox fx:id="userInfoBox">
 
         </VBox>
+        <HBox>
         <Button fx:id="changePassword" alignment="CENTER" contentDisplay="CENTER" text="Change Password" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font></Button>
+            <Button fx:id="deleteAccount" alignment="CENTER" contentDisplay="CENTER" text="Delete Account" textAlignment="CENTER">
+                <font>
+                    <Font size="18.0" />
+                </font></Button>
+        </HBox>
     </VBox>
 
 </AnchorPane>
