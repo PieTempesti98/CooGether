@@ -11,20 +11,20 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Utils {
-    public static Object changeScene (String fileName, Event event)
-    {
+    static public void changeScene(String fxmlFile, ActionEvent event){
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFile));
         Scene scene = null;
-        FXMLLoader loader = null;
         try {
-            loader=new FXMLLoader(Utils.class.getResource(fileName));
+            scene = new Scene(fxmlLoader.load(), 800, 600);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(loader.load());
+
             stage.setScene(scene);
             stage.show();
-            return loader.getController();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+
     }
 }

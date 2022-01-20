@@ -1,8 +1,11 @@
 package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
+import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -79,9 +82,31 @@ public class HelloController implements Initializable {
     }
 
     private void goToRecipe(Recipe r, MouseEvent mouseEvent){
-        RecipeViewController recipeViewController =
-                (RecipeViewController) Utils.changeScene("/recipe-view.fxml", (Event) mouseEvent);
+        SessionUtils.setRecipeToShow(r);
+        Utils.changeScene("/recipe-view.fxml", (ActionEvent) mouseEvent);
+    }
 
-        recipeViewController.setRecipeId(r.getRecipeId());
+    private void login(ActionEvent ae){
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        User u = neo4j.getUsersFromUsername(email.getText());
+
+        if(u == null){
+            //error
+            return;
+        }
+        if(!u.getPassword().equals(password.getText())){
+            //error
+            return;
+        }
+        SessionUtils.setUserLogged(u);
+        if(u.getRole() == 2){
+            //code to the admin page
+        }
+        else{
+            Utils.changeScene("/login-view.fxml", ae);
+
+        }
+
+
     }
 }

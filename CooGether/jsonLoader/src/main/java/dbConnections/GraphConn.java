@@ -47,9 +47,14 @@ public class GraphConn implements AutoCloseable{
 
     public void addRecipes(ArrayList<Recipe> list){
         for(Recipe r: list) {
+            if(r.getName() == null)
+                continue;
+
             try (Session session = driver.session()) {
-                session.run("MERGE (r: Recipe {id: $id}) " +
-                                "ON CREATE SET r.name = $name, r.category = $category, r.datePublished = $date",
+
+                session.run("MERGE (r: Recipe {name: $name}) " +
+                                "ON CREATE SET r.name = $name, r.category = $category, r.datePublished = $date, r.id = $id " +
+                                "ON MATCH SET r.name = $name, r.category = $category, r.datePublished = $date, r.id = $id",
                         parameters(
                                 "id", r.getRecipeId(),
                                 "name", r.getName(),

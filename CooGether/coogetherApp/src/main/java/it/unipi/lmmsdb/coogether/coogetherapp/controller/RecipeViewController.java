@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
+import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 
 import javafx.fxml.FXML;
@@ -46,7 +47,7 @@ public class RecipeViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         goBack.setOnMouseClicked(mouseEvent -> clickOnBackToChangePage(mouseEvent));
         log.setOnMouseClicked(mouseEvent -> clickOnUserToChangePage(mouseEvent));
-        recipe= MongoDBDriver.getRecipesFromId(recipe.getRecipeId());
+        recipe= MongoDBDriver.getRecipesFromId(SessionUtils.getRecipeToShow().getRecipeId());
         recipeTitle.setText(recipe.getName());
         recipeAuthorName.setText(recipe.getAuthorName());
         Image img = new Image(recipe.getImage());
