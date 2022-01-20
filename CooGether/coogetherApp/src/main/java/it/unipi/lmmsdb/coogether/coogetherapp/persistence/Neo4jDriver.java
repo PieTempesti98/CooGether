@@ -10,8 +10,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.neo4j.driver.Values.parameters;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Neo4jDriver{
 
@@ -48,7 +48,7 @@ public class Neo4jDriver{
         }
     }
 
-    public void closeConnection() {
+    private void closeConnection() {
         try{
             driver.close();
         }catch (Exception ex){
@@ -139,7 +139,7 @@ public class Neo4jDriver{
     public boolean addUser(User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("CREATE (u:User {u.id: $id, u.username: $username, u.fullname: $fullname, u.email: $email, u.password: $password})",
+                tx.run ("CREATE (u:User {id: $id, username: $username, fullname: $fullname, email: $email, password: $password})",
                 Values.parameters("id", u.getUserId(), "username", u.getUsername(), "fullname", u.getFullName(), "email", u.getEmail(), "password", u.getPassword()));
                 return null;
             } );
@@ -156,10 +156,10 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ( "match (u:User {id:1234})" +
+                tx.run ( "match (u:User {id:$id})" +
                                 "set u.email=$email, u.fullname=$fullName, u.password=$pass, u.username=$userName",
                         Values.parameters("email", u.getEmail(), "fullName", u.getFullName(), "pass",
-                                u.getPassword(), "userName", u.getUsername()));
+                                u.getPassword(), "userName", u.getUsername(), "id", u.getUserId()));
                 return null;
             } );
 
@@ -250,28 +250,31 @@ public class Neo4jDriver{
         return users;
     }
 
-    public User getUsersFromUsername(String username){
+    public User getUsersFromUnique(String unique){
 
         try(Session session= driver.session()){
-
-            session.readTransaction(tx->{
-                Result result = tx.run("match (u:User) where u.username=$name " +
-                                "return u",
-                        Values.parameters("name", username));
+            User user;
+            user = session.readTransaction(tx->{
+                Result result = tx.run("match (u:User) where u.username=$name or u.email=$name " +
+                                "return u.id, u.password, u.email, u.username, u.fullName",
+                        Values.parameters("name", unique));
 
                 if (result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u.id").asInt();
-                    User user= new User(id, username);
-                    return user;
+                    String username = r.get("u.username").asString();
+                    String password = r.get("u.password").asString();
+                    String email = r.get("u.email").asString();
+                    String fullName = r.get("u.fullName").asString();
+                    return new User(id, username, fullName, password, email);
                 }
                 return null;
             });
+            return user;
         }catch(Exception ex){
             ex.printStackTrace();
             return null;
         }
-        return null;
     }
 
     public List<User> getFollowedUsers(User u){
@@ -333,21 +336,40 @@ public class Neo4jDriver{
         return recipes;
     }
 
+    public int getMaxUId() {
+        AtomicInteger maxId = new AtomicInteger();
+        try(Session session= driver.session()){
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User) return max(u.id) as maxId");
+                Record r= result.next();
+
+                maxId.set(r.get("maxId").asInt());
+                return maxId;
+            });
+            return maxId.get();
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+
+    }
+
     //******************************************************************************************************************
     //                              ANALYTICS
     //******************************************************************************************************************
 
-    public List<Recipe> searchSuggestedRecipes(String userId){
-        List<Recipe> recipes= new ArrayList<>();
+    public ArrayList<Recipe> searchSuggestedRecipes(int skip, int howMany, String userId){
+        ArrayList<Recipe> recipes= new ArrayList<>();
 
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (u:User)-[f:FOLLOWS]->(u2:User)" +
-                                "match (r:Recipe)<-[a:ADDS]-(u2)" +
-                                "where u.id=$userId" +
-                                "return r, u, u2, f, a",
-                        Values.parameters("userId", userId));
+                Result result = tx.run("match (u:User)-[f:FOLLOWS]->(u2:User) " +
+                                "match (r:Recipe)<-[a:ADDS]-(u2) " +
+                                "where u.id=$userId " +
+                                "return r.id, r.name, r.category, r.datePublished order by r.datePublished desc " +
+                                "skip $skip limit $limit",
+                        Values.parameters("userId", userId, "skip", skip, "limit", howMany));
 
                 while(result.hasNext()){
                     Record r= result.next();
@@ -421,6 +443,5 @@ public class Neo4jDriver{
         }
         return users;
     }
-
 
 }

@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.w3c.dom.events.MouseEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -59,8 +59,15 @@ public class HelloController implements Initializable {
     //Adds 20 recipes in the scene and places the show more button
     private void showRecipes(){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        ArrayList<Recipe> recipes = neo4j.getRecipes(skip, 20);
-
+        ArrayList<Recipe> recipes;
+        User logged = SessionUtils.getUserLogged();
+        if(logged == null)
+            recipes = neo4j.getRecipes(skip, 20);
+        else {
+            recipes = neo4j.searchSuggestedRecipes(skip, 20, logged.getUsername());
+            if(recipes == null || recipes.size() == 0)
+                recipes = neo4j.getRecipes(skip, 20);
+        }
         for(Recipe r: recipes){
             Label title = new Label(r.getName());
             Label category = new Label(r.getCategory());
@@ -70,7 +77,7 @@ public class HelloController implements Initializable {
             recContainer.getChildren().add(title);
             recContainer.getChildren().add(category);
             recContainer.getChildren().add(datePublished);
-            recContainer.setOnMouseClicked(mouseEvent -> {goToRecipe(r, (MouseEvent) mouseEvent);});
+            recContainer.setOnMouseClicked(mouseEvent -> {goToRecipe(r, mouseEvent);});
             recContainer.setSpacing(10);
 
             recipeContainer.getChildren().add(recContainer);
@@ -83,19 +90,21 @@ public class HelloController implements Initializable {
 
     private void goToRecipe(Recipe r, MouseEvent mouseEvent){
         SessionUtils.setRecipeToShow(r);
-        Utils.changeScene("/recipe-view.fxml", (ActionEvent) mouseEvent);
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("recipe-view.fxml", ae);
     }
 
+    @FXML
     private void login(ActionEvent ae){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        User u = neo4j.getUsersFromUsername(email.getText());
+        User u = neo4j.getUsersFromUnique(email.getText());
 
         if(u == null){
-            //error
+            System.out.println("user not found");
             return;
         }
         if(!u.getPassword().equals(password.getText())){
-            //error
+            System.out.println("Wrong password");
             return;
         }
         SessionUtils.setUserLogged(u);
@@ -103,10 +112,14 @@ public class HelloController implements Initializable {
             //code to the admin page
         }
         else{
-            Utils.changeScene("/login-view.fxml", ae);
+            Utils.changeScene("login-view.fxml", ae);
 
         }
 
 
+    }
+    @FXML
+    private void signUp(ActionEvent actionEvent) {
+        Utils.changeScene("registration-view.fxml", actionEvent);
     }
 }

@@ -33,8 +33,7 @@
          </AnchorPane>
    </ScrollPane>
    <Pane layoutX="417.0" layoutY="149.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="5.6843418860808015E-14">
-      <children>
-         <Button fx:id="signIn" layoutX="72.0" layoutY="100.0" mnemonicParsing="false" text="Sign in" textFill="#596cc2">
+         <Button fx:id="signIn" layoutX="72.0" layoutY="100.0" mnemonicParsing="false" text="Sign in" textFill="#596cc2" onAction="#login">
             <font>
                <Font name="System Bold" size="18.0" />
             </font></Button>
@@ -48,12 +47,11 @@
             </font></Label>
          <TextField fx:id="email" layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
          <TextField fx:id="password" layoutX="96.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
-         <Button fx:id="signUp" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
+         <Button fx:id="signUp" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Sign Up" textAlignment="CENTER" textFill="#596cc2" onAction="#signUp">
             <font>
                <Font name="System Bold" size="18.0" />
             </font></Button>
          <Line endX="100.0" layoutX="111.0" layoutY="158.0" startX="-100.0" stroke="#596cc2" />
-      </children>
       <padding>
          <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
       </padding>
