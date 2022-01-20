@@ -2,9 +2,12 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,8 +24,6 @@ import java.util.ResourceBundle;
 
 public class RecipeViewController implements Initializable {
 
-    @FXML private ImageView goBack;
-    @FXML private ImageView log;
     @FXML private Text recipeTitle;
     @FXML private Text recipeAuthorName;
     @FXML private ImageView recipeImg;
@@ -39,14 +40,11 @@ public class RecipeViewController implements Initializable {
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
     @FXML private Spinner starSpinner;
-    @FXML private Button addCommennt;
 
     Recipe recipe;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        goBack.setOnMouseClicked(mouseEvent -> clickOnBackToChangePage(mouseEvent));
-        log.setOnMouseClicked(mouseEvent -> clickOnUserToChangePage(mouseEvent));
         recipe= MongoDBDriver.getRecipesFromId(SessionUtils.getRecipeToShow().getRecipeId());
         recipeTitle.setText(recipe.getName());
         recipeAuthorName.setText(recipe.getAuthorName());
@@ -90,19 +88,28 @@ public class RecipeViewController implements Initializable {
             text.setText(c.getText());
             comments.getChildren().addAll(box, text);
         }
-        addCommennt.setOnMouseClicked(mouseEvent -> clickOnAddComment(mouseEvent));
    }
 
-    private void clickOnAddComment(MouseEvent mouseEvent) {
+   @FXML
+    private void addComment(MouseEvent mouseEvent) {
         //deve controllare se lo user e loggato prima di aggiungere il commento
     }
 
-    private void clickOnUserToChangePage(MouseEvent mouseEvent) {
+    @FXML
+    private void log(ActionEvent ae) {
         //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        User logged = SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+
+        }
     }
 
-    private void clickOnBackToChangePage(MouseEvent mouseEvent) {
+    @FXML
+    private void goBack(ActionEvent ae) {
         //torna alla hello page
+        Utils.changeScene("hello-view.fxml", ae);
     }
 
     public void setRecipeId(int id) {

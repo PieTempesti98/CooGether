@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -26,9 +27,6 @@ public class HelloController implements Initializable {
 
     @FXML
     private VBox recipeContainer;
-
-    @FXML private Button signIn;
-    @FXML private Button signUp;
     @FXML private TextField email;
     @FXML private TextField password;
 
@@ -38,8 +36,6 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // retrieve first 20 recipes
         showRecipes();
-
-
     }
 
     //Called by the show more button
@@ -69,17 +65,33 @@ public class HelloController implements Initializable {
                 recipes = neo4j.getRecipes(skip, 20);
         }
         for(Recipe r: recipes){
+            Label recipeName = new Label("Title: ");
+            Font bold = new Font("System Bold", 18);
+            Font size = new Font(14);
+            recipeName.setFont(bold);
+            Label recipeCategory= new Label("Category: ");
+            recipeCategory.setFont(bold);
+            Label date = new Label("Date of publication: ");
+            date.setFont(bold);
             Label title = new Label(r.getName());
+            title.setFont(size);
             Label category = new Label(r.getCategory());
+            category.setFont(size);
             Label datePublished  = new Label(new SimpleDateFormat("dd-MM-yyyy").format(r.getDatePublished()));
+            datePublished.setFont(size);
             HBox recContainer = new HBox();
             recContainer.setAlignment(Pos.CENTER_LEFT);
+            recContainer.getChildren().add(recipeName);
             recContainer.getChildren().add(title);
+            recContainer.getChildren().add(recipeCategory);
             recContainer.getChildren().add(category);
+            recContainer.getChildren().add(date);
             recContainer.getChildren().add(datePublished);
             recContainer.setOnMouseClicked(mouseEvent -> {goToRecipe(r, mouseEvent);});
             recContainer.setSpacing(10);
-
+            recContainer.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
             recipeContainer.getChildren().add(recContainer);
         }
         skip = skip + 20;
