@@ -227,8 +227,9 @@ public class MongoDBDriver{
         openConnection();
         Recipe recipe= null;
         Gson gson = new Gson();
-        Document myDoc = (Document) collection.find(eq("recipeId", id));
-        recipe = gson.fromJson(gson.toJson(myDoc), Recipe.class);
+        ArrayList<Document> myDoc = null;
+        myDoc = collection.find(eq("recipeId", id)).into(new ArrayList<>());
+        recipe = gson.fromJson(gson.toJson(myDoc.get(0)), Recipe.class);
         closeConnection();
         return recipe;
     }

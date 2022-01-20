@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -90,6 +91,7 @@ public class UsersViewController implements Initializable {
 
     @FXML
     private void goBack(ActionEvent actionEvent){
+        Utils.changeScene("hello-view.fxml", actionEvent);
 
     }
 

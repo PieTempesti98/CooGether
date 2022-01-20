@@ -124,7 +124,7 @@ public class HelloController implements Initializable {
             //code to the admin page
         }
         else{
-            Utils.changeScene("login-view.fxml", ae);
+            Utils.changeScene("users-view.fxml", ae);
 
         }
 
