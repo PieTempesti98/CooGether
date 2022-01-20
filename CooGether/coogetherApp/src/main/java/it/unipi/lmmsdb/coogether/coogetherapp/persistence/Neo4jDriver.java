@@ -223,20 +223,24 @@ public class Neo4jDriver{
         return true;
     }
 
-    public List<User> getUsers(){
-        List<User> users= new ArrayList<>();
+    public ArrayList<User> getUsers( int skip, int limit){
+        ArrayList<User> users= new ArrayList<>();
 
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
                 Result result = tx.run("match (u:User)" +
-                                "return u");
+                                "return u" +
+                        "limit $toLimit" +
+                        "skip $toSkip", Values.parameters("toLimit",limit, "toSkip", skip));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u.id").asInt();
                     String username = r.get("u.username").asString();
-                    User user= new User(id, username);
+                    String email = r.get("u.email").asString();
+                    String fullName = r.get("u.fullname").asString();
+                    User user= new User(id, username, fullName, email);
                     users.add(user);
                 }
                 return users;

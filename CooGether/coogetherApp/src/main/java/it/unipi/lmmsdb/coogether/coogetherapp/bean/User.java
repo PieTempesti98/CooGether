@@ -24,6 +24,13 @@ public class User {
         this.followers=followers;
     }
 
+    public User(int id, String username, String fullName, String email){
+        this.userId= id;
+        this.username=username;
+        this.fullName=fullName;
+        this.email=email;
+    }
+
     public User(int id, String username, String fullName, String password, String email){
         this.userId = id;
         this.username = username;

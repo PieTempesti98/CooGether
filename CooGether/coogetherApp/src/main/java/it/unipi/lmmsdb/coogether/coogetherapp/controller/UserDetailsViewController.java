@@ -30,6 +30,7 @@ public class UserDetailsViewController implements Initializable {
         Font size = new Font(14);
 
         HBox containerName = new HBox();
+        containerName.setSpacing(10);
         Label name = new Label("Full Name:");
         name.setFont(bold);
         Label fname = new Label(user.getFullName());
@@ -38,6 +39,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(containerName);
 
         HBox containerU = new HBox();
+        containerU.setSpacing(10);
         Label uname = new Label("Username:");
         uname.setFont(bold);
         Label userName = new Label(user.getUsername());
@@ -46,6 +48,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(containerU);
 
         HBox containerEmail = new HBox();
+        containerEmail.setSpacing(10);
         Label em= new Label("E-mail:");
         em.setFont(bold);
         Label email = new Label(user.getEmail());
@@ -54,6 +57,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(containerEmail);
 
         HBox roleContainer= new HBox();
+        roleContainer.setSpacing(10);
         Label role = new Label("Role:");
         role.setFont(bold);
         String r;
@@ -67,6 +71,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(roleContainer);
 
         HBox followerContainer = new HBox();
+        followerContainer.setSpacing(10);
         Label follower= new Label("Follower:");
         follower.setFont(bold);
         Label fol= new Label(String.valueOf( user.getFollowers()));
@@ -75,6 +80,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(followerContainer);
 
         HBox followingContainer = new HBox();
+        followingContainer.setSpacing(10);
         Label following= new Label("Following:");
         following.setFont(bold);
         Label foll= new Label(String.valueOf( user.getFollowing()));
@@ -85,6 +91,11 @@ public class UserDetailsViewController implements Initializable {
 
     @FXML
     private void changePassword (ActionEvent actionEvent){
+
+    }
+
+    @FXML
+    private void goBack(ActionEvent actionEvent){
 
     }
 }
