@@ -250,6 +250,30 @@ public class Neo4jDriver{
         return users;
     }
 
+    public User getUsersFromUsername(String username){
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User) where u.username=$name " +
+                                "return u",
+                        Values.parameters("name", username));
+
+                if (result.hasNext()){
+                    Record r= result.next();
+                    int id = r.get("u.id").asInt();
+                    User user= new User(id, username);
+                    return user;
+                }
+                return null;
+            });
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
     public List<User> getFollowedUsers(User u){
         List<User> users= new ArrayList<>();
 

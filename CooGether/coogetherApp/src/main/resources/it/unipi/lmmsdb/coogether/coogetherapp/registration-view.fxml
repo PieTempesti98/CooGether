@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RegistrationViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RegistrationViewController">
+    <Pane prefHeight="116.0" prefWidth="640.0">
+        <children>
+            <VBox>
+                <HBox>
+                    <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@img/icon.jpeg" />
+                        </image>
+                    </ImageView>
+                    <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Registration page" textAlignment="CENTER" wrappingWidth="471.1054992675781">
+                        <font>
+                            <Font name="Avenir" size="36.0" />
+                        </font>
+                    </Text>
+                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                        <image>
+                            <Image url="@img/back.png" />
+                        </image>
+                    </ImageView>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="First Name:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+                    <TextField fx:id="Fname" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="First Name:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+
+                    <TextField fx:id="Lname" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="TOP_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Email:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+
+                    <TextField fx:id="email" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Username:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+
+                    <TextField fx:id="username" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Password:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+
+                    <TextField fx:id="password" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="299.0" text="Confirm Password:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+
+                    <TextField fx:id="conPassword" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin></TextField>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </HBox>
+            </VBox>
+        </children>
+    </Pane>
+   <Button fx:id="submit" alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
+   <Line endX="100.0" layoutX="320.0" layoutY="344.0" startX="-100.0" stroke="#596cc2" />
 
 </AnchorPane>
