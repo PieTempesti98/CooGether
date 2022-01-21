@@ -284,7 +284,7 @@ public class MongoDBDriver{
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("authorName", username));
         Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("recipeId","name", "authorName","datePublished")));
+        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("recipeId","name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch, mySort, projection))
                 .into(new ArrayList<>());
@@ -319,7 +319,7 @@ public class MongoDBDriver{
         String pattern2=".*" + ing2 +".*";
         Bson myMatch_1= Aggregates.match(Filters.regex("ingredients", pattern1));
         Bson myMatch_2= Aggregates.match(Filters.regex("ingredients", pattern2));
-        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "ingredients")));
+        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch_1,myMatch_2, projection)).into(new ArrayList<>());
 

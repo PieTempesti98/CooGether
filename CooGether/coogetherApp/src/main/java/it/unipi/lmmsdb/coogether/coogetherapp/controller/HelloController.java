@@ -113,9 +113,7 @@ public class HelloController implements Initializable {
     }
 
     private void goToRecipe(Recipe r, MouseEvent mouseEvent){
-        System.out.println(r.getRecipeId());
         SessionUtils.setRecipeToShow(r);
-        System.out.println(SessionUtils.getRecipeToShow().getRecipeId());
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("recipe-view.fxml", ae);
     }
@@ -149,7 +147,6 @@ public class HelloController implements Initializable {
         Utils.changeScene("registration-view.fxml", actionEvent);
     }
 
-
     public void filterFunction(ActionEvent actionEvent) {
         //show filtered recipe
         String catFilter=(String) filterCategory.getValue();
@@ -159,8 +156,6 @@ public class HelloController implements Initializable {
 
         if(!catFilter.equals("Filters") && !catFilter.equals("NO filter")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromCategory(catFilter);
-            System.out.println("categoria");
-            System.out.println(recipes.size());
             showFilteredRecipes(recipes);
         }
         else if(!autFilter.equals("")){
@@ -173,24 +168,21 @@ public class HelloController implements Initializable {
                 errorAlert.setHeaderText("No recipe found");
                 errorAlert.showAndWait();
             }
-            //else
-                //showFilteredRecipes(recipes);
+            else
+                showFilteredRecipes(recipes);
         }
         else if(!ingFilter1.equals("") && !ingFilter2.equals("")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromTwoIngredients(ingFilter1, ingFilter2);
-            System.out.println("ingredienti");
-            System.out.println(recipes.size());
             if(recipes.size()==0)
             {
                 Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
                 errorAlert.setHeaderText("No recipe found");
                 errorAlert.showAndWait();
             }
-            //else
-                //showFilteredRecipes(recipes);
+            else
+                showFilteredRecipes(recipes);
         }
         else {
-            //errore
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("No filter inserted");
             errorAlert.setContentText("Select a category OR insert an author name OR insert two ingredients");
