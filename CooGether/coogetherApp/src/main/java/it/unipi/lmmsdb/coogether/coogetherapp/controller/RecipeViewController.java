@@ -40,6 +40,7 @@ public class RecipeViewController implements Initializable {
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
     @FXML private Spinner starSpinner;
+    private User logged;
 
     Recipe recipe;
 
@@ -48,8 +49,10 @@ public class RecipeViewController implements Initializable {
         recipe= MongoDBDriver.getRecipesFromId(SessionUtils.getRecipeToShow().getRecipeId());
         recipeTitle.setText(recipe.getName());
         recipeAuthorName.setText(recipe.getAuthorName());
-        Image img = new Image(recipe.getImage());
-        recipeImg.setImage(img);
+        if(recipe.getImage() != null) {
+            Image img = new Image(recipe.getImage());
+            recipeImg.setImage(img);
+        }
         recipeCategory.setText(recipe.getCategory());
         recipeDescription.setText(recipe.getDescription());
         recipeCookTime.setText(String.valueOf(recipe.getCookTime()));
@@ -66,12 +69,13 @@ public class RecipeViewController implements Initializable {
             recipeIngredients.getChildren().add(text);
         }
 
-        for (String s : recipe.getInstructions()){
+        for (String s : recipe.getRecipeInstructions()){
             Text text = new Text();
             text.setText(s);
             recipeInstructions.getChildren().add(text);
         }
 
+        if(recipe.getComments() != null)
         for (Comment c : recipe.getComments()){
             HBox box = new HBox();
             Text author = new Text();
@@ -88,27 +92,34 @@ public class RecipeViewController implements Initializable {
             text.setText(c.getText());
             comments.getChildren().addAll(box, text);
         }
+        logged = SessionUtils.getUserLogged();
    }
 
    @FXML
-    private void addComment(MouseEvent mouseEvent) {
+    private void addComment(ActionEvent actionEvent) {
         //deve controllare se lo user e loggato prima di aggiungere il commento
+       if(logged == null){
+           //errore: impossibile aggiungere commenti
+           return;
+       }
+
     }
 
     @FXML
-    private void log(ActionEvent ae) {
+    private void log(MouseEvent mouseEvent) {
         //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
-        User logged = SessionUtils.getUserLogged();
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         if(logged==null){
             Utils.changeScene("login-view.fxml", ae);
         }else{
-
+            Utils.changeScene("user-details.fxml", ae);
         }
     }
 
     @FXML
-    private void goBack(ActionEvent ae) {
+    private void goBack(MouseEvent mouseEvent) {
         //torna alla hello page
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
     }
 

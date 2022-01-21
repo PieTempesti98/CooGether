@@ -1,9 +1,13 @@
 package it.unipi.lmmsdb.coogether.coogetherapp.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Recipe {
+public class Recipe{
 
     private int recipeId;
     private String name;
@@ -15,14 +19,14 @@ public class Recipe {
     private String description;
     private String image;
     private String category;
-    private List<String> ingredients;
-    private List<Comment> comments;
+    private ArrayList<String> ingredients;
+    private ArrayList<Comment> comments;
     private double calories;
     private double fatContent;
     private double sodiumContent;
     private double proteinContent;
     private int recipeServings;
-    private List<String> instructions;
+    private ArrayList<String> recipeInstructions;
 
     public Recipe(){
     }
@@ -40,8 +44,8 @@ public class Recipe {
     }
 
     public Recipe(int id, String name, int authorId, String authorName, int cookTime, int prepTime, Date pub,
-                  String desc, String img, String category, List<String> ing, List<Comment> comm, double cal,
-                  double fat, double sodium, double protein, int serving, List<String> instructions){
+                  String desc, String img, String category, ArrayList<String> ing, ArrayList<Comment> comm, double cal,
+                  double fat, double sodium, double protein, int serving, ArrayList<String> instructions){
 
         this.recipeId= id;
         this.name= name;
@@ -60,7 +64,7 @@ public class Recipe {
         this.sodiumContent=sodium;
         this.proteinContent=protein;
         this.recipeServings=serving;
-        this.instructions=instructions;
+        this.recipeInstructions=instructions;
     }
 
     public int getRecipeId(){
@@ -103,11 +107,11 @@ public class Recipe {
         return category;
     }
 
-    public List<String> getIngredients(){
+    public ArrayList<String> getIngredients(){
         return ingredients;
     }
 
-    public List<Comment> getComments(){
+    public ArrayList<Comment> getComments(){
         return comments;
     }
 
@@ -131,8 +135,8 @@ public class Recipe {
         return recipeServings;
     }
 
-    public List<String> getInstructions(){
-        return instructions;
+    public ArrayList<String> getRecipeInstructions(){
+        return recipeInstructions;
     }
 
     public void setRecipeId(int id){
@@ -175,11 +179,11 @@ public class Recipe {
         this.category=cat;
     }
 
-    public void setIngredients(List<String> ing){
+    public void setIngredients(ArrayList<String> ing){
         this.ingredients=ing;
     }
 
-    public void setComments(List<Comment> c){
+    public void setComments(ArrayList<Comment> c){
         this.comments= c;
     }
 
@@ -203,8 +207,8 @@ public class Recipe {
         this.recipeServings=serv;
     }
 
-    public void setInstructions(List<String> in){
-        this.instructions=in;
+    public void setRecipeInstructions(ArrayList<String> in){
+        this.recipeInstructions=in;
     }
 
     public void addComments(Comment comment) {
@@ -221,7 +225,7 @@ public class Recipe {
                 ", prepTime=" + prepTime +'\'' +
                 ", authorUsername='" + authorName + '\'' +
                 ", description='" + description + '\'' +
-                ", instructions='" + instructions + '\'' +
+                ", instructions='" + recipeInstructions + '\'' +
                 ", ingredients=" + ingredients + '\'' +
                 ", calories=" + calories + '\'' +
                 ", fatContent=" + fatContent + '\'' +

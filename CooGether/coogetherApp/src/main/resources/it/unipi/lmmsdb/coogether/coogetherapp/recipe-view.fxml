@@ -18,7 +18,7 @@
        </ImageView>
       <ToolBar layoutX="129.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="123.0" prefWidth="471.0">
         <items>
-            <ImageView fx:id="log" fitHeight="65.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView onMouseClicked="#log" fitHeight="65.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/user.png" />
                 </image>
@@ -26,7 +26,7 @@
                     <Insets left="20.0" />
                 </BorderPane.margin>
             </ImageView>
-              <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+              <ImageView onMouseClicked="#goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                   <image>
                       <Image url="@img/back.png" />
                   </image>
@@ -192,7 +192,7 @@
                             <Spinner fx:id="starSpinner" editable="true" />
                         </HBox>
                         <TextArea layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
-                        <Button fx:id="addComment" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Add" textAlignment="CENTER" textFill="#596cc2" />
+                        <Button onAction="#addComment" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Add" textAlignment="CENTER" textFill="#596cc2" />
                     </VBox>
                 </VBox>
 

@@ -1,23 +1,25 @@
 package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.mongodb.client.model.*;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import com.mongodb.client.*;
 import com.mongodb.ConnectionString;
-import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Accumulators.*;
-import static com.mongodb.client.model.Projections.*;
+
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Sorts.*;
 
 
 import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
+import it.unipi.lmmsdb.coogether.coogetherapp.pojo.RecipePojo;
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import org.bson.BsonArray;
 import org.bson.BsonString;
 import org.bson.Document;
@@ -25,7 +27,6 @@ import org.bson.conversions.Bson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
 
 public class MongoDBDriver{
@@ -41,17 +42,35 @@ public class MongoDBDriver{
 
     private static final ConnectionString uri= new ConnectionString(connectionString);
 
+    //returns recipes given a list of mongoDB documents
+    private static ArrayList<Recipe> getRecipesFromDocuments(ArrayList<Document> results){
 
-    private static boolean openConnection(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        try {
+            for (Document doc : results) {
+                RecipePojo pojo = objectMapper.readValue(doc.toJson(), RecipePojo.class);
+                Recipe recipe = Utils.mapRecipe(pojo);
+                recipes.add(recipe);
+            }
+
+            return recipes;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static void openConnection(){
         try{
             myClient= MongoClients.create(uri);
             db= myClient.getDatabase(ConfigurationParameters.getMongoDbName());
             collection= db.getCollection("recipe");
         }catch (Exception ex){
             System.out.println("Impossible open connection with MongoDB");
-            return false;
         }
-        return true;
     }
 
 
@@ -97,7 +116,7 @@ public class MongoDBDriver{
                 doc.append("proteinContent", r.getProteinContent());
             if(r.getRecipeServings()!=-1)
                 doc.append("recipeServings", r.getRecipeServings());
-            doc.append("recipeInstructions", r.getInstructions());
+            doc.append("recipeInstructions", r.getRecipeInstructions());
 
             collection.insertOne(doc);
 
@@ -227,32 +246,38 @@ public class MongoDBDriver{
         openConnection();
         Recipe recipe= null;
         Gson gson = new Gson();
-        ArrayList<Document> myDoc = null;
-        myDoc = collection.find(eq("recipeId", id)).into(new ArrayList<>());
-        recipe = gson.fromJson(gson.toJson(myDoc.get(0)), Recipe.class);
-        closeConnection();
-        return recipe;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ArrayList<Document> myDoc = new ArrayList<>();
+        try{
+            for(Document doc: collection.find(eq("recipeId", id))){
+                System.out.println(doc.toString());
+                myDoc.add(doc);
+            }
+            RecipePojo pojo = objectMapper.readValue(myDoc.get(0).toJson(), RecipePojo.class);
+            recipe = Utils.mapRecipe(pojo);
+            closeConnection();
+            return recipe;
+        } catch (Exception e) {
+            e.printStackTrace();
+            closeConnection();
+            return null;
+        }
     }
 
     public static ArrayList<Recipe> getAllRecipes(){
         openConnection();
-        ArrayList<Recipe> recipes;
-
         Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
         Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
 
         ArrayList<Document> results = collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        Gson gson = new Gson();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> getRecipesFromAuthorName(String username){
-        ArrayList<Recipe> recipes;
+        ArrayList<Recipe> recipes = new ArrayList<>();
         ArrayList<Document> results;
         Gson gson = new Gson();
 
@@ -264,11 +289,8 @@ public class MongoDBDriver{
         results = collection.aggregate(Arrays.asList(myMatch, mySort, projection))
                 .into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> getRecipesFromCategory(String category){
@@ -276,16 +298,15 @@ public class MongoDBDriver{
         ArrayList<Document> results;
         Gson gson = new Gson();
 
+        openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
         Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch,mySort, projection)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
-        return recipes;
+        closeConnection();
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> getRecipesFromTwoIngredients(String ing1, String ing2){
@@ -302,11 +323,8 @@ public class MongoDBDriver{
 
         results = collection.aggregate(Arrays.asList(myMatch_1,myMatch_2, projection)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
 
@@ -333,11 +351,8 @@ public class MongoDBDriver{
 
         results = collection.aggregate(Arrays.asList(m, m1, m2, m3, m4, s, s1, s2, s3, l)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> searchTopKReviewedRecipes(String category, int k){
@@ -356,35 +371,25 @@ public class MongoDBDriver{
         results = collection.aggregate(Arrays.asList(myMatch_1,myUnwind,myMatch_2,myGroup,mySort,myLimit))
                 .into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> searchMostRecentRecipes(String category){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
-        closeConnection();
+        openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
 
-        results= collection.aggregate(Arrays.asList(myMatch,mySort)).into(new ArrayList<>());
-
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
+        results = collection.aggregate(Arrays.asList(myMatch,mySort)).into(new ArrayList<>());
 
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> searchFastestRecipes(String category){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
@@ -395,17 +400,12 @@ public class MongoDBDriver{
 
         results = collection.aggregate(Arrays.asList(m1, m2, m3, s1, s2)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<Recipe> searchFewestIngredientsRecipes(String category){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
@@ -415,11 +415,8 @@ public class MongoDBDriver{
 
         results = collection.aggregate(Arrays.asList(m1, u, g, s)).into(new ArrayList<>());
 
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        return getRecipesFromDocuments(results);
     }
 
     public static ArrayList<User> userRankingSystem(int k){

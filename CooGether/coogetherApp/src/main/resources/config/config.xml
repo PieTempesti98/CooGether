@@ -8,7 +8,7 @@
     <mongoThirdPort>27018</mongoThirdPort>
     <mongoUsername></mongoUsername>
     <mongoPassword></mongoPassword>
-    <mongoDbName>CooGether</mongoDbName>
+    <mongoDbName>coogether</mongoDbName>
     <neo4jIp>172.16.4.53</neo4jIp>
     <neo4jPort>7687</neo4jPort>
     <neo4jUsername>neo4j</neo4jUsername>
