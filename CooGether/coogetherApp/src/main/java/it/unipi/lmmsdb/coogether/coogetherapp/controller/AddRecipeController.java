@@ -73,7 +73,7 @@ public class AddRecipeController implements Initializable {
         errorAlert.showAndWait();
     }
 
-    @FXML private void addRecipe(MouseEvent mouseEvent) throws JsonProcessingException {
+    @FXML private void addRecipe(ActionEvent ae) throws JsonProcessingException {
         if(recipeName.getText().isEmpty() || recipeCategory.getText().isEmpty() || recipeIngredients.getText().isEmpty()
                 || recipeInstructions.getText().isEmpty()){
             showErrorAlert("Title, Category, Ingredients and Instructions are mandatory fields");
@@ -195,7 +195,6 @@ public class AddRecipeController implements Initializable {
             }
             clearAllFields();
             SessionUtils.setRecipeToShow(r);
-            ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
             Utils.changeScene("recipe-view.fxml", ae);
         }
     }

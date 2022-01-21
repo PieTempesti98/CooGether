@@ -29,7 +29,7 @@
                     </ImageView>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="First Name:">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="First Name (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>
@@ -43,7 +43,7 @@
                     </padding>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Last Name:">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Last Name (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>
@@ -57,7 +57,7 @@
                     </padding>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="TOP_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Email:">
+                    <Label alignment="TOP_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Email (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>
@@ -71,7 +71,7 @@
                     </padding>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Username:">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Username (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>
@@ -85,7 +85,7 @@
                     </padding>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Password:">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Password (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>
@@ -99,7 +99,7 @@
                     </padding>
                 </HBox>
                 <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="299.0" text="Confirm Password:">
+                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="299.0" text="Confirm Password (*):">
                         <font>
                             <Font size="18.0" />
                         </font></Label>

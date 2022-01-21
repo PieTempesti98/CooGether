@@ -17,7 +17,7 @@
                             <Image url="@img/icon.jpeg" />
                         </image>
                     </ImageView>
-                    <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Add your recipe" textAlignment="CENTER" wrappingWidth="411.1054992675781">
+                    <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Login page" textAlignment="CENTER" wrappingWidth="411.1054992675781">
                         <font>
                             <Font name="Avenir" size="36.0" />
                         </font>
@@ -61,7 +61,7 @@
                <Insets top="10.0" />
             </padding>
             </HBox>
-            <Button fx:id="signIn" onAction="#signIn" alignment="CENTER" contentDisplay="CENTER" layoutX="244.0" layoutY="160.0" mnemonicParsing="false" text="Sign in" textAlignment="CENTER" textFill="#596cc2">
+            <Button fx:id="signIn" alignment="CENTER" contentDisplay="CENTER" layoutX="244.0" layoutY="160.0" mnemonicParsing="false" onAction="#signIn" text="Sign in" textAlignment="CENTER" textFill="#596cc2">
                 <font>
                     <Font name="System Bold" size="18.0" />
                 </font>
@@ -83,7 +83,7 @@
                <padding>
                   <Insets top="2.0" />
                </padding></Label>
-                <Button fx:id="signUp" onAction="#signUp" layoutX="358.0" layoutY="256.0" mnemonicParsing="false" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
+                <Button fx:id="signUp" layoutX="358.0" layoutY="256.0" mnemonicParsing="false" onAction="#signUp" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font></Button>

@@ -39,7 +39,7 @@ public class LoginViewController implements Initializable {
         Utils.changeScene("hello-view.fxml", ae);
     }
 
-    @FXML private void signIn(MouseEvent mouseEvent){
+    @FXML private void signIn(ActionEvent actionEvent){
         if(email.getText().isEmpty() || password.getText().isEmpty()){
             showErrorAlert("You should insert email and password");
         }else{
@@ -59,16 +59,14 @@ public class LoginViewController implements Initializable {
                 //code to the admin page
             }
             else{
-                ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
-                Utils.changeScene("users-view.fxml", ae);
+                Utils.changeScene("users-view.fxml", actionEvent);
 
             }
         }
 
     }
 
-    @FXML private void signUp(MouseEvent mouseEvent){
-        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
-        Utils.changeScene("registration-view.fxml", ae);
+    @FXML private void signUp(ActionEvent actionEvent){
+        Utils.changeScene("registration-view.fxml", actionEvent);
     }
 }
