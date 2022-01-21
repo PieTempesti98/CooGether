@@ -144,7 +144,7 @@ public class HelloController implements Initializable {
             if (u.getRole() == 2) {
                 //code to the admin page
             } else {
-                Utils.changeScene("users-view.fxml", ae);
+                Utils.changeScene("user-details-view.fxml", ae);
 
             }
         }

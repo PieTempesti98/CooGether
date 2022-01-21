@@ -83,10 +83,18 @@ public class RegistrationViewController {
             errorAlert.setHeaderText("User entered incorrectly");
             errorAlert.showAndWait();
             return;
+        }else{
+            showInfoAlert("Recipe succesfully added");
+            SessionUtils.setUserLogged(user);
+            Utils.changeScene("user-details-view.fxml", actionEvent);
         }
-        SessionUtils.setUserLogged(user);
-        Utils.changeScene("hello-view.fxml", actionEvent);
 
+    }
+
+    private void showInfoAlert(String s){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(s);
+        errorAlert.showAndWait();
     }
 
     @FXML
