@@ -21,7 +21,7 @@
             </font>
         </Text>
         <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-            <image>
+            <image >
                 <Image url="@img/back.png" />
             </image>
         </ImageView>
@@ -72,15 +72,15 @@
             </padding>
         </HBox>
         <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Ingredients:">
+            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Ingredients (*):">
                 <font>
                     <Font size="18.0" />
                 </font></Label>
-         <ListView fx:id="recipeIngredients" editable="true" prefHeight="200.0" prefWidth="200.0" >
+         <TextArea fx:id="recipeIngredients" editable="true" prefHeight="200.0" prefWidth="200.0" >
             <HBox.margin>
                 <Insets left="5.0" />
             </HBox.margin>
-         </ListView>
+         </TextArea>
 
             <padding>
                 <Insets top="10.0" />
@@ -199,20 +199,21 @@
                     </padding>
                 </HBox>
         <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Instructions:">
+            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Instructions (*):">
                 <font>
                     <Font size="18.0" />
                 </font></Label>
-            <ListView fx:id="recipeInstructions" editable="true" prefHeight="200.0" prefWidth="200.0" >
+            <TextArea fx:id="recipeInstructions" editable="true" prefHeight="200.0" prefWidth="200.0" >
                 <HBox.margin>
                     <Insets left="5.0" />
                 </HBox.margin>
-            </ListView>
+            </TextArea>
 
             <padding>
                 <Insets top="10.0" />
             </padding>
         </HBox>
+                <Button fx:id="submit" alignment="CENTER" onAction="#addRecipe" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
             </VBox>
         </AnchorPane>
         </ScrollPane>

@@ -231,6 +231,7 @@ public class Neo4jDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u:User)" +
                                 "return u.id, u.username, u.email, u.fullName " +
+                                "order by u.username" +
                                 "skip $toSkip " +
                                 "limit $toLimit "
                         , Values.parameters("toLimit",limit, "toSkip", skip));

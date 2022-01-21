@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -90,9 +91,9 @@ public class UsersViewController implements Initializable {
     }
 
     @FXML
-    private void goBack(ActionEvent actionEvent){
-        Utils.changeScene("hello-view.fxml", actionEvent);
-
+    private void goBack(MouseEvent mouseEvent){
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("hello-view.fxml", ae);
     }
 
 

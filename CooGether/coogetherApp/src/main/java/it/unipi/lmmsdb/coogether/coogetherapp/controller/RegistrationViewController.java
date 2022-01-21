@@ -23,18 +23,12 @@ import java.util.regex.Pattern;
 
 public class RegistrationViewController {
 
-    @FXML private ImageView goBack;
     @FXML private TextField fName;
     @FXML private TextField lName;
     @FXML private TextField email;
     @FXML private TextField username;
     @FXML private PasswordField password;
     @FXML private PasswordField conPassword;
-    @FXML private Button submit;
-
-    private void clickOnBackToChangePage(MouseEvent mouseEvent) {
-        //torna alla pagina precedente
-    }
 
     @FXML
     private void register(ActionEvent actionEvent) {

@@ -44,6 +44,29 @@ public class Recipe{
     }
 
     public Recipe(int id, String name, int authorId, String authorName, int cookTime, int prepTime, Date pub,
+                  String desc, String img, String category, ArrayList<String> ing, double cal,
+                  double fat, double sodium, double protein, int serving, ArrayList<String> instructions){
+
+        this.recipeId= id;
+        this.name= name;
+        this.authorId=authorId;
+        this.authorName=authorName;
+        this.cookTime=cookTime;
+        this.prepTime=prepTime;
+        this.datePublished=pub;
+        this.description=desc;
+        this.image= img;
+        this.category= category;
+        this.ingredients=ing;
+        this.calories= cal;
+        this.fatContent= fat;
+        this.sodiumContent=sodium;
+        this.proteinContent=protein;
+        this.recipeServings=serving;
+        this.recipeInstructions=instructions;
+    }
+
+    public Recipe(int id, String name, int authorId, String authorName, int cookTime, int prepTime, Date pub,
                   String desc, String img, String category, ArrayList<String> ing, ArrayList<Comment> comm, double cal,
                   double fat, double sodium, double protein, int serving, ArrayList<String> instructions){
 

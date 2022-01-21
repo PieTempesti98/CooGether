@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="583.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
+<AnchorPane prefHeight="1120.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
    <children>
        <ImageView fitHeight="123.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
            <image>
@@ -16,9 +16,9 @@
                <Insets left="20.0" />
            </BorderPane.margin>
        </ImageView>
-      <ToolBar layoutX="129.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="123.0" prefWidth="471.0">
+      <ToolBar layoutX="124.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="123.0" prefWidth="651.0">
         <items>
-            <ImageView onMouseClicked="#log" fitHeight="65.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="65.0" fitWidth="63.0" onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/user.png" />
                 </image>
@@ -26,7 +26,7 @@
                     <Insets left="20.0" />
                 </BorderPane.margin>
             </ImageView>
-              <ImageView onMouseClicked="#goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+              <ImageView fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                   <image>
                       <Image url="@img/back.png" />
                   </image>
@@ -36,9 +36,9 @@
               </ImageView>
           </items>
       </ToolBar>
-      <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="696.0" prefWidth="600.0">
+      <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="459.0" prefWidth="777.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="272.0" prefWidth="605.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1007.0" prefWidth="765.0">
                 <VBox>
               <Text fx:id="recipeTitle" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
                 <font>
@@ -186,13 +186,13 @@
                         </Label>
                     </VBox>
                     <VBox>
-                        <Label text="Add a comment"></Label>
+                        <Label text="Add a comment" />
                         <HBox>
-                            <Label text="Add a rating from 0 to 5:"></Label>
+                            <Label text="Add a rating from 0 to 5:" />
                             <Spinner fx:id="starSpinner" editable="true" />
                         </HBox>
                         <TextArea layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
-                        <Button onAction="#addComment" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Add" textAlignment="CENTER" textFill="#596cc2" />
+                        <Button layoutX="68.0" layoutY="177.0" mnemonicParsing="false" onAction="#addComment" text="Add" textAlignment="CENTER" textFill="#596cc2" />
                     </VBox>
                 </VBox>
 

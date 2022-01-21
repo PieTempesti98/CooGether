@@ -3,11 +3,13 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -100,7 +102,8 @@ public class UserDetailsViewController implements Initializable {
     }
 
     @FXML
-    private void goBack(ActionEvent actionEvent){
-
+    private void goBack(MouseEvent mouseEvent){
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("hello-view.fxml", ae);
     }
 }

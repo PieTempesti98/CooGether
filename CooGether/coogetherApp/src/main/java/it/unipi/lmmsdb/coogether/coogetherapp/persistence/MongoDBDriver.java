@@ -1,5 +1,6 @@
 package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.mongodb.client.model.*;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
@@ -28,6 +29,7 @@ import org.bson.conversions.Bson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MongoDBDriver{
 
@@ -245,7 +247,6 @@ public class MongoDBDriver{
     public static Recipe getRecipesFromId( int id){
         openConnection();
         Recipe recipe= null;
-        Gson gson = new Gson();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ArrayList<Document> myDoc = new ArrayList<>();
@@ -312,7 +313,6 @@ public class MongoDBDriver{
     public static ArrayList<Recipe> getRecipesFromTwoIngredients(String ing1, String ing2){
         ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         String pattern1=".*" + ing1 +".*";
@@ -325,6 +325,25 @@ public class MongoDBDriver{
 
         closeConnection();
         return getRecipesFromDocuments(results);
+    }
+
+    public static int getMaxRecipeId() throws JsonProcessingException {
+        int maxId = 0;
+        ArrayList<Document> results;
+        Recipe recipe= null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        openConnection();
+        Bson mySort = Aggregates.sort(Sorts.descending("recipeId"));
+        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId")));
+        results = collection.aggregate(Arrays.asList(mySort, projection)).into(new ArrayList<>());
+        RecipePojo pojo = objectMapper.readValue(results.get(0).toJson(), RecipePojo.class);
+        recipe = Utils.mapRecipe(pojo);
+        closeConnection();
+        maxId=recipe.getRecipeId();
+        return maxId;
     }
 
 
