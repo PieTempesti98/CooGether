@@ -359,6 +359,28 @@ public class Neo4jDriver{
 
     }
 
+    public ArrayList<String> getAllCategories(){
+        ArrayList<String> cat=new ArrayList<>();
+        try(Session session=driver.session()){
+            session.readTransaction(tx->{
+                Result result=tx.run("match (r:Recipe) " +
+                        "return distinct r.category order by r.category");
+                while (result.hasNext())
+                {
+                    Record r=result.next();
+                    String catString=r.get("r.category").asString();
+                    cat.add(catString);
+                }
+                return cat;
+            });
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return cat;
+    }
+
     //******************************************************************************************************************
     //                              ANALYTICS
     //******************************************************************************************************************

@@ -3,6 +3,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -29,11 +31,25 @@ public class HelloController implements Initializable {
     private VBox recipeContainer;
     @FXML private TextField email;
     @FXML private TextField password;
+    @FXML private ChoiceBox filterCategory;
+    @FXML private TextField filterAuthor;
+    @FXML private TextField filterIng1;
+    @FXML private TextField filterIng2;
+    @FXML private Button goFilter;
 
     private int skip = 0;
 
+    Neo4jDriver neo4j = Neo4jDriver.getInstance();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //create filter category choicebox
+        ArrayList<String> categories= neo4j.getAllCategories();
+        filterCategory.getItems().add("NO filter");
+        for(String cat : categories)
+        {
+            filterCategory.getItems().add(cat);
+        }
         // retrieve first 20 recipes
         showRecipes();
     }
@@ -54,7 +70,6 @@ public class HelloController implements Initializable {
 
     //Adds 20 recipes in the scene and places the show more button
     private void showRecipes(){
-        Neo4jDriver neo4j = Neo4jDriver.getInstance();
         ArrayList<Recipe> recipes;
         User logged = SessionUtils.getUserLogged();
         if(logged == null)
@@ -133,5 +148,79 @@ public class HelloController implements Initializable {
     @FXML
     private void signUp(ActionEvent actionEvent) {
         Utils.changeScene("registration-view.fxml", actionEvent);
+    }
+
+    public void filterFunction(ActionEvent actionEvent) {
+        //show filtered recipe
+        String catFilter=(String) filterCategory.getValue();
+        String autFilter=filterAuthor.getText();
+        String ingFilter1=filterIng1.getText();
+        String ingFilter2=filterIng2.getText();
+
+        if(!catFilter.equals("Filters") && !catFilter.equals("NO filter")){
+            ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromCategory(catFilter);
+            System.out.println("categoria");
+            System.out.println(recipes.size());
+            //showFilteredRecipes(recipes);
+        }
+        else if(!autFilter.equals("")){
+            ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromAuthorName(autFilter);
+            System.out.println("autore");
+            System.out.println(recipes.size());
+            if(recipes.size()==0)
+            {
+                //autore inesistente dare errore
+            }
+            //else
+                //showFilteredRecipes(recipes);
+        }
+        else if(!ingFilter1.equals("") && !ingFilter2.equals("")){
+            ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromTwoIngredients(ingFilter1, ingFilter2);
+            System.out.println("ingredienti");
+            System.out.println(recipes.size());
+            if(recipes.size()==0)
+            {
+                //nessuna ricetta trovata, dare errore
+            }
+            //else
+                //showFilteredRecipes(recipes);
+        }
+        else
+            System.out.println("nessun filtro");
+    }
+
+    private void showFilteredRecipes(ArrayList<Recipe> recipes) {
+        for(Recipe r: recipes) {
+            Label recipeName = new Label("Title: ");
+            Font bold = new Font("System Bold", 18);
+            Font size = new Font(14);
+            recipeName.setFont(bold);
+            Label recipeCategory = new Label("Category: ");
+            recipeCategory.setFont(bold);
+            Label date = new Label("Date of publication: ");
+            date.setFont(bold);
+            Label title = new Label(r.getName());
+            title.setFont(size);
+            Label category = new Label(r.getCategory());
+            category.setFont(size);
+            Label datePublished = new Label(new SimpleDateFormat("dd-MM-yyyy").format(r.getDatePublished()));
+            datePublished.setFont(size);
+            HBox recContainer = new HBox();
+            recContainer.setAlignment(Pos.CENTER_LEFT);
+            recContainer.getChildren().add(recipeName);
+            recContainer.getChildren().add(title);
+            recContainer.getChildren().add(recipeCategory);
+            recContainer.getChildren().add(category);
+            recContainer.getChildren().add(date);
+            recContainer.getChildren().add(datePublished);
+            recContainer.setOnMouseClicked(mouseEvent -> {
+                goToRecipe(r, mouseEvent);
+            });
+            recContainer.setSpacing(10);
+            recContainer.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
+            recipeContainer.getChildren().add(recContainer);
+        }
     }
 }

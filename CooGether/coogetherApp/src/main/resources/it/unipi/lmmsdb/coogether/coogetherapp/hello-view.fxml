@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -15,7 +16,7 @@
                <Font name="Avenir" size="36.0" />
             </font>
           </Text>
-           <ImageView fitHeight="104.0" fitWidth="115.0" layoutX="536.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+           <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="550.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
                    <Image url="@img/icon.jpeg" />
                </image>
@@ -23,17 +24,28 @@
                    <Insets left="20.0" />
                </BorderPane.margin>
            </ImageView>
+         <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Filters">
+             <items>
+                 <FXCollections fx:factory="observableArrayList">
+
+                 </FXCollections>
+             </items>
+         </ChoiceBox>
+            <TextField fx:id="filterAuthor" layoutX="147.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="AuthorName" />
+            <TextField fx:id="filterIng1" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 1" />
+         <TextField fx:id="filterIng2" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 2" />
+         <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
        </children>
    </Pane>
    <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
-       <AnchorPane minHeight="0.0" minWidth="0.0" >
-                <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10" >
+       <AnchorPane minHeight="0.0" minWidth="0.0">
+                <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10">
 
                 </VBox>
          </AnchorPane>
    </ScrollPane>
    <Pane layoutX="417.0" layoutY="149.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="5.6843418860808015E-14">
-         <Button fx:id="signIn" layoutX="72.0" layoutY="100.0" mnemonicParsing="false" text="Sign in" textFill="#596cc2" onAction="#login">
+         <Button fx:id="signIn" layoutX="72.0" layoutY="100.0" mnemonicParsing="false" onAction="#login" text="Sign in" textFill="#596cc2">
             <font>
                <Font name="System Bold" size="18.0" />
             </font></Button>
@@ -47,7 +59,7 @@
             </font></Label>
          <TextField fx:id="email" layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
          <PasswordField fx:id="password" layoutX="96.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
-         <Button fx:id="signUp" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" text="Sign Up" textAlignment="CENTER" textFill="#596cc2" onAction="#signUp">
+         <Button fx:id="signUp" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" onAction="#signUp" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
             <font>
                <Font name="System Bold" size="18.0" />
             </font></Button>
