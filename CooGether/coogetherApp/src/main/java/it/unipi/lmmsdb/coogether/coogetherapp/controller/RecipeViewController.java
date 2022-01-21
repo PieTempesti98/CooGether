@@ -84,7 +84,7 @@ public class RecipeViewController implements Initializable {
             int star = c.getRating();
             for (int i=0; i< star; i++){
                 ImageView imgViewStar = new ImageView();
-                Image imgStar = new Image("/../../../../../resources/it/unipi/lmmsdb/coogether/coogetherapp/img");
+                Image imgStar = new Image("it/unipi/lmmsdb/coogether/coogetherapp/img");
                 imgViewStar.setImage(imgStar);
                 box.getChildren().add(imgViewStar);
             }
