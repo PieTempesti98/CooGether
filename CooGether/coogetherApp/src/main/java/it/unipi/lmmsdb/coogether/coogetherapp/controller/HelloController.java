@@ -187,6 +187,7 @@ public class HelloController implements Initializable {
                 //showFilteredRecipes(recipes);
         }
         else {
+            //errore
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("No filter inserted");
             errorAlert.setContentText("Select a category OR insert an author name OR insert two ingredients");

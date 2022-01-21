@@ -84,7 +84,7 @@ public class RegistrationViewController {
         int newId = neo4j.getMaxUId() + 1;
         User user = new User(newId, userN, firstName + lastName, pass, em);
         if(!neo4j.addUser(user)){
-            //error message
+            //error messagee
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("User entered incorrectly");
             errorAlert.showAndWait();
