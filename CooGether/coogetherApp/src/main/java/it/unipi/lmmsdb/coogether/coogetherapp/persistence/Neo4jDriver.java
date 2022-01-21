@@ -229,7 +229,7 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (u:User) " +
+                Result result = tx.run("match (u:User)" +
                                 "return u.id, u.username, u.email, u.fullName " +
                                 "skip $toSkip " +
                                 "limit $toLimit "
@@ -315,7 +315,7 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (r:Recipe) where r.id IS NOT NULL " +
+                Result result = tx.run("match (r:Recipe) where r.id IS NOT NULL and (r.name is not null or r.name <> 'null')" +
                                           "return r.id, r.name, r.datePublished, r.category order by r.datePublished desc " +
                                           "skip $toSkip " +
                                           "limit $toLimit"
