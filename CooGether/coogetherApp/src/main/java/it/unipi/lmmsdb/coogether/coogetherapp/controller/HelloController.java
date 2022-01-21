@@ -11,10 +11,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
@@ -169,7 +166,9 @@ public class HelloController implements Initializable {
             System.out.println(recipes.size());
             if(recipes.size()==0)
             {
-                //autore inesistente dare errore
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setHeaderText("No recipe found");
+                errorAlert.showAndWait();
             }
             //else
                 //showFilteredRecipes(recipes);
@@ -180,16 +179,24 @@ public class HelloController implements Initializable {
             System.out.println(recipes.size());
             if(recipes.size()==0)
             {
-                //nessuna ricetta trovata, dare errore
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setHeaderText("No recipe found");
+                errorAlert.showAndWait();
             }
             //else
                 //showFilteredRecipes(recipes);
         }
-        else
-            System.out.println("nessun filtro");
+        else {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("No filter inserted");
+            errorAlert.setContentText("Select a category OR insert an author name OR insert two ingredients");
+            errorAlert.showAndWait();
+        }
     }
 
     private void showFilteredRecipes(ArrayList<Recipe> recipes) {
+        //remove all the previous recipes
+        recipeContainer.getChildren().clear();
         for(Recipe r: recipes) {
             Label recipeName = new Label("Title: ");
             Font bold = new Font("System Bold", 18);

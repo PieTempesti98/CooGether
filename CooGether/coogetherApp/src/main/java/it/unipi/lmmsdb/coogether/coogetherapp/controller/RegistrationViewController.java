@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -46,7 +47,9 @@ public class RegistrationViewController {
 
         //empty field control
         if(firstName.equals("") || lastName.equals("") || em.equals("") || userN.equals("") || pass.equals("") || pass2.equals("")){
-            //Show th error message
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Fill in all fields");
+            errorAlert.showAndWait();
             return;
         }
 
@@ -56,23 +59,35 @@ public class RegistrationViewController {
 
         if(!m.matches()) {
             //show the error message
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("incorrect email");
+            errorAlert.showAndWait();
             return;
         }
 
         if(!pass.equals(pass2)){
             //show the error message
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Passwords do not match");
+            errorAlert.showAndWait();
             return;
         }
 
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
         if(neo4j.getUsersFromUnique(userN) != null || neo4j.getUsersFromUnique(em) != null){
             //show the error message
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("username or email already exist");
+            errorAlert.showAndWait();
             return;
         }
         int newId = neo4j.getMaxUId() + 1;
         User user = new User(newId, userN, firstName + lastName, pass, em);
         if(!neo4j.addUser(user)){
             //error message
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("User entered incorrectly");
+            errorAlert.showAndWait();
             return;
         }
         SessionUtils.setUserLogged(user);
