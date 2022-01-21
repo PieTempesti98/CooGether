@@ -268,7 +268,7 @@ public class MongoDBDriver{
     public static ArrayList<Recipe> getAllRecipes(){
         openConnection();
         Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
+        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName","datePublished")));
 
         ArrayList<Document> results = collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList<>());
 
@@ -284,7 +284,7 @@ public class MongoDBDriver{
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("authorName", username));
         Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("name", "authorName","datePublished")));
+        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("recipeId","name", "authorName","datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch, mySort, projection))
                 .into(new ArrayList<>());
@@ -301,7 +301,7 @@ public class MongoDBDriver{
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("name", "authorName", "recipeCategory", "datePublished")));
+        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch,mySort, projection)).into(new ArrayList<>());
 

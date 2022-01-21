@@ -113,7 +113,9 @@ public class HelloController implements Initializable {
     }
 
     private void goToRecipe(Recipe r, MouseEvent mouseEvent){
+        System.out.println(r.getRecipeId());
         SessionUtils.setRecipeToShow(r);
+        System.out.println(SessionUtils.getRecipeToShow().getRecipeId());
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("recipe-view.fxml", ae);
     }
@@ -147,6 +149,7 @@ public class HelloController implements Initializable {
         Utils.changeScene("registration-view.fxml", actionEvent);
     }
 
+
     public void filterFunction(ActionEvent actionEvent) {
         //show filtered recipe
         String catFilter=(String) filterCategory.getValue();
@@ -158,7 +161,7 @@ public class HelloController implements Initializable {
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromCategory(catFilter);
             System.out.println("categoria");
             System.out.println(recipes.size());
-            //showFilteredRecipes(recipes);
+            showFilteredRecipes(recipes);
         }
         else if(!autFilter.equals("")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromAuthorName(autFilter);
