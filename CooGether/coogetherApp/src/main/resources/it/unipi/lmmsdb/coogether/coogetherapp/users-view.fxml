@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.geometry.Insets?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController">
 
     <VBox>
@@ -19,6 +20,14 @@
                     <Font name="Avenir" size="36.0" />
                 </font>
             </Text>
+            <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0"  onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
+                <image>
+                    <Image url="@img/user.png" />
+                </image>
+                <BorderPane.margin>
+                    <Insets left="20.0" />
+                </BorderPane.margin>
+            </ImageView>
             <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/back.png" />

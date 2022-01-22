@@ -19,7 +19,7 @@
                     <Font name="Avenir" size="36.0" />
                 </font>
             </Text>
-            <ImageView fx:id="goBack" onMouseClicked="#goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/back.png" />
                 </image>
@@ -29,14 +29,18 @@
 
         </VBox>
         <HBox>
-        <Button fx:id="changePassword" onAction="#changePassword" alignment="CENTER" contentDisplay="CENTER" text="Change Password" textAlignment="CENTER">
+        <Button fx:id="changePassword" alignment="CENTER" contentDisplay="CENTER" onAction="#changePassword" text="Change Password" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font></Button>
-            <Button fx:id="deleteAccount" onAction="#deleteAccount" alignment="CENTER" contentDisplay="CENTER" text="Delete Account" textAlignment="CENTER">
+            <Button fx:id="deleteAccount" alignment="CENTER" contentDisplay="CENTER" onAction="#deleteAccount" text="Delete Account" textAlignment="CENTER">
                 <font>
                     <Font size="18.0" />
                 </font></Button>
+         <Button mnemonicParsing="false" text="Add Recipe" fx:id="addRecipe" alignment="CENTER" contentDisplay="CENTER" onAction="#addRecipe" textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font></Button>
         </HBox>
     </VBox>
 

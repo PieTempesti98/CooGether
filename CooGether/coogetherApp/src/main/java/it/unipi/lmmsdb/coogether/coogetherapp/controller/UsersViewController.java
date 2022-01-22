@@ -168,5 +168,15 @@ public class UsersViewController implements Initializable {
         Utils.changeScene("hello-view.fxml", ae);
     }
 
-
+    @FXML
+    private void log(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        User logged =SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+            Utils.changeScene("user-details-view.fxml", ae);
+        }
+    }
 }

@@ -20,6 +20,14 @@
                 <Font name="Avenir" size="36.0" />
             </font>
         </Text>
+        <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0"  onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
+            <image>
+                <Image url="@img/user.png" />
+            </image>
+            <BorderPane.margin>
+                <Insets left="20.0" />
+            </BorderPane.margin>
+        </ImageView>
         <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
             <image >
                 <Image url="@img/back.png" />

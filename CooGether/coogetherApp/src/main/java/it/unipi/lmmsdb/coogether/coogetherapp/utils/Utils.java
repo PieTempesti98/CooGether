@@ -25,7 +25,7 @@ public class Utils {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFile));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(), 800, 600);
+            scene = new Scene(fxmlLoader.load(), 1200, 800);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             stage.setScene(scene);
