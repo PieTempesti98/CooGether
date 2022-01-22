@@ -10,6 +10,7 @@ import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,5 +62,19 @@ public class Utils {
         }
 
         return recipe;
+    }
+
+    public static void showErrorAlert(String s){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Error message");
+        alert.setContentText(s);
+        alert.showAndWait();
+    }
+
+    public static void showInfoAlert(String s){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Info message");
+        alert.setHeaderText(s);
+        alert.showAndWait();
     }
 }

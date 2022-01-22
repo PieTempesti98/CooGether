@@ -51,12 +51,6 @@ public class HelloController implements Initializable {
         showRecipes();
     }
 
-    private void showErrorAlert(String s){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(s);
-        alert.showAndWait();
-    }
-
     //Called by the show more button
     private void showMoreRecipes(){
         recipeContainer.getChildren().remove(recipeContainer.getChildren().size() - 1);
@@ -130,14 +124,14 @@ public class HelloController implements Initializable {
         User u = neo4j.getUsersFromUnique(email.getText());
 
         if(email.getText().isEmpty() || password.getText().isEmpty()){
-            showErrorAlert("You should insert email and password");
+            Utils.showErrorAlert("You should insert email and password");
         }else {
             if (u == null) {
-                showErrorAlert("user not found");
+                Utils.showErrorAlert("user not found");
                 return;
             }
             if (!u.getPassword().equals(password.getText())) {
-                showErrorAlert("Wrong password");
+                Utils.showErrorAlert("Wrong password");
                 return;
             }
             SessionUtils.setUserLogged(u);
@@ -172,7 +166,7 @@ public class HelloController implements Initializable {
             System.out.println(recipes.size());
             if(recipes.size()==0)
             {
-                showErrorAlert("No recipe found");
+                Utils.showErrorAlert("No recipe found");
             }
             else
                 showFilteredRecipes(recipes);
@@ -181,7 +175,7 @@ public class HelloController implements Initializable {
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromTwoIngredients(ingFilter1, ingFilter2);
             if(recipes.size()==0)
             {
-                showErrorAlert("No recipe found");
+                Utils.showErrorAlert("No recipe found");
             }
             else
                 showFilteredRecipes(recipes);

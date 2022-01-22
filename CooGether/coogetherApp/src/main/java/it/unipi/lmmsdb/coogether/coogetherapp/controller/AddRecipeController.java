@@ -61,22 +61,10 @@ public class AddRecipeController implements Initializable {
         recipeDescription.setText("");
     }
 
-    private void showErrorAlert(String s){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(s);
-        alert.showAndWait();
-    }
-
-    private void showInfoAlert(String s){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(s);
-        errorAlert.showAndWait();
-    }
-
     @FXML private void addRecipe(ActionEvent ae) throws JsonProcessingException {
         if(recipeName.getText().isEmpty() || recipeCategory.getText().isEmpty() || recipeIngredients.getText().isEmpty()
                 || recipeInstructions.getText().isEmpty()){
-            showErrorAlert("Title, Category, Ingredients and Instructions are mandatory fields");
+            Utils.showErrorAlert("Title, Category, Ingredients and Instructions are mandatory fields");
         }else{
             Date date = new Date(System.currentTimeMillis());
 
@@ -91,7 +79,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     kal = Double.parseDouble(recipeKal.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Calories field must contains only numbers!");
+                    Utils.showErrorAlert("The Calories field must contains only numbers!");
                     return;
                 }
             }
@@ -102,7 +90,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     fat = Double.parseDouble(recipeFat.getText());
                 } catch (NumberFormatException e) {
-                    showErrorAlert("The Fat Content field must contains only numbers!");
+                    Utils.showErrorAlert("The Fat Content field must contains only numbers!");
                     return;
                 }
             }
@@ -113,7 +101,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     sod = Double.parseDouble(recipeSod.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Sodium Content field must contains only numbers!");
+                    Utils.showErrorAlert("The Sodium Content field must contains only numbers!");
                     return;
                 }
             }
@@ -124,7 +112,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     prot = Double.parseDouble(recipeProt.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Protein Content field must contains only numbers!");
+                    Utils.showErrorAlert("The Protein Content field must contains only numbers!");
                     return;
                 }
             }
@@ -137,7 +125,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     serv = Integer.parseInt(recipeServ.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Recipe Servings field must contains only numbers!");
+                    Utils.showErrorAlert("The Recipe Servings field must contains only numbers!");
                     return;
                 }
             }
@@ -151,7 +139,7 @@ public class AddRecipeController implements Initializable {
                 try {
                     cook = Integer.parseInt(recipeCook.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Cook Time field must contains only numbers!");
+                    Utils.showErrorAlert("The Cook Time field must contains only numbers!");
                     return;
                 }
             }
@@ -162,12 +150,12 @@ public class AddRecipeController implements Initializable {
                 try {
                     prep = Integer.parseInt(recipePrep.getText());
                 }catch (NumberFormatException e){
-                    showErrorAlert("The Preparation Time field must contains only numbers!");
+                    Utils.showErrorAlert("The Preparation Time field must contains only numbers!");
                     return;
                 }
             }
 
-            int id=MongoDBDriver.getMaxRecipeId();
+            int id=MongoDBDriver.getMaxRecipeId() +1 ;
 
             int authorId = SessionUtils.getUserLogged().getUserId();
             String authorName= SessionUtils.getUserLogged().getUsername();
@@ -186,11 +174,11 @@ public class AddRecipeController implements Initializable {
                 {
                     // if mongo is not ok, remove the previously added recipe
                     neo4j.deleteRecipe(r);
-                    showErrorAlert("Error in adding the recipe");
+                    Utils.showErrorAlert("Error in adding the recipe");
                 }
                 else
                 {
-                    showInfoAlert("Recipe succesfully added");
+                    Utils.showInfoAlert("Recipe succesfully added");
                 }
             }
             clearAllFields();

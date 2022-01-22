@@ -41,9 +41,7 @@ public class RegistrationViewController {
 
         //empty field control
         if(firstName.equals("") || lastName.equals("") || em.equals("") || userN.equals("") || pass.equals("") || pass2.equals("")){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Fill in all fields");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("Fill in all fields");
             return;
         }
 
@@ -53,48 +51,34 @@ public class RegistrationViewController {
 
         if(!m.matches()) {
             //show the error message
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("incorrect email");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("incorrect email");
             return;
         }
 
         if(!pass.equals(pass2)){
             //show the error message
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Passwords do not match");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("Passwords do not match");
             return;
         }
 
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
         if(neo4j.getUsersFromUnique(userN) != null || neo4j.getUsersFromUnique(em) != null){
             //show the error message
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("username or email already exist");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("username or email already exist");
             return;
         }
         int newId = neo4j.getMaxUId() + 1;
         User user = new User(newId, userN, firstName + lastName, pass, em);
         if(!neo4j.addUser(user)){
             //error messagee
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("User entered incorrectly");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("User entered incorrectly");
             return;
         }else{
-            showInfoAlert("Recipe succesfully added");
+            Utils.showInfoAlert("Recipe succesfully added");
             SessionUtils.setUserLogged(user);
             Utils.changeScene("user-details-view.fxml", actionEvent);
         }
 
-    }
-
-    private void showInfoAlert(String s){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(s);
-        errorAlert.showAndWait();
     }
 
     @FXML

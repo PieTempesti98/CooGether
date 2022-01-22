@@ -27,12 +27,6 @@ public class LoginViewController implements Initializable {
         goBack.setOnMouseClicked(mouseEvent -> goBack(mouseEvent));
     }
 
-    private void showErrorAlert(String s){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(s);
-        alert.showAndWait();
-    }
-
     @FXML
     private void goBack(MouseEvent mouseEvent) {
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
@@ -41,17 +35,17 @@ public class LoginViewController implements Initializable {
 
     @FXML private void signIn(ActionEvent actionEvent){
         if(email.getText().isEmpty() || password.getText().isEmpty()){
-            showErrorAlert("You should insert email and password");
+            Utils.showErrorAlert("You should insert email and password");
         }else{
             Neo4jDriver neo4j = Neo4jDriver.getInstance();
             User u = neo4j.getUsersFromUnique(email.getText());
 
             if(u == null){
-                showErrorAlert("user not found");
+                Utils.showErrorAlert("user not found");
                 return;
             }
             if(!u.getPassword().equals(password.getText())){
-                showErrorAlert("Wrong password");
+                Utils.showErrorAlert("Wrong password");
                 return;
             }
             SessionUtils.setUserLogged(u);
