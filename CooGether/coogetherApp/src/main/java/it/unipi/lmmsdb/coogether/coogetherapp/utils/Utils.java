@@ -69,14 +69,14 @@ public class Utils {
     }
 
     public static void showErrorAlert(String s){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText("Error message");
         alert.setContentText(s);
         alert.showAndWait();
     }
 
     public static void showInfoAlert(String s){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Info message");
         alert.setHeaderText(s);
         alert.showAndWait();
