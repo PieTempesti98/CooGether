@@ -269,7 +269,7 @@ public class MongoDBDriver{
     public static ArrayList<Recipe> getAllRecipes(){
         openConnection();
         Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName","datePublished")));
+        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName","category", "datePublished")));
 
         ArrayList<Document> results = collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList<>());
 
@@ -327,7 +327,7 @@ public class MongoDBDriver{
         return getRecipesFromDocuments(results);
     }
 
-    public static int getMaxRecipeId() throws JsonProcessingException {
+    public static int getMaxRecipeId(){
         int maxId = 0;
         ArrayList<Document> results;
         Recipe recipe= null;
@@ -339,11 +339,16 @@ public class MongoDBDriver{
         Bson mySort = Aggregates.sort(Sorts.descending("recipeId"));
         Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId")));
         results = collection.aggregate(Arrays.asList(mySort, projection)).into(new ArrayList<>());
-        RecipePojo pojo = objectMapper.readValue(results.get(0).toJson(), RecipePojo.class);
-        recipe = Utils.mapRecipe(pojo);
         closeConnection();
-        maxId=recipe.getRecipeId();
-        return maxId;
+        try {
+            RecipePojo pojo = objectMapper.readValue(results.get(0).toJson(), RecipePojo.class);
+            recipe = Utils.mapRecipe(pojo);
+            maxId = recipe.getRecipeId();
+            return maxId;
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
@@ -375,15 +380,18 @@ public class MongoDBDriver{
     }
 
     public static ArrayList<Recipe> searchTopKReviewedRecipes(String category, int k){
-        ArrayList<Recipe> recipes= new ArrayList<>();
-        ArrayList<Document> results = new ArrayList<>();
-        Gson gson = new Gson();
+        ArrayList<Document> results;
 
         openConnection();
         Bson myMatch_1 = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson myUnwind = Aggregates.unwind("$comments");
         Bson myMatch_2 = Aggregates.match(Filters.eq("comments.rating", 5));
-        Bson myGroup = Aggregates.group("$recipeId", Accumulators.sum("count", 1));
+        Bson myGroup = new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
+                .append("name", "$name")
+                .append("recipeCategory", "$recipeCategory")
+                .append("datePublished", "$datePublished")
+                .append("authorName", "$authorName"))
+                .append("count", new Document("$sum", 1)));
         Bson mySort = Aggregates.sort(Sorts.descending("count"));
         Bson myLimit = Aggregates.limit(k);
 
@@ -391,7 +399,12 @@ public class MongoDBDriver{
                 .into(new ArrayList<>());
 
         closeConnection();
-        return getRecipesFromDocuments(results);
+        ArrayList<Document> recipeValues = new ArrayList<>();
+        for(Document doc: results){
+            recipeValues.add((Document) doc.get("_id"));
+        }
+
+        return getRecipesFromDocuments(recipeValues);
     }
 
     public static ArrayList<Recipe> searchMostRecentRecipes(String category){
@@ -407,7 +420,7 @@ public class MongoDBDriver{
         return getRecipesFromDocuments(results);
     }
 
-    public static ArrayList<Recipe> searchFastestRecipes(String category){
+    public static ArrayList<Recipe> searchFastestRecipes(String category, int k){
         ArrayList<Document> results;
 
         openConnection();
@@ -416,32 +429,43 @@ public class MongoDBDriver{
         Bson m3 = Aggregates.match(Filters.exists("prepTime", true));
         Bson s1 = Aggregates.sort(Sorts.ascending("cookTime"));
         Bson s2 = Aggregates.sort(Sorts.ascending("prepTime"));
+        Bson myLimit = Aggregates.limit(k);
 
-        results = collection.aggregate(Arrays.asList(m1, m2, m3, s1, s2)).into(new ArrayList<>());
+        results = collection.aggregate(Arrays.asList(m1, m2, m3, s1, s2, myLimit)).into(new ArrayList<>());
 
         closeConnection();
         return getRecipesFromDocuments(results);
     }
 
-    public static ArrayList<Recipe> searchFewestIngredientsRecipes(String category){
+    public static ArrayList<Recipe> searchFewestIngredientsRecipes(String category, int k){
         ArrayList<Document> results;
 
         openConnection();
         Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson u= Aggregates.unwind("$ingredients");
-        Bson g= Aggregates.group("$recipeId", Accumulators.sum("numberOfIngredients", 1));
+        Bson g= new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
+                    .append("name", "$name")
+                    .append("recipeCategory", "$recipeCategory")
+                    .append("datePublished", "$datePublished")
+                    .append("authorName", "$authorName"))
+                .append("numberOfIngredients", new Document("$sum", 1)));
         Bson s= Aggregates.sort(Sorts.ascending("numberOfIngredients"));
+        Bson myLimit = Aggregates.limit(k);
 
-        results = collection.aggregate(Arrays.asList(m1, u, g, s)).into(new ArrayList<>());
-
+        results = collection.aggregate(Arrays.asList(m1, u, g, s, myLimit)).into(new ArrayList<>());
         closeConnection();
-        return getRecipesFromDocuments(results);
+
+        ArrayList<Document> recipeValues = new ArrayList<>();
+        for(Document doc: results){
+            recipeValues.add((Document) doc.get("_id"));
+        }
+
+        return getRecipesFromDocuments(recipeValues);
     }
 
     public static ArrayList<User> userRankingSystem(int k){
         ArrayList<User> users;
         ArrayList<Document> results;
-        Gson gson= new Gson();
 
         openConnection();
         Bson unwind_comments = Aggregates.unwind("$comments");
@@ -455,11 +479,15 @@ public class MongoDBDriver{
 
         results= collection.aggregate(Arrays.asList(unwind_comments, group1, group2, sort_by_rating, limitResults))
                 .into(new ArrayList<>());
-
-        Type userListType = new TypeToken<ArrayList<User>>(){}.getType();
-        users = gson.fromJson(gson.toJson(results), userListType);
-
         closeConnection();
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        if(results.size() == 0)
+            return null;
+        users = new ArrayList<>();
+        for(Document d: results){
+            User user = neo4j.getUsersFromId(d.getInteger("_id"));
+            users.add(user);
+        }
         return users;
     }
 
@@ -470,7 +498,11 @@ public class MongoDBDriver{
 
         openConnection();
         Bson unwind_comments = Aggregates.unwind("$comments");
-        Bson group1 = new Document("$group", new Document("_id", "$recipeId")
+        Bson group1 = new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
+                                .append("name", "$name")
+                                .append("recipeCategory", "$recipeCategory")
+                                .append("datePublished", "$datePublished")
+                                .append("authorName", "$authorName"))
         	                .append("mostRecentComment", new Document("$max", "$comments.dateModified"))
         	                .append("leastRecentComment",new Document("$min", "$comments.dateModified")));
         BsonArray operands = new BsonArray();
@@ -483,12 +515,13 @@ public class MongoDBDriver{
 
         results= collection.aggregate(Arrays.asList(unwind_comments, group1, project_lifespan, sort_by_lifespan,
                 limitResults)).into(new ArrayList<>());
-
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        recipes = gson.fromJson(gson.toJson(results), recipeListType);
-
         closeConnection();
-        return recipes;
+        ArrayList<Document> recipeValues = new ArrayList<>();
+        for(Document doc: results){
+            recipeValues.add((Document) doc.get("_id"));
+        }
+
+        return getRecipesFromDocuments(recipeValues);
     }
 
 }

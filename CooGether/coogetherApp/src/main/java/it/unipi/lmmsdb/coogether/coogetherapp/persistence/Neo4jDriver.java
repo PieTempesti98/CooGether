@@ -124,16 +124,22 @@ public class Neo4jDriver{
         }
     }
 
-    //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
-    /*public boolean deleteRecipesOfAUser(User u){
+    public boolean deleteRecipesOfAUser(User u){
         try(Session session= driver.session()){
-
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run( "MATCH (u:User)-->(r:Recipe) " +
+                                "WHERE u.id=$id " +
+                                "DETACH DELETE r",
+                        Values.parameters( "id", u.getUserId()) );
+                closeConnection();
+                return null;
+            });
         }catch(Exception ex){
             ex.printStackTrace();
             return false;
         }
         return true;
-    }*/
+    }
 
 
     public boolean addUser(User u){
@@ -273,6 +279,33 @@ public class Neo4jDriver{
                     String email = r.get("u.email").asString();
                     String fullName = r.get("u.fullName").asString();
                     return new User(id, username, fullName, password, email);
+                }
+                return null;
+            });
+            return user;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public User getUsersFromId(int id){
+
+        try(Session session= driver.session()){
+            User user;
+            user = session.readTransaction(tx->{
+                Result result = tx.run("match (u:User) where u.id = $id " +
+                                "return u.id, u.password, u.email, u.username, u.fullname",
+                        Values.parameters("id", id));
+
+                if (result.hasNext()){
+                    Record r= result.next();
+                    int uid = r.get("u.id").asInt();
+                    String username = r.get("u.username").asString();
+                    String password = r.get("u.password").asString();
+                    String email = r.get("u.email").asString();
+                    String fullName = r.get("u.fullName").asString();
+                    return new User(uid, username, fullName, password, email);
                 }
                 return null;
             });

@@ -3,6 +3,9 @@ package it.unipi.lmmsdb.coogether.coogetherapp.utils;
 import it.unipi.lmmsdb.coogether.coogetherapp.HelloApplication;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.pojo.CommentPojo;
 import it.unipi.lmmsdb.coogether.coogetherapp.pojo.RecipePojo;
 import javafx.event.ActionEvent;
@@ -40,7 +43,8 @@ public class Utils {
         recipe.setName(r.getName());
         recipe.setAuthorId(r.getAuthorId());
         recipe.setAuthorName(r.getAuthorName());
-        recipe.setDatePublished(r.getDatePublished().get$date());
+        if(r.getDatePublished() != null)
+            recipe.setDatePublished(r.getDatePublished().get$date());
         recipe.setCategory(r.getRecipeCategory());
         recipe.setRecipeInstructions(r.getRecipeInstructions());
         recipe.setCalories(r.getCalories());
@@ -77,4 +81,13 @@ public class Utils {
         alert.setHeaderText(s);
         alert.showAndWait();
     }
+
+    public static boolean deleteAccount(User user) {
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        if(neo4j.deleteRecipesOfAUser(user))
+            if(MongoDBDriver.deleteRecipesOfAUser(user))
+                return neo4j.deleteUser(user);
+        return false;
+    }
+
 }

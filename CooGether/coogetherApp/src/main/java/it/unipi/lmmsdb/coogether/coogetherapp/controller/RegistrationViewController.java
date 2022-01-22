@@ -68,11 +68,10 @@ public class RegistrationViewController {
             return;
         }
         int newId = neo4j.getMaxUId() + 1;
-        User user = new User(newId, userN, firstName + lastName, pass, em);
+        User user = new User(newId, userN, (firstName + " " + lastName), pass, em);
         if(!neo4j.addUser(user)){
             //error messagee
             Utils.showErrorAlert("User entered incorrectly");
-            return;
         }else{
             Utils.showInfoAlert("User succesfully added");
             SessionUtils.setUserLogged(user);

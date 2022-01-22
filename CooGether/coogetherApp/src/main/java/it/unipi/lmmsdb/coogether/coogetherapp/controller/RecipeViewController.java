@@ -100,9 +100,11 @@ public class RecipeViewController implements Initializable {
         //deve controllare se lo user e loggato prima di aggiungere il commento
        logged =SessionUtils.getUserLogged();
        if(logged == null){
-           //errore: impossibile aggiungere commenti
+           Utils.showErrorAlert("You have to log in in order to add comments");
            return;
        }
+       Comment c = new Comment();
+
 
     }
 
@@ -123,5 +125,9 @@ public class RecipeViewController implements Initializable {
         //torna alla hello page
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
+    }
+
+    public void setRecipeId(int id) {
+        this.recipe.setRecipeId(id);
     }
 }

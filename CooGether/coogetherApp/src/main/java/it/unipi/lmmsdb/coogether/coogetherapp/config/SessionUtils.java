@@ -22,4 +22,8 @@ public class SessionUtils {
     public static void setRecipeToShow(Recipe recipeToShow) {
         SessionUtils.recipeToShow = recipeToShow;
     }
+
+    public static void logout() {
+        userLogged = null;
+    }
 }

@@ -1,5 +1,9 @@
 package it.unipi.lmmsdb.coogether.coogetherapp;
 
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,9 +19,8 @@ public class HelloApplication extends Application {
         stage.setTitle("CooGether");
         stage.setScene(scene);
         stage.show();
+        System.out.println(MongoDBDriver.getMaxRecipeId());
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+    public static void main(String[] args) {launch();}
 }

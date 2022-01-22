@@ -98,7 +98,12 @@ public class UserDetailsViewController implements Initializable {
 
     @FXML
     private void deleteAccount (ActionEvent actionEvent){
-
+        if(Utils.deleteAccount(SessionUtils.getUserLogged())) {
+            SessionUtils.logout();
+            Utils.changeScene("hello-view.fxml", actionEvent);
+        }
+        else
+            Utils.showErrorAlert("There was an error, retry");
     }
 
     @FXML
