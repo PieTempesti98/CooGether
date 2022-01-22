@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Neo4jDriver{
 
@@ -162,7 +161,7 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ( "match (u:User {id:$id})" +
+                tx.run ( "match (u:User {id:$id}) " +
                                 "set u.email=$email, u.fullname=$fullName, u.password=$pass, u.username=$userName",
                         Values.parameters("email", u.getEmail(), "fullName", u.getFullName(), "pass",
                                 u.getPassword(), "userName", u.getUsername(), "id", u.getUserId()));
@@ -197,8 +196,8 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("match (a:User) where a.id= $usera" +
-                           "match (b:User) where b.id=$userb" +
+                tx.run ("match (a:User) where a.id= $usera " +
+                           "match (b:User) where b.id=$userb " +
                            "merge (a)-[:FOLLOWS]->(b)",
                         Values.parameters("usera", following, "userb", follower));
                 return null;
@@ -216,7 +215,7 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("match (a:User {a.id: $usera}) -[f:FOLLOWS]-> (b:User {b.id:$userb})" +
+                tx.run ("match (a:User {id: $usera}) -[f:FOLLOWS]-> (b:User {id:$userb}) " +
                            "delete f",
                         Values.parameters("usera", following, "userb", follower));
                 return null;
@@ -247,7 +246,7 @@ public class Neo4jDriver{
                     int id = r.get("u.id").asInt();
                     String username = r.get("u.username").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullName").asString();
+                    String fullName = r.get("u.fullname").asString();
                     User user= new User(id, username, fullName, email);
                     users.add(user);
                 }
@@ -277,7 +276,7 @@ public class Neo4jDriver{
                     String username = r.get("u.username").asString();
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullName").asString();
+                    String fullName = r.get("u.fullname").asString();
                     return new User(id, username, fullName, password, email);
                 }
                 return null;
@@ -304,7 +303,7 @@ public class Neo4jDriver{
                     String username = r.get("u.username").asString();
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullName").asString();
+                    String fullName = r.get("u.fullname").asString();
                     return new User(uid, username, fullName, password, email);
                 }
                 return null;
@@ -316,15 +315,92 @@ public class Neo4jDriver{
         }
     }
 
-    public List<User> getFollowedUsers(User u){
-        List<User> users= new ArrayList<>();
+    public int getNFollowingUser(int id){
+        AtomicInteger following= new AtomicInteger();
 
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User)" +
-                                          "where u1.id = $userId"+
-                                           "return u2", Values.parameters("userId", u.getUserId()));
+                Result result = tx.run("match (u:User)-[f:FOLLOWS]->(u2:User) " +
+                                          "where u.id= $id " +
+                                          "return count (distinct f) as following",
+                        Values.parameters("id", id));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    following.set(r.get("following").asInt());
+                }
+                return following.get();
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+        return following.get();
+    }
+
+    public int getNFollowerUser(int id){
+        AtomicInteger followers= new AtomicInteger();
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User)<-[f:FOLLOWS]-(u2:User) " +
+                                "where u.id= $id " +
+                                "return count (distinct f) as followers",
+                        Values.parameters("id", id));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    followers.set(r.get("followers").asInt());
+                }
+                return followers.get();
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+        return followers.get();
+    }
+
+    public ArrayList<User> getFollowingUsers(User u){
+        ArrayList<User> users= new ArrayList<>();
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User) " +
+                                          "where u1.id = $userId "+
+                                           "return u2.id, u2.username", Values.parameters("userId", u.getUserId()));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    int id = r.get("u2.id").asInt();
+                    String username = r.get("u2.username").asString();
+                    User user= new User(id, username);
+                    users.add(user);
+                }
+                return users;
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return users;
+    }
+
+    public ArrayList<User> getFollowerUsers(User u){
+        ArrayList<User> users= new ArrayList<>();
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u1:User)<-[f:FOLLOWS]-(u2:User) " +
+                        "where u1.id = $userId "+
+                        "return u2.id, u2.username", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
@@ -349,7 +425,7 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (r:Recipe) where r.id IS NOT NULL and (r.name is not null or r.name <> 'null')" +
+                Result result = tx.run("match (r:Recipe) where r.id IS NOT NULL and (r.name is not null or r.name <> 'null') " +
                                           "return r.id, r.name, r.datePublished, r.category order by r.datePublished desc " +
                                           "skip $toSkip " +
                                           "limit $toLimit"
@@ -484,7 +560,7 @@ public class Neo4jDriver{
 
         try(Session session = driver.session()){
             session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe)" +
-                          			                                  "return user.id, user.username,  count(x)" +
+                          			                                  "return user.id, user.username,  count(x) " +
                             			                              "order by count(x)" +
                            				                              "limit $k",
                 			                                Values.parameters("k", k) );

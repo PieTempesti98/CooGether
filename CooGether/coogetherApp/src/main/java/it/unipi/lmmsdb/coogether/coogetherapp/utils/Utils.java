@@ -78,7 +78,7 @@ public class Utils {
     public static void showInfoAlert(String s){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Info message");
-        alert.setHeaderText(s);
+        alert.setContentText(s);
         alert.showAndWait();
     }
 
