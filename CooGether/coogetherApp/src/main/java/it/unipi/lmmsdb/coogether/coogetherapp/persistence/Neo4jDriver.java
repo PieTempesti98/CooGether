@@ -288,6 +288,37 @@ public class Neo4jDriver{
         }
     }
 
+    public ArrayList<User> getUsersFromFullname(String name){
+        ArrayList<User> users= new ArrayList<>();
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (u:User) " +
+                                          "where u.fullname=$name " +
+                                          "return u.id, u.email, u.username, u.fullname"
+                        , Values.parameters("fullname", name));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    int id = r.get("u.id").asInt();
+                    String username = r.get("u.username").asString();
+                    String email = r.get("u.email").asString();
+                    String fullName = r.get("u.fullname").asString();
+                    User user= new User(id, username, fullName, email);
+                    users.add(user);
+                }
+                return users;
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+
+        return users;
+    }
+
     public User getUsersFromId(int id){
 
         try(Session session= driver.session()){
@@ -530,7 +561,7 @@ public class Neo4jDriver{
         return recipes;
     }
 
-    public List<User> mostFollowedUsers(int limit){
+    public ArrayList<User> mostFollowedUsers(int limit){
         ArrayList<User> users = new ArrayList<>();
 
         try ( Session session = driver.session() ) {
@@ -559,8 +590,8 @@ public class Neo4jDriver{
         return users;
     }
 
-    public List<User> getMostActiveUsers(int k){
-        List<User> users = new ArrayList<>();
+    public ArrayList<User> getMostActiveUsers(int k){
+        ArrayList<User> users = new ArrayList<>();
 
         try(Session session = driver.session()){
             session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe)" +

@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
@@ -9,7 +10,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,18 +27,24 @@ public class UsersViewController implements Initializable {
 
     private int skip = 0;
     private ArrayList<User> followedUsers;
+    Neo4jDriver neo4j = Neo4jDriver.getInstance();
 
     @FXML private VBox usersContainer;
+    @FXML private TextField filterFullName;
+    @FXML private TextField filterUsername;
+    @FXML private ChoiceBox ChoseAnalytics;
+    @FXML private ChoiceBox KAnalytics;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        showUsers();
-    }
-
-    private void showUsers() {
-        Neo4jDriver neo4j = Neo4jDriver.getInstance();
         ArrayList<User> users;
         users= neo4j.getUsers(skip, 20);
+        int more=1;
+        showUsers(users, 1);
+    }
+
+    private void showUsers(ArrayList<User> users, int more) {
+
         User logged= SessionUtils.getUserLogged();
 
         if(logged!=null){
@@ -105,8 +114,11 @@ public class UsersViewController implements Initializable {
 
         }
 
-        skip = skip +20;
-        createShowMore();
+        if(more==1){
+            skip = skip +20;
+            createShowMore();
+        }
+
     }
 
     private void createButton(VBox box){
@@ -159,7 +171,9 @@ public class UsersViewController implements Initializable {
 
     private void showMoreUsers() {
         usersContainer.getChildren().remove(usersContainer.getChildren().size() - 1);
-        showUsers();
+        ArrayList<User> users;
+        users= neo4j.getUsers(skip, 20);
+        showUsers(users, 1);
     }
 
     @FXML
@@ -177,6 +191,61 @@ public class UsersViewController implements Initializable {
             Utils.changeScene("login-view.fxml", ae);
         }else{
             Utils.changeScene("user-details-view.fxml", ae);
+        }
+    }
+
+    public void filterFunction(ActionEvent actionEvent) {
+        String name = filterFullName.getText();
+        String username = filterUsername.getText();
+
+        if(name.equals("") && username.equals("")){
+            Utils.showErrorAlert("No filter inserted!");
+        }else if (!name.equals("")){
+            //get users by fullname
+            ArrayList<User>users = neo4j.getUsersFromFullname(name);
+            if(users.isEmpty()){
+                Utils.showErrorAlert("No users find");
+            }else{
+                showFilteredUsers(users);
+            }
+        }else if(!username.equals("")){
+            //get user by username
+            User u= neo4j.getUsersFromUnique(username);
+            ArrayList<User> users= new ArrayList();
+            users.add(u);
+            if(u==null)
+                Utils.showErrorAlert("No users find");
+            else
+                showFilteredUsers(users);
+        }else{
+            Utils.showInfoAlert("Choose one filter between Username and Full Name");
+        }
+    }
+
+    private void showFilteredUsers(ArrayList<User> users){
+        usersContainer.getChildren().clear();
+        showUsers(users, 0);
+    }
+
+    public void AnalyticsFunction(ActionEvent actionEvent) {
+        String typeAnalytics=(String) ChoseAnalytics.getValue();
+        String kAnalytics=(String) KAnalytics.getValue();
+
+        if(!typeAnalytics.equals("Select") && !kAnalytics.equals("How many"))
+        {
+            if(typeAnalytics.equals("Top active users")){
+                ArrayList<User> users= neo4j.getMostActiveUsers(Integer.parseInt(kAnalytics));
+                showFilteredUsers(users);
+            }else if(typeAnalytics.equals("Top followed users")){
+                ArrayList<User> users =neo4j.mostFollowedUsers(Integer.parseInt(kAnalytics));
+                showFilteredUsers(users);
+            }else if(typeAnalytics.equals("User ranking system")){
+                ArrayList<User> users= MongoDBDriver.userRankingSystem(Integer.parseInt(kAnalytics));
+                showFilteredUsers(users);
+            }
+        }else
+        {
+            Utils.showErrorAlert("Not all fields have been selected.");
         }
     }
 }
