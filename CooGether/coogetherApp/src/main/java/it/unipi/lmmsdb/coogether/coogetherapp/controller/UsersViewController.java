@@ -112,6 +112,9 @@ public class UsersViewController implements Initializable {
                 createButton( userBox);
             }
 
+            if(logged.getRole()==1){
+                createButtonDelete(u, userBox);
+            }
         }
 
         if(more==1){
@@ -119,6 +122,23 @@ public class UsersViewController implements Initializable {
             createShowMore();
         }
 
+    }
+
+    private void createButtonDelete(User u, VBox box){
+        Button delete= new Button();
+        delete.setText("Delete user");
+        delete.setOnAction(actionEvent -> delete(u, box));
+        box.getChildren().add(delete);
+    }
+
+    private void delete(User u, VBox box){
+        Neo4jDriver neo4j= Neo4jDriver.getInstance();
+        neo4j.deleteUser(u);
+        Utils.showInfoAlert("User followed correctly");
+        ArrayList<User> users;
+        users= neo4j.getUsers(skip, 20);
+        int more=1;
+        showUsers(users, 1);
     }
 
     private void createButton(VBox box){
