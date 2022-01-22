@@ -373,13 +373,15 @@ public class Neo4jDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User) " +
                                           "where u1.id = $userId "+
-                                           "return u2.id, u2.username", Values.parameters("userId", u.getUserId()));
+                                           "return u2.id, u2.username, u2.fullname, u2.email", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u2.id").asInt();
                     String username = r.get("u2.username").asString();
-                    User user= new User(id, username);
+                    String email = r.get("u2.email").asString();
+                    String fullname= r.get("u2.fullname").asString();
+                    User user= new User(id, username, fullname, email);
                     users.add(user);
                 }
                 return users;
@@ -400,13 +402,15 @@ public class Neo4jDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u1:User)<-[f:FOLLOWS]-(u2:User) " +
                         "where u1.id = $userId "+
-                        "return u2.id, u2.username", Values.parameters("userId", u.getUserId()));
+                        "return u2.id, u2.username, u2.fullname, u2.email", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u2.id").asInt();
                     String username = r.get("u2.username").asString();
-                    User user= new User(id, username);
+                    String email = r.get("u2.email").asString();
+                    String fullname= r.get("u2.fullname").asString();
+                    User user= new User(id, username, fullname, email);
                     users.add(user);
                 }
                 return users;

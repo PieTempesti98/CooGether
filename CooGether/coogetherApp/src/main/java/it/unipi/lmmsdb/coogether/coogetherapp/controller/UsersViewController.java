@@ -75,8 +75,6 @@ public class UsersViewController implements Initializable {
             containerEmail.getChildren().addAll(em, email);
             userBox.getChildren().add(containerEmail);
 
-            //button per seguire u (se questo non è gia seguito)
-
             userBox.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
@@ -135,7 +133,7 @@ public class UsersViewController implements Initializable {
     private void follow(int a, int b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
         neo4j.follow(a, b);
-        Utils.showInfoAlert("");
+        Utils.showInfoAlert("User followed correctly");
         box.getChildren().remove(box.getChildren().size() - 1);
         createButtonUnfollow(a, b, box);
     }
@@ -143,7 +141,7 @@ public class UsersViewController implements Initializable {
     private void unfollow(int a, int b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
         neo4j.unfollow(a, b);
-        Utils.showInfoAlert("");
+        Utils.showInfoAlert("User unfollowed correctly");
         box.getChildren().remove(box.getChildren().size()-1);
         createButtonFollow(a, b, box);
     }
