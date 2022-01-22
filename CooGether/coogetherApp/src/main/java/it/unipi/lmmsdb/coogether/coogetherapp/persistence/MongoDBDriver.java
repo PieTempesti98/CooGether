@@ -407,19 +407,6 @@ public class MongoDBDriver{
         return getRecipesFromDocuments(recipeValues);
     }
 
-    public static ArrayList<Recipe> searchMostRecentRecipes(String category){
-        ArrayList<Document> results;
-
-        openConnection();
-        Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
-        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-
-        results = collection.aggregate(Arrays.asList(myMatch,mySort)).into(new ArrayList<>());
-
-        closeConnection();
-        return getRecipesFromDocuments(results);
-    }
-
     public static ArrayList<Recipe> searchFastestRecipes(String category, int k){
         ArrayList<Document> results;
 

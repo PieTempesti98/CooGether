@@ -67,10 +67,6 @@ public class HelloController implements Initializable {
         showRecipes();
     }
 
-    private void visualizeProfile(ActionEvent actionEvent) {
-        Utils.changeScene("user-details-view.fxml", actionEvent);
-    }
-
     //Called by the show more button
     private void showMoreRecipes(){
         recipeContainer.getChildren().remove(recipeContainer.getChildren().size() - 1);
@@ -137,38 +133,6 @@ public class HelloController implements Initializable {
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("recipe-view.fxml", ae);
     }
-
-    @FXML
-    private void login(ActionEvent ae, String password, String email){
-        Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        User u = neo4j.getUsersFromUnique(email);
-
-        if(email.isEmpty() || password.isEmpty()){
-            Utils.showErrorAlert("You should insert email and password");
-        }else {
-            if (u == null) {
-                Utils.showErrorAlert("user not found");
-                return;
-            }
-            if (!u.getPassword().equals(password)) {
-                Utils.showErrorAlert("Wrong password");
-                return;
-            }
-            SessionUtils.setUserLogged(u);
-            if (u.getRole() == 2) {
-                //code to the admin page
-            } else {
-                Utils.changeScene("user-details-view.fxml", ae);
-
-            }
-        }
-    }
-
-    @FXML
-    private void signUp(ActionEvent actionEvent) {
-        Utils.changeScene("registration-view.fxml", actionEvent);
-    }
-
 
     public void filterFunction(ActionEvent actionEvent) {
         //show filtered recipe
