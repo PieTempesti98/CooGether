@@ -74,7 +74,7 @@ public class RegistrationViewController {
             Utils.showErrorAlert("User entered incorrectly");
             return;
         }else{
-            Utils.showInfoAlert("Recipe succesfully added");
+            Utils.showInfoAlert("User succesfully added");
             SessionUtils.setUserLogged(user);
             Utils.changeScene("user-details-view.fxml", actionEvent);
         }

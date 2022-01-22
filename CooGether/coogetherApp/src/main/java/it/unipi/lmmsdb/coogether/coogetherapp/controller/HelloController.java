@@ -13,8 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
 import java.net.URL;
@@ -26,13 +30,12 @@ public class HelloController implements Initializable {
 
     @FXML
     private VBox recipeContainer;
-    @FXML private TextField email;
-    @FXML private TextField password;
     @FXML private ChoiceBox filterCategory;
     @FXML private TextField filterAuthor;
     @FXML private TextField filterIng1;
     @FXML private TextField filterIng2;
     @FXML private Button goFilter;
+    @FXML private Pane loginContainer;
 
     private int skip = 0;
 
@@ -47,6 +50,68 @@ public class HelloController implements Initializable {
         {
             filterCategory.getItems().add(cat);
         }
+
+        // creo dinamicamente la zona di login
+        User logged = SessionUtils.getUserLogged();
+        if(logged == null)
+        {
+            //inserire la zona di login
+            VBox totalContainer=new VBox();
+            totalContainer.setAlignment(Pos.CENTER);
+
+            Label email=new Label("Email: ");
+            TextField emailText= new TextField();
+            Font bold = new Font("System Bold", 18);
+            Font size = new Font(14);
+            email.setFont(bold);
+
+            Label pass=new Label("Password: ");
+            TextField passText= new TextField();
+            pass.setFont(bold);
+
+            HBox emailContainer= new HBox();
+            emailContainer.setAlignment(Pos.CENTER_RIGHT);
+            emailContainer.getChildren().add(email);
+            emailContainer.getChildren().add(emailText);
+            emailContainer.setStyle("-fx-padding: 5 5 5 5;");
+
+            HBox passContainer= new HBox();
+            passContainer.setAlignment(Pos.CENTER_RIGHT);
+            passContainer.getChildren().add(pass);
+            passContainer.getChildren().add(passText);
+            passContainer.setStyle("-fx-padding: 5 5 5 5;");
+
+            Button loginButton=new Button("Sign In");
+            loginButton.setOnAction(actionEvent -> login(actionEvent, passText.getText(), emailText.getText()));
+            loginButton.setFont(bold);
+            loginButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
+                    + "-fx-background-insets: 5");
+
+            Line line=new Line(-100.0, 0, 100.0, 0);
+            line.setStroke(Color.BLUE);
+
+            Button registerButton=new Button("Sign Up");
+            registerButton.setOnAction(actionEvent -> signUp(actionEvent));
+            registerButton.setFont(bold);
+            registerButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
+                    + "-fx-background-insets: 5;");
+
+            totalContainer.getChildren().add(emailContainer);
+            totalContainer.getChildren().add(passContainer);
+            totalContainer.getChildren().add(loginButton);
+            totalContainer.getChildren().add(line);
+            totalContainer.getChildren().add(registerButton);
+
+            loginContainer.getChildren().add(totalContainer);
+        }
+        else {
+            Label hello=new Label("HELLO " + logged.getUsername());
+            Font bold = new Font("System Bold", 18);
+            hello.setFont(bold);
+
+            loginContainer.getChildren().add(hello);
+        }
+
         // retrieve first 20 recipes
         showRecipes();
     }
@@ -119,18 +184,18 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    private void login(ActionEvent ae){
+    private void login(ActionEvent ae, String password, String email){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        User u = neo4j.getUsersFromUnique(email.getText());
+        User u = neo4j.getUsersFromUnique(email);
 
-        if(email.getText().isEmpty() || password.getText().isEmpty()){
+        if(email.isEmpty() || password.isEmpty()){
             Utils.showErrorAlert("You should insert email and password");
         }else {
             if (u == null) {
                 Utils.showErrorAlert("user not found");
                 return;
             }
-            if (!u.getPassword().equals(password.getText())) {
+            if (!u.getPassword().equals(password)) {
                 Utils.showErrorAlert("Wrong password");
                 return;
             }
@@ -148,6 +213,7 @@ public class HelloController implements Initializable {
     private void signUp(ActionEvent actionEvent) {
         Utils.changeScene("registration-view.fxml", actionEvent);
     }
+
 
     public void filterFunction(ActionEvent actionEvent) {
         //show filtered recipe

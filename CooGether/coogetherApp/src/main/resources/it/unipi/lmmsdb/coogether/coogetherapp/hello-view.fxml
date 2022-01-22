@@ -5,7 +5,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="486.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.HelloController">
@@ -44,28 +43,8 @@
                 </VBox>
          </AnchorPane>
    </ScrollPane>
-   <Pane layoutX="417.0" layoutY="149.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="5.6843418860808015E-14">
-         <Button fx:id="signIn" layoutX="72.0" layoutY="100.0" mnemonicParsing="false" onAction="#login" text="Sign in" textFill="#596cc2">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font></Button>
-         <Label layoutX="7.0" layoutY="13.0" text="Email:">
-            <font>
-               <Font size="18.0" />
-            </font></Label>
-         <Label layoutX="7.0" layoutY="54.0" text="Password:">
-            <font>
-               <Font size="18.0" />
-            </font></Label>
-         <TextField fx:id="email" layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
-         <PasswordField fx:id="password" layoutX="96.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0" />
-         <Button fx:id="signUp" layoutX="68.0" layoutY="177.0" mnemonicParsing="false" onAction="#signUp" text="Sign Up" textAlignment="CENTER" textFill="#596cc2">
-            <font>
-               <Font name="System Bold" size="18.0" />
-            </font></Button>
-         <Line endX="100.0" layoutX="111.0" layoutY="158.0" startX="-100.0" stroke="#596cc2" />
+   <Pane fx:id="loginContainer" layoutX="400.0" layoutY="196.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="50.0">
       <padding>
-         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-      </padding>
-   </Pane>
+         <Insets right="100.0" />
+      </padding></Pane>
 </AnchorPane>
