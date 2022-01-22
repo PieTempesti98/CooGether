@@ -23,6 +23,7 @@
                    <Insets left="20.0" />
                </BorderPane.margin>
            </ImageView>
+            <!-- ok-->
          <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
              <items>
                  <FXCollections fx:factory="observableArrayList">

@@ -65,6 +65,7 @@ public class HelloController implements Initializable {
             Font size = new Font(14);
             email.setFont(bold);
 
+            //ok
             Label pass=new Label("Password: ");
             PasswordField passText= new PasswordField();
             pass.setFont(bold);
