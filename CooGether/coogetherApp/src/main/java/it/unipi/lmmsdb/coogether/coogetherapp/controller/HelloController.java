@@ -102,18 +102,35 @@ public class HelloController implements Initializable {
             totalContainer.getChildren().add(line);
             totalContainer.getChildren().add(registerButton);
 
+            totalContainer.setAlignment(Pos.CENTER);
+
             loginContainer.getChildren().add(totalContainer);
         }
         else {
+            VBox totalContainer=new VBox();
+
             Label hello=new Label("HELLO " + logged.getUsername());
             Font bold = new Font("System Bold", 18);
             hello.setFont(bold);
 
-            loginContainer.getChildren().add(hello);
+            Button profileButton=new Button("Profile");
+            profileButton.setOnAction(actionEvent -> visualizeProfile(actionEvent));
+            profileButton.setFont(bold);
+            profileButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
+                    + "-fx-background-insets: 5;");
+
+            totalContainer.getChildren().add(hello);
+            totalContainer.getChildren().add(profileButton);
+
+            loginContainer.getChildren().add(totalContainer);
         }
 
         // retrieve first 20 recipes
         showRecipes();
+    }
+
+    private void visualizeProfile(ActionEvent actionEvent) {
+        Utils.changeScene("user-details-view.fxml", actionEvent);
     }
 
     //Called by the show more button
