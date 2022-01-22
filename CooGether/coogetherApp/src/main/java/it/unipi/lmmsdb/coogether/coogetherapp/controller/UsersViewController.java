@@ -74,6 +74,8 @@ public class UsersViewController implements Initializable {
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
 
+            usersContainer.getChildren().add(userBox);
+
         }
 
         skip = skip +20;

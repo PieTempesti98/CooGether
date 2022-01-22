@@ -31,11 +31,13 @@ public class HelloController implements Initializable {
     @FXML
     private VBox recipeContainer;
     @FXML private ChoiceBox filterCategory;
+    @FXML private ChoiceBox AnalyticsCategory;
+    @FXML private ChoiceBox ChoseAnalytics;
+    @FXML private ChoiceBox KAnalytics;
     @FXML private TextField filterAuthor;
     @FXML private TextField filterIng1;
     @FXML private TextField filterIng2;
-    @FXML private Button goFilter;
-    @FXML private Pane loginContainer;
+    @FXML private VBox userName;
 
     private int skip = 0;
 
@@ -49,82 +51,18 @@ public class HelloController implements Initializable {
         for(String cat : categories)
         {
             filterCategory.getItems().add(cat);
+            AnalyticsCategory.getItems().add(cat);
         }
 
-        // creo dinamicamente la zona di login
         User logged = SessionUtils.getUserLogged();
-        if(logged == null)
+        if(logged != null)
         {
-            //inserire la zona di login
-            VBox totalContainer=new VBox();
-            totalContainer.setAlignment(Pos.CENTER);
-
-            Label email=new Label("Email: ");
-            TextField emailText= new TextField();
+            Label uName = new Label(logged.getUsername());
             Font bold = new Font("System Bold", 18);
-            Font size = new Font(14);
-            email.setFont(bold);
+            uName.setFont(bold);
 
-            Label pass=new Label("Password: ");
-            PasswordField passText= new PasswordField();
-            pass.setFont(bold);
-
-            HBox emailContainer= new HBox();
-            emailContainer.setAlignment(Pos.CENTER_RIGHT);
-            emailContainer.getChildren().add(email);
-            emailContainer.getChildren().add(emailText);
-            emailContainer.setStyle("-fx-padding: 5 5 5 5;");
-
-            HBox passContainer= new HBox();
-            passContainer.setAlignment(Pos.CENTER_RIGHT);
-            passContainer.getChildren().add(pass);
-            passContainer.getChildren().add(passText);
-            passContainer.setStyle("-fx-padding: 5 5 5 5;");
-
-            Button loginButton=new Button("Sign In");
-            loginButton.setOnAction(actionEvent -> login(actionEvent, passText.getText(), emailText.getText()));
-            loginButton.setFont(bold);
-            loginButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
-                    + "-fx-background-insets: 5");
-
-            Line line=new Line(-100.0, 0, 100.0, 0);
-            line.setStroke(Color.BLUE);
-
-            Button registerButton=new Button("Sign Up");
-            registerButton.setOnAction(actionEvent -> signUp(actionEvent));
-            registerButton.setFont(bold);
-            registerButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
-                    + "-fx-background-insets: 5;");
-
-            totalContainer.getChildren().add(emailContainer);
-            totalContainer.getChildren().add(passContainer);
-            totalContainer.getChildren().add(loginButton);
-            totalContainer.getChildren().add(line);
-            totalContainer.getChildren().add(registerButton);
-
-            totalContainer.setAlignment(Pos.CENTER);
-
-            loginContainer.getChildren().add(totalContainer);
+            userName.getChildren().add(uName);
         }
-        else {
-            VBox totalContainer=new VBox();
-
-            Label hello=new Label("HELLO " + logged.getUsername());
-            Font bold = new Font("System Bold", 18);
-            hello.setFont(bold);
-
-            Button profileButton=new Button("Profile");
-            profileButton.setOnAction(actionEvent -> visualizeProfile(actionEvent));
-            profileButton.setFont(bold);
-            profileButton.setStyle("-fx-text-fill: #596cc2;" + "-fx-padding: 5;" +"-fx-border-insets: 5;"
-                    + "-fx-background-insets: 5;");
-
-            totalContainer.getChildren().add(hello);
-            totalContainer.getChildren().add(profileButton);
-
-            loginContainer.getChildren().add(totalContainer);
-        }
-
         // retrieve first 20 recipes
         showRecipes();
     }
@@ -239,7 +177,11 @@ public class HelloController implements Initializable {
         String ingFilter1=filterIng1.getText();
         String ingFilter2=filterIng2.getText();
 
-        if(!catFilter.equals("Filters") && !catFilter.equals("NO filter")){
+        if(catFilter.equals("NO filter"))
+        {
+            showRecipes();
+        }
+        else if(!catFilter.equals("Filters")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromCategory(catFilter);
             showFilteredRecipes(recipes);
         }
@@ -311,5 +253,52 @@ public class HelloController implements Initializable {
     @FXML
     private void showUsers(ActionEvent actionEvent){
         Utils.changeScene("users-view.fxml", actionEvent);
+    }
+
+    public void AnalyticsFunction(ActionEvent actionEvent) {
+        String typeAnalytics=(String) ChoseAnalytics.getValue();
+        String catAnalytics=(String) AnalyticsCategory.getValue();
+        String kAnalytics=(String) KAnalytics.getValue();
+
+        if(!typeAnalytics.equals("Select") && !catAnalytics.equals("Categories") && !kAnalytics.equals("How many"))
+        {
+            //chiamare analytics
+            if(typeAnalytics.equals("Top healthiest"))
+            {
+                ArrayList<Recipe> recipes=MongoDBDriver.searchTopKHealthiestRecipes(catAnalytics, Integer.parseInt(kAnalytics));
+                showFilteredRecipes(recipes);
+            }
+            else if(typeAnalytics.equals("Plus votes equal to 5"))
+            {
+                ArrayList<Recipe> recipes=MongoDBDriver.searchTopKReviewedRecipes(catAnalytics, Integer.parseInt(kAnalytics));
+                showFilteredRecipes(recipes);
+            }
+            else if(typeAnalytics.equals("Top fastest"))
+            {
+                ArrayList<Recipe> recipes=MongoDBDriver.searchFastestRecipes(catAnalytics, Integer.parseInt(kAnalytics));
+                showFilteredRecipes(recipes);
+            }
+            else if(typeAnalytics.equals("With few ingredients"))
+            {
+                ArrayList<Recipe> recipes=MongoDBDriver.searchFewestIngredientsRecipes(catAnalytics, Integer.parseInt(kAnalytics));
+                showFilteredRecipes(recipes);
+            }
+        }
+        else
+        {
+            Utils.showErrorAlert("Not all fields have been selected.");
+        }
+    }
+
+    @FXML
+    private void log(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        User logged =SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+            Utils.changeScene("user-details-view.fxml", ae);
+        }
     }
 }

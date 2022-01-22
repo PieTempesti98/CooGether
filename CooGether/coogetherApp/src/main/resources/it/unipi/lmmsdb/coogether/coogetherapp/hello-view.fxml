@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -8,46 +9,118 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="486.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.HelloController">
+            <VBox alignment="CENTER">
+                <HBox alignment="TOP_CENTER">
+                    <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="5.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
+                        <image>
+                            <Image url="@img/icon.jpeg" />
+                        </image>
+                        <BorderPane.margin>
+                            <Insets left="20.0" />
+                        </BorderPane.margin>
+                    </ImageView>
+                    <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Welcome to CooGether!" textAlignment="CENTER" wrappingWidth="410.1054992675781">
+                        <font>
+                            <Font name="Avenir" size="36.0" />
+                        </font>
+                    </Text>
+                    <VBox fx:id="userName">
+                        <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0"  onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
+                            <image>
+                                <Image url="@img/user.png" />
+                            </image>
+                            <BorderPane.margin>
+                                <Insets left="20.0" />
+                            </BorderPane.margin>
+                        </ImageView>
+                    </VBox>
+                    <padding>
+                        <Insets bottom="10" left="5" right="5" top="5" />
+                    </padding>
+                </HBox>
+                <HBox>
+                    <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
 
-    <Pane prefHeight="166.0" prefWidth="648.0">
-        <children>
-          <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Welcome to CooGether!" textAlignment="CENTER" wrappingWidth="410.1054992675781">
-            <font>
-               <Font name="Avenir" size="36.0" />
-            </font>
-          </Text>
-           <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="550.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-               <image>
-                   <Image url="@img/icon.jpeg" />
-               </image>
-               <BorderPane.margin>
-                   <Insets left="20.0" />
-               </BorderPane.margin>
-           </ImageView>
-         <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
-             <items>
-                 <FXCollections fx:factory="observableArrayList">
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+                    <TextField fx:id="filterAuthor" layoutX="147.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="AuthorName" />
+                    <TextField fx:id="filterIng1" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 1" />
+                    <TextField fx:id="filterIng2" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 2" />
+                    <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
+                    <padding>
+                        <Insets bottom="10" left="5" right="5" top="5" />
+                    </padding>
+                </HBox>
+                <HBox>
+                    <Button layoutX="14.0" layoutY="127.0" onAction="#showUsers" text="Show All Users" textFill="#596cc2" />
+                    <padding>
+                        <Insets bottom="10" left="5" right="5" top="5" />
+                    </padding>
+                </HBox>
 
-                 </FXCollections>
-             </items>
-         </ChoiceBox>
-            <TextField fx:id="filterAuthor" layoutX="147.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="AuthorName" />
-            <TextField fx:id="filterIng1" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 1" />
-         <TextField fx:id="filterIng2" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 2" />
-         <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
+                <HBox>
+                    <ScrollPane layoutX="12.0" layoutY="159.0" prefHeight="500.0" prefWidth="750.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10">
 
-        <Button layoutX="14.0" layoutY="127.0" onAction="#showUsers" text="Show All Users" textFill="#596cc2" />
-        </children>
-   </Pane>
-   <ScrollPane layoutX="12.0" layoutY="159.0" prefHeight="370.0" prefWidth="500.0">
-       <AnchorPane minHeight="0.0" minWidth="0.0">
-                <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10">
+                            </VBox>
+                        </AnchorPane>
+                    </ScrollPane>
+                        <VBox alignment="CENTER">
+                            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analitics" textAlignment="CENTER" wrappingWidth="410.1054992675781">
+                                <font>
+                                    <Font name="Avenir" size="36.0" />
+                                </font>
+                            </Text>
+                            <HBox alignment="CENTER">
+                                <ChoiceBox fx:id="ChoseAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Select">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Top healthiest" />
+                                            <String fx:value="Plus votes equal to 5" />
+                                            <String fx:value="Top fastest" />
+                                            <String fx:value="With few ingredients" />
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                                <padding>
+                                    <Insets bottom="10" top="20" />
+                                </padding>
+                            </HBox>
+                            <HBox alignment="CENTER">
+                                <ChoiceBox fx:id="AnalyticsCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
 
-                </VBox>
-         </AnchorPane>
-   </ScrollPane>
-   <Pane fx:id="loginContainer" layoutX="400.0" layoutY="196.0" prefHeight="238.0" prefWidth="223.0" AnchorPane.rightAnchor="50.0">
-      <padding>
-         <Insets right="100.0" />
-      </padding></Pane>
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                                <padding>
+                                    <Insets bottom="10" top="0" />
+                                </padding>
+                            </HBox>
+                            <HBox alignment="CENTER">
+                                <ChoiceBox fx:id="KAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="How many">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="10" />
+                                            <String fx:value="20" />
+                                            <String fx:value="30" />
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                                <padding>
+                                    <Insets bottom="10" />
+                                </padding>
+                            </HBox>
+                            <Button fx:id="goAnalitics" mnemonicParsing="false" onAction="#AnalyticsFunction" text="GO" textFill="#596cc2" />
+                            <padding>
+                                <Insets bottom="10" left="5" right="5" top="20" />
+                            </padding>
+                        </VBox>
+                </HBox>
+            </VBox>
 </AnchorPane>
