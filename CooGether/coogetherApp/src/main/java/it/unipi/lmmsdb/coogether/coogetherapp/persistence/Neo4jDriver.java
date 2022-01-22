@@ -229,12 +229,12 @@ public class Neo4jDriver{
         try(Session session= driver.session()){
 
             session.readTransaction(tx->{
-                Result result = tx.run("match (u:User)" +
-                                "return u.id, u.username, u.email, u.fullName " +
-                                "order by u.username" +
+                Result result = tx.run("match (u:User) " +
+                                "return u.id, u.username, u.email, u.fullname " +
+                                "order by u.username asc " +
                                 "skip $toSkip " +
                                 "limit $toLimit "
-                        , Values.parameters("toLimit",limit, "toSkip", skip));
+                        , Values.parameters("toSkip", skip, "toLimit",limit));
 
                 while(result.hasNext()){
                     Record r= result.next();
@@ -262,7 +262,7 @@ public class Neo4jDriver{
             User user;
             user = session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) where u.username=$name or u.email=$name " +
-                                "return u.id, u.password, u.email, u.username, u.fullName",
+                                "return u.id, u.password, u.email, u.username, u.fullname",
                         Values.parameters("name", unique));
 
                 if (result.hasNext()){

@@ -65,7 +65,6 @@ public class HelloController implements Initializable {
             Font size = new Font(14);
             email.setFont(bold);
 
-            //ok
             Label pass=new Label("Password: ");
             PasswordField passText= new PasswordField();
             pass.setFont(bold);
@@ -307,5 +306,10 @@ public class HelloController implements Initializable {
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
             recipeContainer.getChildren().add(recContainer);
         }
+    }
+
+    @FXML
+    private void showUsers(ActionEvent actionEvent){
+        Utils.changeScene("users-view.fxml", actionEvent);
     }
 }

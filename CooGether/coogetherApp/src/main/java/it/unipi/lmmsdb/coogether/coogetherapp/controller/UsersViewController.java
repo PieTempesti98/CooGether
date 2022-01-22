@@ -35,6 +35,7 @@ public class UsersViewController implements Initializable {
         users= neo4j.getUsers(skip, 20);
 
         for(User u: users){
+            System.out.println(u.getUsername());
             VBox userBox = new VBox();
 
             Font bold = new Font("System Bold", 18);

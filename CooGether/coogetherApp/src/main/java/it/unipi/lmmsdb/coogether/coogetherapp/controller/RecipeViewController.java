@@ -114,7 +114,6 @@ public class RecipeViewController implements Initializable {
         if(logged==null){
             Utils.changeScene("login-view.fxml", ae);
         }else{
-            //ok
             Utils.changeScene("user-details-view.fxml", ae);
         }
     }

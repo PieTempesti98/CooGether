@@ -8,7 +8,8 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="486.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.HelloController">
-   <Pane prefHeight="116.0" prefWidth="640.0">
+
+    <Pane prefHeight="166.0" prefWidth="648.0">
         <children>
           <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Welcome to CooGether!" textAlignment="CENTER" wrappingWidth="410.1054992675781">
             <font>
@@ -23,7 +24,6 @@
                    <Insets left="20.0" />
                </BorderPane.margin>
            </ImageView>
-            <!-- ok-->
          <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
              <items>
                  <FXCollections fx:factory="observableArrayList">
@@ -35,9 +35,11 @@
             <TextField fx:id="filterIng1" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 1" />
          <TextField fx:id="filterIng2" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 2" />
          <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
-       </children>
+
+        <Button layoutX="14.0" layoutY="127.0" onAction="#showUsers" text="Show All Users" textFill="#596cc2" />
+        </children>
    </Pane>
-   <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
+   <ScrollPane layoutX="12.0" layoutY="159.0" prefHeight="370.0" prefWidth="500.0">
        <AnchorPane minHeight="0.0" minWidth="0.0">
                 <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10">
 

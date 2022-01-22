@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController">
 
     <VBox>
         <HBox>
@@ -27,16 +19,16 @@
                     <Font name="Avenir" size="36.0" />
                 </font>
             </Text>
-            <ImageView fx:id="goBack" onMouseClicked="#goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <image>
                     <Image url="@img/back.png" />
                 </image>
             </ImageView>
         </HBox>
         <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" >
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="416.0" prefWidth="635.0">
 
-        <VBox fx:id="usersContainer">
+        <VBox fx:id="usersContainer" alignment="CENTER_LEFT" spacing="10">
 
         </VBox>
         </AnchorPane>
