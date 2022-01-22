@@ -98,6 +98,7 @@ public class RecipeViewController implements Initializable {
    @FXML
     private void addComment(ActionEvent actionEvent) {
         //deve controllare se lo user e loggato prima di aggiungere il commento
+       logged =SessionUtils.getUserLogged();
        if(logged == null){
            //errore: impossibile aggiungere commenti
            return;
@@ -109,10 +110,11 @@ public class RecipeViewController implements Initializable {
     private void log(MouseEvent mouseEvent) {
         //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        logged =SessionUtils.getUserLogged();
         if(logged==null){
             Utils.changeScene("login-view.fxml", ae);
         }else{
-            Utils.changeScene("user-details.fxml", ae);
+            Utils.changeScene("user-details-view.fxml", ae);
         }
     }
 

@@ -66,7 +66,7 @@ public class HelloController implements Initializable {
             email.setFont(bold);
 
             Label pass=new Label("Password: ");
-            TextField passText= new TextField();
+            PasswordField passText= new PasswordField();
             pass.setFont(bold);
 
             HBox emailContainer= new HBox();
