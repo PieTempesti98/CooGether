@@ -19,7 +19,6 @@ public class HelloApplication extends Application {
         stage.setTitle("CooGether");
         stage.setScene(scene);
         stage.show();
-        System.out.println(MongoDBDriver.getMaxRecipeId());
     }
 
     public static void main(String[] args) {launch();}

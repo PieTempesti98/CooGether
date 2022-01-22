@@ -484,7 +484,7 @@ public class Neo4jDriver{
 
         try(Session session = driver.session()){
             session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe)" +
-                          			                                  "return user, count(x)" +
+                          			                                  "return user.id, user.username,  count(x)" +
                             			                              "order by count(x)" +
                            				                              "limit $k",
                 			                                Values.parameters("k", k) );
