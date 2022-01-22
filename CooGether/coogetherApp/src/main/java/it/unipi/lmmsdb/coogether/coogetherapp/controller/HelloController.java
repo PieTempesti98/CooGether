@@ -155,6 +155,10 @@ public class HelloController implements Initializable {
                 return;
             }
             SessionUtils.setUserLogged(u);
+            int followers = neo4j.getNFollowerUser(u.getUserId());
+            int following = neo4j.getNFollowingUser(u.getUserId());
+            u.setFollowers(followers);
+            u.setFollowing(following);
             if (u.getRole() == 2) {
                 //code to the admin page
             } else {

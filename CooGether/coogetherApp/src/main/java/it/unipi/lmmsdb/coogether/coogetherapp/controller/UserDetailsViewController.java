@@ -79,7 +79,17 @@ public class UserDetailsViewController implements Initializable {
         Label fol= new Label(String.valueOf( user.getFollowers()));
         fol.setFont(size);
         followerContainer.getChildren().addAll(follower, fol);
-        userInfoBox.getChildren().add(followerContainer);
+        if(user.getFollowers()!=0) {
+            VBox box = new VBox();
+            box.getChildren().add(followerContainer);
+            box.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
+            box.setOnMouseClicked(mouseEvent -> showFollower(mouseEvent));
+            userInfoBox.getChildren().add(box);
+        }else{
+            userInfoBox.getChildren().add(followerContainer);
+        }
 
         HBox followingContainer = new HBox();
         followingContainer.setSpacing(10);
@@ -88,7 +98,27 @@ public class UserDetailsViewController implements Initializable {
         Label foll= new Label(String.valueOf( user.getFollowing()));
         foll.setFont(size);
         followerContainer.getChildren().addAll(following, foll);
-        userInfoBox.getChildren().add(followingContainer);
+        if(user.getFollowing()!=0) {
+            VBox box = new VBox();
+            box.getChildren().add(followingContainer);
+            box.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
+            box.setOnMouseClicked(mouseEvent -> showFollowing(mouseEvent));
+            userInfoBox.getChildren().add(box);
+        }else{
+            userInfoBox.getChildren().add(followingContainer);
+        }
+    }
+
+    private void showFollower(MouseEvent mouseEvent){
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("followers-view.fxml", ae);
+    }
+
+    private void showFollowing(MouseEvent mouseEvent){
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        Utils.changeScene("following-view.fxml", ae);
     }
 
     @FXML
