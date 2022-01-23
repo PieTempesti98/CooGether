@@ -156,7 +156,7 @@ public class AddRecipeController implements Initializable {
                 }
             }
 
-            int id=MongoDBDriver.getMaxRecipeId() +1 ;
+            int id = MongoDBDriver.getMaxRecipeId() +1 ;
 
             int authorId = SessionUtils.getUserLogged().getUserId();
             String authorName= SessionUtils.getUserLogged().getUsername();
@@ -184,6 +184,7 @@ public class AddRecipeController implements Initializable {
             }
             clearAllFields();
             SessionUtils.setRecipeToShow(r);
+            MongoDBDriver.setMaxRecipeId(r.getRecipeId());
             Utils.changeScene("recipe-view.fxml", ae);
         }
     }

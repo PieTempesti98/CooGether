@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
+import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
@@ -67,16 +68,17 @@ public class RegistrationViewController {
             Utils.showErrorAlert("username or email already exist");
             return;
         }
-        int newId = neo4j.getMaxUId() + 1;
+        int newId = MongoDBDriver.getMaxUserId() + 1;
         User user = new User(newId, userN, (firstName + " " + lastName), pass, em);
-        if(!neo4j.addUser(user)){
-            //error messagee
+        if(!neo4j.addUser(user)) {
             Utils.showErrorAlert("User entered incorrectly");
-        }else{
-            Utils.showInfoAlert("User succesfully added");
-            SessionUtils.setUserLogged(user);
-            Utils.changeScene("user-details-view.fxml", actionEvent);
+            return;
         }
+        MongoDBDriver.setMaxUserId(user.getUserId());
+        Utils.showInfoAlert("User succesfully added");
+        SessionUtils.setUserLogged(user);
+        Utils.changeScene("user-details-view.fxml", actionEvent);
+
 
     }
 
