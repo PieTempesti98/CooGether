@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -23,6 +24,8 @@ import java.util.ResourceBundle;
 public class UserDetailsViewController implements Initializable {
 
     @FXML private VBox userInfoBox;
+    @FXML private PasswordField newPass;
+    @FXML private PasswordField confPass;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -123,12 +126,24 @@ public class UserDetailsViewController implements Initializable {
 
     @FXML
     private void changePassword (ActionEvent actionEvent){
+        if(newPass.getText().equals("") || confPass.getText().equals("")){
+            Utils.showErrorAlert("Please fill all the fields");
+            return;
+        }
+        if(!newPass.getText().equals(confPass.getText())){
+            Utils.showErrorAlert("Password and confirmation don't match");
+            return;
+        }
+        SessionUtils.getUserLogged().setPassword(newPass.getText());
+        Neo4jDriver.getInstance().updateUser(SessionUtils.getUserLogged());
+        Utils.showInfoAlert("Password successfully updated");
 
     }
 
     @FXML
     private void deleteAccount (ActionEvent actionEvent){
         if(Utils.deleteAccount(SessionUtils.getUserLogged())) {
+            System.out.println("User successfully deleted");
             SessionUtils.logout();
             Utils.changeScene("hello-view.fxml", actionEvent);
         }

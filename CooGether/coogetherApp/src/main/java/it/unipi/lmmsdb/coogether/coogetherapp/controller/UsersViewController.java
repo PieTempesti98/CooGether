@@ -144,7 +144,7 @@ public class UsersViewController implements Initializable {
     private void createButton(VBox box){
         Button follow= new Button();
         follow.setText("Follow");
-        follow.setOnAction(actionEvent ->loginPage(actionEvent));
+        follow.setOnAction(actionEvent -> loginPage(actionEvent));
         box.getChildren().add(follow);
     }
 

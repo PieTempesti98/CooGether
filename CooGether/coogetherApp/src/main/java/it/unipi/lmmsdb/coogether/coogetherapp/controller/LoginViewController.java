@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +20,7 @@ import java.util.ResourceBundle;
 public class LoginViewController implements Initializable {
 
     @FXML private TextField email;
-    @FXML private TextField password;
+    @FXML private PasswordField password;
     @FXML private ImageView goBack;
 
     @Override

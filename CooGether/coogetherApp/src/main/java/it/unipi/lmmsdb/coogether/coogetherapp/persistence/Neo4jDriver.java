@@ -144,8 +144,9 @@ public class Neo4jDriver{
     public boolean addUser(User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("CREATE (u:User {id: $id, username: $username, fullname: $fullname, email: $email, password: $password})",
-                Values.parameters("id", u.getUserId(), "username", u.getUsername(), "fullname", u.getFullName(), "email", u.getEmail(), "password", u.getPassword()));
+                String[] names = u.getFullName().split(" ");
+                tx.run ("CREATE (u:User {id: $id, username: $username, firstName: $firstName, lastName: $lastName, email: $email, password: $password})",
+                Values.parameters("id", u.getUserId(), "username", u.getUsername(), "firstName", names[0], "lastName", names[1], "email", u.getEmail(), "password", u.getPassword()));
                 return null;
             } );
 
@@ -235,7 +236,7 @@ public class Neo4jDriver{
 
             session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) " +
-                                "return u.id, u.username, u.email, u.fullname " +
+                                "return u.id, u.username, u.email, u.firstName, u.lastName " +
                                 "order by u.username asc " +
                                 "skip $toSkip " +
                                 "limit $toLimit "
@@ -246,7 +247,7 @@ public class Neo4jDriver{
                     int id = r.get("u.id").asInt();
                     String username = r.get("u.username").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullname").asString();
+                    String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
                     User user= new User(id, username, fullName, email);
                     users.add(user);
                 }
@@ -267,7 +268,7 @@ public class Neo4jDriver{
             User user;
             user = session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) where u.username=$name or u.email=$name " +
-                                "return u.id, u.password, u.email, u.username, u.fullname",
+                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName",
                         Values.parameters("name", unique));
 
                 if (result.hasNext()){
@@ -276,7 +277,7 @@ public class Neo4jDriver{
                     String username = r.get("u.username").asString();
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullname").asString();
+                    String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
                     return new User(id, username, fullName, password, email);
                 }
                 return null;
@@ -325,7 +326,7 @@ public class Neo4jDriver{
             User user;
             user = session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) where u.id = $id " +
-                                "return u.id, u.password, u.email, u.username, u.fullname",
+                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName",
                         Values.parameters("id", id));
 
                 if (result.hasNext()){
@@ -334,7 +335,7 @@ public class Neo4jDriver{
                     String username = r.get("u.username").asString();
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullname").asString();
+                    String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
                     return new User(uid, username, fullName, password, email);
                 }
                 return null;
