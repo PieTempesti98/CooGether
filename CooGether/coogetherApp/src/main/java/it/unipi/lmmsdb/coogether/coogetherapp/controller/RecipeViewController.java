@@ -150,9 +150,8 @@ public class RecipeViewController implements Initializable {
        c.setDatePublished(new Date(System.currentTimeMillis()));
        c.setText(textNewComment.getText());
        c.setRating((Integer) starSpinner.getValue());
-       //SETTARE ID
-       //c.setCommentId();
-
+       c.setCommentId(MongoDBDriver.getMaxCommentId() + 1);
+       MongoDBDriver.setMaxCommentId(c.getCommentId());
        MongoDBDriver.addComment(SessionUtils.getRecipeToShow(), c);
        showComment();
     }

@@ -15,7 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.*;
 import com.mongodb.ConnectionString;
 
+import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
 
 
 import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
@@ -30,6 +32,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class MongoDBDriver{
 
@@ -70,6 +73,16 @@ public class MongoDBDriver{
             myClient= MongoClients.create(uri);
             db= myClient.getDatabase(ConfigurationParameters.getMongoDbName());
             collection= db.getCollection("recipe");
+        }catch (Exception ex){
+            System.out.println("Impossible open connection with MongoDB");
+        }
+    }
+
+    private static void openUtilConnection(){
+        try{
+            myClient= MongoClients.create(uri);
+            db= myClient.getDatabase(ConfigurationParameters.getMongoDbName());
+            collection= db.getCollection("utility");
         }catch (Exception ex){
             System.out.println("Impossible open connection with MongoDB");
         }
@@ -268,8 +281,8 @@ public class MongoDBDriver{
 
     public static ArrayList<Recipe> getAllRecipes(){
         openConnection();
-        Bson sort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson proj = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName","category", "datePublished")));
+        Bson sort = sort(Sorts.descending("datePublished"));
+        Bson proj = Aggregates.project(fields(excludeId(), include("recipeId", "name", "authorName","category", "datePublished")));
 
         ArrayList<Document> results = collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList<>());
 
@@ -284,8 +297,8 @@ public class MongoDBDriver{
 
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("authorName", username));
-        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson projection = Aggregates.project( Projections.fields(Projections.excludeId(), Projections.include("recipeId","name", "authorName", "recipeCategory", "datePublished")));
+        Bson mySort = sort(Sorts.descending("datePublished"));
+        Bson projection = Aggregates.project( fields(excludeId(), include("recipeId","name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch, mySort, projection))
                 .into(new ArrayList<>());
@@ -301,8 +314,8 @@ public class MongoDBDriver{
 
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
-        Bson mySort = Aggregates.sort(Sorts.descending("datePublished"));
-        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
+        Bson mySort = sort(Sorts.descending("datePublished"));
+        Bson projection= Aggregates.project(fields(excludeId(), include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch,mySort, projection)).into(new ArrayList<>());
 
@@ -319,7 +332,7 @@ public class MongoDBDriver{
         String pattern2=".*" + ing2 +".*";
         Bson myMatch_1= Aggregates.match(Filters.regex("ingredients", pattern1));
         Bson myMatch_2= Aggregates.match(Filters.regex("ingredients", pattern2));
-        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
+        Bson projection= Aggregates.project(fields(excludeId(), include("recipeId", "name", "authorName", "recipeCategory", "datePublished")));
 
         results = collection.aggregate(Arrays.asList(myMatch_1,myMatch_2, projection)).into(new ArrayList<>());
 
@@ -327,29 +340,74 @@ public class MongoDBDriver{
         return getRecipesFromDocuments(results);
     }
 
-    public static int getMaxRecipeId(){
-        int maxId = 0;
+    public static int getMaxCommentId(){
         ArrayList<Document> results;
-        Recipe recipe= null;
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        openConnection();
-        Bson mySort = Aggregates.sort(Sorts.descending("recipeId"));
-        Bson projection= Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("recipeId")));
-        results = collection.aggregate(Arrays.asList(mySort, projection)).into(new ArrayList<>());
+        openUtilConnection();
+        results = collection.find(eq("name", "maxID")).into(new ArrayList<>());
         closeConnection();
         try {
-            RecipePojo pojo = objectMapper.readValue(results.get(0).toJson(), RecipePojo.class);
-            recipe = Utils.mapRecipe(pojo);
-            maxId = recipe.getRecipeId();
-            return maxId;
+            return results.get(0).getInteger("comment");
         }catch(Exception e){
             e.printStackTrace();
             return 0;
         }
     }
+
+    public static int getMaxRecipeId(){
+        ArrayList<Document> results;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        openUtilConnection();
+        results = collection.find(eq("name", "maxID")).into(new ArrayList<>());
+        closeConnection();
+        try {
+            return results.get(0).getInteger("recipe");
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getMaxUserId(){
+        ArrayList<Document> results;
+
+        openUtilConnection();
+        results = collection.find(eq("name", "maxID")).into(new ArrayList<>());
+        closeConnection();
+        try {
+            return results.get(0).getInteger("user");
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static void setMaxUserId(int uid){
+        openUtilConnection();
+        collection.updateOne(eq("name", "maxID"), Updates.set("user", uid));
+        closeConnection();
+    }
+
+    public static void setMaxRecipeId(int uid){
+        openUtilConnection();
+        collection.updateOne(eq("name", "maxID"), Updates.set("recipe", uid));
+        closeConnection();
+    }
+
+    public static void setMaxCommentId(int uid){
+        openUtilConnection();
+        collection.updateOne(eq("name", "maxID"), Updates.set("comment", uid));
+        closeConnection();
+    }
+
+
+
 
 
     //******************************************************************************************************************
@@ -367,11 +425,11 @@ public class MongoDBDriver{
         Bson m2 = Aggregates.match(Filters.exists("fatContent", true));
         Bson m3 = Aggregates.match(Filters.exists("sodiumContent", true));
         Bson m4 = Aggregates.match(Filters.exists("proteinContent", true));
-        Bson s= Aggregates.sort(Sorts.ascending("calories"));
-        Bson s1= Aggregates.sort(Sorts.ascending("fatContent"));
-        Bson s2= Aggregates.sort(Sorts.ascending("sodiumContent"));
-        Bson s3= Aggregates.sort(Sorts.descending("proteinContent"));
-        Bson l= Aggregates.limit(k);
+        Bson s= sort(Sorts.ascending("calories"));
+        Bson s1= sort(Sorts.ascending("fatContent"));
+        Bson s2= sort(Sorts.ascending("sodiumContent"));
+        Bson s3= sort(Sorts.descending("proteinContent"));
+        Bson l= limit(k);
 
         results = collection.aggregate(Arrays.asList(m, m1, m2, m3, m4, s, s1, s2, s3, l)).into(new ArrayList<>());
 
@@ -384,7 +442,7 @@ public class MongoDBDriver{
 
         openConnection();
         Bson myMatch_1 = Aggregates.match(Filters.eq("recipeCategory", category));
-        Bson myUnwind = Aggregates.unwind("$comments");
+        Bson myUnwind = unwind("$comments");
         Bson myMatch_2 = Aggregates.match(Filters.eq("comments.rating", 5));
         Bson myGroup = new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
                 .append("name", "$name")
@@ -392,8 +450,8 @@ public class MongoDBDriver{
                 .append("datePublished", "$datePublished")
                 .append("authorName", "$authorName"))
                 .append("count", new Document("$sum", 1)));
-        Bson mySort = Aggregates.sort(Sorts.descending("count"));
-        Bson myLimit = Aggregates.limit(k);
+        Bson mySort = sort(Sorts.descending("count"));
+        Bson myLimit = limit(k);
 
         results = collection.aggregate(Arrays.asList(myMatch_1,myUnwind,myMatch_2,myGroup,mySort,myLimit))
                 .into(new ArrayList<>());
@@ -414,9 +472,9 @@ public class MongoDBDriver{
         Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
         Bson m2 = Aggregates.match(Filters.exists("cookTime", true));
         Bson m3 = Aggregates.match(Filters.exists("prepTime", true));
-        Bson s1 = Aggregates.sort(Sorts.ascending("cookTime"));
-        Bson s2 = Aggregates.sort(Sorts.ascending("prepTime"));
-        Bson myLimit = Aggregates.limit(k);
+        Bson s1 = sort(Sorts.ascending("cookTime"));
+        Bson s2 = sort(Sorts.ascending("prepTime"));
+        Bson myLimit = limit(k);
 
         results = collection.aggregate(Arrays.asList(m1, m2, m3, s1, s2, myLimit)).into(new ArrayList<>());
 
@@ -429,15 +487,15 @@ public class MongoDBDriver{
 
         openConnection();
         Bson m1 = Aggregates.match(Filters.eq("recipeCategory", category));
-        Bson u= Aggregates.unwind("$ingredients");
+        Bson u= unwind("$ingredients");
         Bson g= new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
                     .append("name", "$name")
                     .append("recipeCategory", "$recipeCategory")
                     .append("datePublished", "$datePublished")
                     .append("authorName", "$authorName"))
                 .append("numberOfIngredients", new Document("$sum", 1)));
-        Bson s= Aggregates.sort(Sorts.ascending("numberOfIngredients"));
-        Bson myLimit = Aggregates.limit(k);
+        Bson s= sort(Sorts.ascending("numberOfIngredients"));
+        Bson myLimit = limit(k);
 
         results = collection.aggregate(Arrays.asList(m1, u, g, s, myLimit)).into(new ArrayList<>());
         closeConnection();
@@ -455,14 +513,14 @@ public class MongoDBDriver{
         ArrayList<Document> results;
 
         openConnection();
-        Bson unwind_comments = Aggregates.unwind("$comments");
+        Bson unwind_comments = unwind("$comments");
         Bson group1 = new Document("$group", new Document("_id",
                 	                                        new Document("recipe", "$recipeId")
                                                             .append("author", "$authorId"))
         	                                                .append("avgRating", new Document("$avg", "$comments.rating")));
         Bson group2 = Aggregates.group("$_id.author", Accumulators.avg("avgRating", "$avgRating"));
-        Bson sort_by_rating = Aggregates.sort(Sorts.descending("avgRating"));
-        Bson limitResults = Aggregates.limit(k);
+        Bson sort_by_rating = sort(Sorts.descending("avgRating"));
+        Bson limitResults = limit(k);
 
         results= collection.aggregate(Arrays.asList(unwind_comments, group1, group2, sort_by_rating, limitResults))
                 .into(new ArrayList<>());
@@ -484,7 +542,7 @@ public class MongoDBDriver{
         Gson gson = new Gson();
 
         openConnection();
-        Bson unwind_comments = Aggregates.unwind("$comments");
+        Bson unwind_comments = unwind("$comments");
         Bson group1 = new Document("$group", new Document("_id", new Document("recipeId","$recipeId")
                                 .append("name", "$name")
                                 .append("recipeCategory", "$recipeCategory")
@@ -495,10 +553,10 @@ public class MongoDBDriver{
         BsonArray operands = new BsonArray();
         operands.add(new BsonString("$mostRecentComment"));
         operands.add(new BsonString("$leastRecentComment"));
-        Bson project_lifespan = Aggregates.project(Projections.fields(Projections.excludeId(), Projections.include("_id"),
+        Bson project_lifespan = Aggregates.project(fields(excludeId(), include("_id"),
                 	        new Document("lifespan", new Document("$subtract", operands))));
-        Bson sort_by_lifespan = Aggregates.sort(Sorts.descending("lifespan"));
-        Bson limitResults = Aggregates.limit(k);
+        Bson sort_by_lifespan = sort(Sorts.descending("lifespan"));
+        Bson limitResults = limit(k);
 
         results= collection.aggregate(Arrays.asList(unwind_comments, group1, project_lifespan, sort_by_lifespan,
                 limitResults)).into(new ArrayList<>());
@@ -510,5 +568,21 @@ public class MongoDBDriver{
 
         return getRecipesFromDocuments(recipeValues);
     }
+
+//    public static void createMaxIdCollection(){
+//        int maxRecipe = getMaxRecipeId();
+//        int maxComment = getMaxCommentId();
+//        int maxUser = Neo4jDriver.getInstance().getMaxUId();
+//
+//        openUtilConnection();
+//        Document doc = new Document();
+//        doc.append("name", "maxID");
+//        doc.append("recipe", maxRecipe);
+//        doc.append("comment", maxComment);
+//        doc.append("user", maxUser);
+//        collection.insertOne(doc);
+//        closeConnection();
+//
+//    }
 
 }
