@@ -94,15 +94,24 @@ public class UsersViewController implements Initializable {
             if(logged!=null){
                 //cerco se tra gli utenti mostrati ce ne sono seguiti
                 if (!followedUsers.isEmpty()) {
+                    Boolean find=false;
                     for (User following : followedUsers) {
                         if (following.getUserId() == u.getUserId()) {
-                            //aggiungo un button unfollow
-                            createButtonUnfollow(logged.getUserId(), u.getUserId(), userBox);
-                        } else {
-                            //aggiungo un button follow
-                            createButtonFollow(logged.getUserId(),u.getUserId(), userBox);
+                            find=true;
+                            break;
                         }
                     }
+                    if(find)
+                    {
+                        //aggiungo un button unfollow
+                        createButtonUnfollow(logged.getUserId(), u.getUserId(), userBox);
+                    }
+                    else
+                    {
+                        //aggiungo un button follow
+                        createButtonFollow(logged.getUserId(),u.getUserId(), userBox);
+                    }
+
                 }else{
                     //aggiungo un button follow
                     createButtonFollow(logged.getUserId(), u.getUserId(), userBox);
