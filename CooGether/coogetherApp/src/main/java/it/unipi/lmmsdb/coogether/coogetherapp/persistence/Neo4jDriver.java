@@ -527,6 +527,39 @@ public class Neo4jDriver{
         return cat;
     }
 
+
+    public Boolean makeAdmin( User u){
+        try(Session session= driver.session()){
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ("match (u:User {u.id: $id})" +
+                        "set u.role=1" +
+                        "return u.role", Values.parameters("id", u.getUserId()));
+                return null;
+            } );
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean makeNotAdmin( User u){
+        try(Session session= driver.session()){
+            session.writeTransaction((TransactionWork<Void>) tx -> {
+                tx.run ("match (u:User {u.id: $id})" +
+                        "set u.role=0" +
+                        "return u.role", Values.parameters("id", u.getUserId()));
+                return null;
+            } );
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     //******************************************************************************************************************
     //                              ANALYTICS
     //******************************************************************************************************************
