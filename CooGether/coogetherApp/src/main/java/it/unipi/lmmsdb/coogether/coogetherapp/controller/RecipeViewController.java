@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,8 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class RecipeViewController implements Initializable {
@@ -43,6 +46,7 @@ public class RecipeViewController implements Initializable {
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
     @FXML private Spinner starSpinner;
+    @FXML private TextArea textNewComment;
     private User logged;
 
     Recipe recipe;
@@ -121,8 +125,50 @@ public class RecipeViewController implements Initializable {
            return;
        }
        Comment c = new Comment();
+       c.setAuthorId(logged.getUserId());
+       c.setAuthorName(logged.getUsername());
+       c.setDatePublished(new Date(System.currentTimeMillis()));
+       c.setText(textNewComment.getText());
+       c.setRating((Integer) starSpinner.getValue());
+       //SETTARE ID
+       //c.setCommentId();
 
+       MongoDBDriver.addComment(SessionUtils.getRecipeToShow(), c);
+       showComment();
+    }
 
+    private void showComment() {
+        comments.getChildren().clear();
+        for (Comment c : recipe.getComments()){
+            VBox oneComment=new VBox();
+            oneComment.setStyle("-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
+            HBox box = new HBox();
+            Text author = new Text();
+            author.setText(c.getAuthorName());
+            Font bold = new Font("System Bold", 12);
+            author.setFont(bold);
+            box.getChildren().add(author);
+            HBox stars=new HBox();
+            stars.setStyle("-fx-padding: 0 0 0 10;");
+            int star = c.getRating();
+            for (int i=0; i< star; i++){
+                //ImageView imgViewStar = new ImageView();
+                Image imgStar = new Image("file:CooGether\\coogetherApp\\src\\main\\resources\\it\\unipi\\lmmsdb\\coogether\\coogetherapp\\img\\star.png");
+                //imgViewStar.setImage(imgStar);
+                ImageView imgViewStar = new ImageView(imgStar);
+                imgViewStar.setFitHeight(20);
+                imgViewStar.setFitWidth(20);
+                stars.getChildren().add(imgViewStar);
+
+            }
+            box.getChildren().add(stars);
+            Text text = new Text();
+            text.setText(c.getText());
+            oneComment.getChildren().addAll(box,text);
+            comments.getChildren().addAll(oneComment);
+        }
     }
 
     @FXML
