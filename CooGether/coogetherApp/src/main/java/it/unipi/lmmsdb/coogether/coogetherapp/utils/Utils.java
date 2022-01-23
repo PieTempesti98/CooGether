@@ -84,9 +84,13 @@ public class Utils {
 
     public static boolean deleteAccount(User user) {
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        if(neo4j.deleteRecipesOfAUser(user))
-            if(MongoDBDriver.deleteRecipesOfAUser(user))
+        if(neo4j.deleteRecipesOfAUser(user)) {
+            System.out.println("neo recipes deleted");
+            if (MongoDBDriver.deleteRecipesOfAUser(user)) {
+                System.out.println("mongo recipes deleted");
                 return neo4j.deleteUser(user);
+            }
+        }
         return false;
     }
 

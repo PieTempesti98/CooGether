@@ -37,10 +37,11 @@ public class UsersViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usersContainer.getChildren().clear();
         ArrayList<User> users;
         users= neo4j.getUsers(skip, 20);
         int more=1;
-        showUsers(users, 1);
+        showUsers(users, more);
     }
 
     private void showUsers(ArrayList<User> users, int more) {
@@ -112,8 +113,11 @@ public class UsersViewController implements Initializable {
                 createButton( userBox);
             }
 
-            if(logged.getRole()==1){
-                createButtonDelete(u, userBox);
+            if(logged!=null) {
+                if (logged.getRole() == 1) {
+                    createButtonDelete(u, userBox);
+                    createButtonAdmin(u, userBox);
+                }
             }
         }
 
@@ -121,6 +125,42 @@ public class UsersViewController implements Initializable {
             skip = skip +20;
             createShowMore();
         }
+
+    }
+
+    private void createButtonAdmin(User u, VBox box){
+        Button admin= new Button();
+        admin.setText("Make Admin");
+        admin.setOnAction(actionEvent -> makeAdmin(u, box));
+        box.getChildren().add(admin);
+    }
+
+    private void makeAdmin(User u, VBox box){
+        Neo4jDriver neo4j= Neo4jDriver.getInstance();
+        if(neo4j.makeAdmin(u)){
+            Utils.showInfoAlert("User "+ u.getUsername() + " is an admin now");
+            box.getChildren().remove(box.getChildren().size() - 1);
+            createButtonNotAdmin(u, box);
+        }else
+            Utils.showErrorAlert("Error in make this user admin");
+
+    }
+
+    private void createButtonNotAdmin(User u, VBox box){
+        Button admin= new Button();
+        admin.setText("Make Not Admin");
+        admin.setOnAction(actionEvent -> makeNotAdmin(u, box));
+        box.getChildren().add(admin);
+    }
+
+    private void makeNotAdmin(User u, VBox box){
+        Neo4jDriver neo4j= Neo4jDriver.getInstance();
+        if(neo4j.makeNotAdmin(u)){
+            Utils.showInfoAlert("User "+ u.getUsername() + " is not an admin now");
+            box.getChildren().remove(box.getChildren().size() - 1);
+            createButtonAdmin(u, box);
+        }else
+            Utils.showErrorAlert("Error in make this user not admin");
 
     }
 
@@ -133,18 +173,21 @@ public class UsersViewController implements Initializable {
 
     private void delete(User u, VBox box){
         Neo4jDriver neo4j= Neo4jDriver.getInstance();
-        neo4j.deleteUser(u);
-        Utils.showInfoAlert("User followed correctly");
-        ArrayList<User> users;
-        users= neo4j.getUsers(skip, 20);
-        int more=1;
-        showUsers(users, 1);
+        if(neo4j.deleteUser(u)){
+            Utils.showInfoAlert("User followed correctly");
+            ArrayList<User> users;
+            users= neo4j.getUsers(skip, 20);
+            int more=1;
+            showUsers(users, 1);
+        }else
+            Utils.showErrorAlert("Error in delete this user");
+
     }
 
     private void createButton(VBox box){
         Button follow= new Button();
         follow.setText("Follow");
-        follow.setOnAction(actionEvent ->loginPage(actionEvent));
+        follow.setOnAction(actionEvent -> loginPage(actionEvent));
         box.getChildren().add(follow);
     }
 
@@ -164,18 +207,24 @@ public class UsersViewController implements Initializable {
 
     private void follow(int a, int b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        neo4j.follow(a, b);
-        Utils.showInfoAlert("User followed correctly");
-        box.getChildren().remove(box.getChildren().size() - 1);
-        createButtonUnfollow(a, b, box);
+        if(neo4j.follow(a, b)){
+            Utils.showInfoAlert("User followed correctly");
+            box.getChildren().remove(box.getChildren().size() - 1);
+            createButtonUnfollow(a, b, box);
+        }else
+            Utils.showErrorAlert("Error in follow this user");
+
     }
 
     private void unfollow(int a, int b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        neo4j.unfollow(a, b);
-        Utils.showInfoAlert("User unfollowed correctly");
-        box.getChildren().remove(box.getChildren().size()-1);
-        createButtonFollow(a, b, box);
+        if(neo4j.unfollow(a, b)){
+            Utils.showInfoAlert("User unfollowed correctly");
+            box.getChildren().remove(box.getChildren().size()-1);
+            createButtonFollow(a, b, box);
+        }else
+            Utils.showErrorAlert("Error in unfollow user");
+
     }
 
     private void loginPage (ActionEvent ae){
