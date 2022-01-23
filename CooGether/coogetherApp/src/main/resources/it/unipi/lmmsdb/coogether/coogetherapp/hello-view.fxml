@@ -38,7 +38,7 @@
                         <Insets bottom="10" left="5" right="5" top="5" />
                     </padding>
                 </HBox>
-                <HBox>
+                <HBox spacing="20">
                     <ChoiceBox fx:id="filterCategory" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Categories">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
@@ -50,19 +50,17 @@
                     <TextField fx:id="filterIng1" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 1" />
                     <TextField fx:id="filterIng2" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Ingredient 2" />
                     <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
+                    <Button layoutX="14.0" layoutY="127.0" onAction="#showUsers" text="Show All Users" textFill="#596cc2">
+                        <HBox.margin>
+                            <Insets left="390" />
+                        </HBox.margin>
+                    </Button>
                     <padding>
                         <Insets bottom="10" left="5" right="5" top="5" />
                     </padding>
                 </HBox>
                 <HBox>
-                    <Button layoutX="14.0" layoutY="127.0" onAction="#showUsers" text="Show All Users" textFill="#596cc2" />
-                    <padding>
-                        <Insets bottom="10" left="5" right="5" top="5" />
-                    </padding>
-                </HBox>
-
-                <HBox>
-                    <ScrollPane layoutX="12.0" layoutY="159.0" prefHeight="500.0" prefWidth="750.0">
+                    <ScrollPane layoutX="12.0" layoutY="159.0" prefHeight="600.0" prefWidth="960.0">
                         <AnchorPane minHeight="0.0" minWidth="0.0">
                             <VBox fx:id="recipeContainer" alignment="CENTER_LEFT" spacing="10">
 
@@ -70,7 +68,7 @@
                         </AnchorPane>
                     </ScrollPane>
                         <VBox alignment="CENTER">
-                            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analitics" textAlignment="CENTER" wrappingWidth="410.1054992675781">
+                            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analytics" textAlignment="CENTER" wrappingWidth="240">
                                 <font>
                                     <Font name="Avenir" size="36.0" />
                                 </font>

@@ -7,6 +7,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -76,6 +77,7 @@ public class UserDetailsViewController implements Initializable {
         userInfoBox.getChildren().add(roleContainer);
 
         HBox followerContainer = new HBox();
+        followerContainer.setAlignment(Pos.CENTER);
         followerContainer.setSpacing(10);
         Label follower= new Label("Follower:");
         follower.setFont(bold);
@@ -83,35 +85,29 @@ public class UserDetailsViewController implements Initializable {
         fol.setFont(size);
         followerContainer.getChildren().addAll(follower, fol);
         if(user.getFollowers()!=0) {
-            VBox box = new VBox();
-            box.getChildren().add(followerContainer);
-            box.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+            followerContainer.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
-            box.setOnMouseClicked(mouseEvent -> showFollower(mouseEvent));
-            userInfoBox.getChildren().add(box);
-        }else{
-            userInfoBox.getChildren().add(followerContainer);
+            followerContainer.setOnMouseClicked(mouseEvent -> showFollower(mouseEvent));
         }
+        userInfoBox.getChildren().add(followerContainer);
 
         HBox followingContainer = new HBox();
+        followingContainer.setAlignment(Pos.CENTER);
         followingContainer.setSpacing(10);
         Label following= new Label("Following:");
         following.setFont(bold);
         Label foll= new Label(String.valueOf( user.getFollowing()));
         foll.setFont(size);
-        followerContainer.getChildren().addAll(following, foll);
+        followingContainer.getChildren().addAll(following, foll);
         if(user.getFollowing()!=0) {
-            VBox box = new VBox();
-            box.getChildren().add(followingContainer);
-            box.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+            followingContainer.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
-            box.setOnMouseClicked(mouseEvent -> showFollowing(mouseEvent));
-            userInfoBox.getChildren().add(box);
-        }else{
-            userInfoBox.getChildren().add(followingContainer);
+            followingContainer.setOnMouseClicked(mouseEvent -> showFollowing(mouseEvent));
         }
+        userInfoBox.getChildren().add(followingContainer);
+
     }
 
     private void showFollower(MouseEvent mouseEvent){
