@@ -143,16 +143,15 @@ public class HelloController implements Initializable {
 
         if(catFilter.equals("NO filter"))
         {
+            recipeContainer.getChildren().clear();
             showRecipes();
         }
-        else if(!catFilter.equals("Filters")){
+        else if(!catFilter.equals("Categories")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromCategory(catFilter);
             showFilteredRecipes(recipes);
         }
         else if(!autFilter.equals("")){
             ArrayList<Recipe> recipes=MongoDBDriver.getRecipesFromAuthorName(autFilter);
-            System.out.println("autore");
-            System.out.println(recipes.size());
             if(recipes.size()==0)
             {
                 Utils.showErrorAlert("No recipe found");
@@ -170,10 +169,7 @@ public class HelloController implements Initializable {
                 showFilteredRecipes(recipes);
         }
         else {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("No filter inserted");
-            errorAlert.setContentText("Select a category OR insert an author name OR insert two ingredients");
-            errorAlert.showAndWait();
+            Utils.showErrorAlert("No filter inserted");
         }
     }
 

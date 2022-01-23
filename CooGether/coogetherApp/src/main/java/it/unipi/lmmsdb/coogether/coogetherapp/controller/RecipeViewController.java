@@ -17,9 +17,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class RecipeViewController implements Initializable {
@@ -77,20 +80,34 @@ public class RecipeViewController implements Initializable {
 
         if(recipe.getComments() != null)
         for (Comment c : recipe.getComments()){
+            VBox oneComment=new VBox();
+            oneComment.setStyle("-fx-border-style: solid inside;"
+                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
             HBox box = new HBox();
             Text author = new Text();
             author.setText(c.getAuthorName());
+            Font bold = new Font("System Bold", 12);
+            author.setFont(bold);
             box.getChildren().add(author);
+            HBox stars=new HBox();
+            stars.setStyle("-fx-padding: 0 0 0 10;");
             int star = c.getRating();
             for (int i=0; i< star; i++){
-                ImageView imgViewStar = new ImageView();
-                Image imgStar = new Image("it/unipi/lmmsdb/coogether/coogetherapp/img");
-                imgViewStar.setImage(imgStar);
-                box.getChildren().add(imgViewStar);
+                //ImageView imgViewStar = new ImageView();
+                Image imgStar = new Image("file:CooGether\\coogetherApp\\src\\main\\resources\\it\\unipi\\lmmsdb\\coogether\\coogetherapp\\img\\star.png");
+                //imgViewStar.setImage(imgStar);
+                ImageView imgViewStar = new ImageView(imgStar);
+                imgViewStar.setFitHeight(20);
+                imgViewStar.setFitWidth(20);
+                stars.getChildren().add(imgViewStar);
+
             }
+            box.getChildren().add(stars);
             Text text = new Text();
             text.setText(c.getText());
-            comments.getChildren().addAll(box, text);
+            oneComment.getChildren().addAll(box,text);
+            comments.getChildren().addAll(oneComment);
         }
         logged = SessionUtils.getUserLogged();
    }

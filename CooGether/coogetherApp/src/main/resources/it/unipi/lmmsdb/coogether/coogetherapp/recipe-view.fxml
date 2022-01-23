@@ -36,7 +36,7 @@
               </ImageView>
           </items>
       </ToolBar>
-      <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="459.0" prefWidth="777.0">
+      <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="630.0" prefWidth="800.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                 <VBox>
@@ -198,6 +198,9 @@
 
             </AnchorPane>
         </content>
+          <padding>
+              <Insets bottom="10" left="10" right="5" top="5" />
+          </padding>
       </ScrollPane>
    </children>
 </AnchorPane>
