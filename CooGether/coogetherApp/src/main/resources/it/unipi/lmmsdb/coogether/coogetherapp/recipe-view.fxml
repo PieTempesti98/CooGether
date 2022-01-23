@@ -8,6 +8,8 @@
 
 <AnchorPane prefHeight="1120.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
    <children>
+       <VBox>
+       <HBox>
        <ImageView fitHeight="123.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
            <image>
                <Image url="@img/icon.jpeg" />
@@ -36,6 +38,8 @@
               </ImageView>
           </items>
       </ToolBar>
+       </HBox>
+       <HBox fx:id="boxUpdate">
       <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="630.0" prefWidth="800.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -202,5 +206,7 @@
               <Insets bottom="10" left="10" right="5" top="5" />
           </padding>
       </ScrollPane>
+       </HBox>
+       </VBox>
    </children>
 </AnchorPane>

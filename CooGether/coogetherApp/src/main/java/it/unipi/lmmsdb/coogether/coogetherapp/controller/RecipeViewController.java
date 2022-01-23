@@ -48,6 +48,7 @@ public class RecipeViewController implements Initializable {
     @FXML private Spinner starSpinner;
     @FXML private TextArea textNewComment;
     private User logged;
+    @FXML private HBox boxUpdate;
 
     Recipe recipe;
 
@@ -114,6 +115,25 @@ public class RecipeViewController implements Initializable {
             comments.getChildren().addAll(oneComment);
         }
         logged = SessionUtils.getUserLogged();
+
+        if(logged!= null) {
+            if (recipeAuthorName.equals(logged.getUsername()) || logged.getRole()==1) {
+                //metto un button per poter modificare la ricetta e uno per eliminarla
+                VBox container = new VBox();
+
+                Button update = new Button();
+                update.setText("Update Recipe");
+                update.setOnAction(actionEvent -> updateRecipe(actionEvent, recipe));
+                container.getChildren().add(update);
+
+                Button delete = new Button();
+                update.setText("Delete Recipe");
+                update.setOnAction(actionEvent -> deleteRecipe(actionEvent, recipe));
+                container.getChildren().add(delete);
+
+                boxUpdate.getChildren().add(container);
+            }
+        }
    }
 
    @FXML
@@ -188,5 +208,19 @@ public class RecipeViewController implements Initializable {
         //torna alla hello page
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
+    }
+
+    private void updateRecipe(ActionEvent actionEvent, Recipe r){
+        Utils.changeScene("update-recipe-view.fxml", actionEvent);
+    }
+
+    private void deleteRecipe(ActionEvent actionEvent, Recipe r){
+        //elimino la ricetta
+        if(MongoDBDriver.deleteRecipe(r)){
+            Utils.showInfoAlert("Recipe successfully deleted");
+            Utils.changeScene("hello-view.fxml", actionEvent);
+        }else
+            Utils.showErrorAlert("Error in delete this recipe");
+
     }
 }
