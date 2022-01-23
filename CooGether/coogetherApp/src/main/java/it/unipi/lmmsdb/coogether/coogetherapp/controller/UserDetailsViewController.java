@@ -141,4 +141,9 @@ public class UserDetailsViewController implements Initializable {
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
     }
+
+    @FXML
+    public void addRecipe(ActionEvent actionEvent) {
+        Utils.changeScene("add-recipe.fxml", actionEvent);
+    }
 }

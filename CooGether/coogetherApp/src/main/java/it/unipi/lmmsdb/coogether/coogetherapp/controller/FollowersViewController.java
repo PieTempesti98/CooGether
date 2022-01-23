@@ -7,6 +7,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 
 public class FollowersViewController  implements Initializable {
     private User logged = SessionUtils.getUserLogged();
+    private ArrayList<User> followedUsers;
     @FXML
     private VBox usersContainer;
 
@@ -37,6 +39,7 @@ public class FollowersViewController  implements Initializable {
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
         ArrayList<User> users;
         users= neo4j.getFollowerUsers(logged);
+        followedUsers= neo4j.getFollowingUsers(logged);
 
         for(User u: users) {
             VBox userBox = new VBox();
@@ -71,40 +74,69 @@ public class FollowersViewController  implements Initializable {
             containerEmail.getChildren().addAll(em, email);
             userBox.getChildren().add(containerEmail);
 
-            //button per seguire u (se questo non è gia seguito)
-
             userBox.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
 
             usersContainer.getChildren().add(userBox);
 
-            /*if(logged!=null){
-                //cerco se tra gli utenti mostrati ce ne sono seguiti
-                if (!followedUsers.isEmpty()) {
-                    for (User following : followedUsers) {
-                        if (following.getUserId() == u.getUserId()) {
-                            //aggiungo un button unfollow
-                            createButtonUnfollow(logged.getUserId(), u.getUserId(), userBox);
-                        } else {
-                            //aggiungo un button follow
-                            createButtonFollow(logged.getUserId(),u.getUserId(), userBox);
-                        }
+            if (!followedUsers.isEmpty()) {
+                for (User following : followedUsers) {
+                    if (following.getUserId() == u.getUserId()) {
+                        //aggiungo un button unfollow
+                        createButtonUnfollow(logged.getUserId(), u.getUserId(), userBox);
+                    } else {
+                        //aggiungo un button follow
+                        createButtonFollow(logged.getUserId(),u.getUserId(), userBox);
                     }
-                }else{
-                    //aggiungo un button follow
-                    createButtonFollow(logged.getUserId(), u.getUserId(), userBox);
+                }
+            }else{
+                //aggiungo un button follow
+                createButtonFollow(logged.getUserId(), u.getUserId(), userBox);
                 }
 
-            }else{
-                //aggiungo sempre un button segui
-                createButton( userBox);
-            }
-
         }
+    }
 
-        skip = skip +20;
-        createShowMore();*/
+    private void createButtonFollow(int a, int b, VBox box){
+        Button follow= new Button();
+        follow.setText("Follow");
+        follow.setOnAction(actionEvent -> follow(a, b, box));
+        box.getChildren().add(follow);
+    }
+
+    private void createButtonUnfollow(int a, int b, VBox box){
+        Button unfollow= new Button();
+        unfollow.setText("Unfollow");
+        unfollow.setOnAction(actionEvent -> unfollow(a, b, box));
+        box.getChildren().add(unfollow);
+    }
+
+    private void follow(int a, int b, VBox box){
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        neo4j.follow(a, b);
+        Utils.showInfoAlert("User followed correctly");
+        box.getChildren().remove(box.getChildren().size() - 1);
+        createButtonUnfollow(a, b, box);
+    }
+
+    private void unfollow(int a, int b, VBox box){
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        neo4j.unfollow(a, b);
+        Utils.showInfoAlert("User unfollowed correctly");
+        box.getChildren().remove(box.getChildren().size()-1);
+        createButtonFollow(a, b, box);
+    }
+
+    @FXML
+    private void log(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        User logged =SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+            Utils.changeScene("user-details-view.fxml", ae);
         }
     }
 }

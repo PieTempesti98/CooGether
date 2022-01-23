@@ -2,6 +2,7 @@ package it.unipi.lmmsdb.coogether.coogetherapp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
+import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.SessionUtils;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
@@ -191,5 +192,17 @@ public class AddRecipeController implements Initializable {
     private void goBack(MouseEvent mouseEvent) {
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
+    }
+
+    @FXML
+    private void log(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        User logged =SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+            Utils.changeScene("user-details-view.fxml", ae);
+        }
     }
 }

@@ -38,7 +38,7 @@
       </ToolBar>
       <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="459.0" prefWidth="777.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1007.0" prefWidth="765.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0">
                 <VBox>
               <Text fx:id="recipeTitle" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
                 <font>

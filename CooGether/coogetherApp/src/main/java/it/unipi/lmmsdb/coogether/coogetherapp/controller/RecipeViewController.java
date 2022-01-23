@@ -126,8 +126,4 @@ public class RecipeViewController implements Initializable {
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
     }
-
-    public void setRecipeId(int id) {
-        this.recipe.setRecipeId(id);
-    }
 }
