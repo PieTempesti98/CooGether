@@ -91,48 +91,61 @@ public class FollowersViewController  implements Initializable {
                 for (User following : followedUsers) {
                     if (following.getUserId() == u.getUserId()) {
                         //aggiungo un button unfollow
-                        createButtonUnfollow(logged.getUserId(), u.getUserId(), userBox);
+                        createButtonUnfollow(logged, u, userBox);
                     } else {
                         //aggiungo un button follow
-                        createButtonFollow(logged.getUserId(),u.getUserId(), userBox);
+                        createButtonFollow(logged,u, userBox);
                     }
                 }
             }else{
                 //aggiungo un button follow
-                createButtonFollow(logged.getUserId(), u.getUserId(), userBox);
+                createButtonFollow(logged, u, userBox);
                 }
 
         }
     }
 
-    private void createButtonFollow(int a, int b, VBox box){
+    private void createButtonFollow(User a, User b, VBox box){
         Button follow= new Button();
         follow.setText("Follow");
         follow.setOnAction(actionEvent -> follow(a, b, box));
         box.getChildren().add(follow);
     }
 
-    private void createButtonUnfollow(int a, int b, VBox box){
+    private void createButtonUnfollow(User a, User b, VBox box){
         Button unfollow= new Button();
         unfollow.setText("Unfollow");
         unfollow.setOnAction(actionEvent -> unfollow(a, b, box));
         box.getChildren().add(unfollow);
     }
 
-    private void follow(int a, int b, VBox box){
+    private void follow(User a, User b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        neo4j.follow(a, b);
-        Utils.showInfoAlert("User followed correctly");
-        box.getChildren().remove(box.getChildren().size() - 1);
-        createButtonUnfollow(a, b, box);
+        if(neo4j.follow(a.getUserId(), b.getUserId())){
+            Utils.showInfoAlert("User followed correctly");
+            int i= a.getFollowing();
+            a.setFollowing(i+1);
+            int j = b.getFollowers();
+            b.setFollowers(j+1);
+            box.getChildren().remove(box.getChildren().size() - 1);
+            createButtonUnfollow(a, b, box);
+        }else
+            Utils.showErrorAlert("Error in follow this user");
+
     }
 
-    private void unfollow(int a, int b, VBox box){
+    private void unfollow(User a,User b, VBox box){
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        neo4j.unfollow(a, b);
-        Utils.showInfoAlert("User unfollowed correctly");
-        box.getChildren().remove(box.getChildren().size()-1);
-        createButtonFollow(a, b, box);
+        if(neo4j.unfollow(a.getUserId(), b.getUserId())){
+            Utils.showInfoAlert("User unfollowed correctly");
+            int i= a.getFollowing();
+            a.setFollowing(i-1);
+            int j = b.getFollowers();
+            b.setFollowers(j-1);
+            box.getChildren().remove(box.getChildren().size()-1);
+            createButtonFollow(a, b, box);
+        }else
+            Utils.showErrorAlert("Error in unfollow user");
     }
 
     @FXML

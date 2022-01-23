@@ -48,6 +48,10 @@
             </font></Button>
     </VBox>
     <VBox spacing="20" alignment="CENTER">
+        <Button alignment="CENTER" contentDisplay="CENTER" onAction="#logout" text="Logout" textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font></Button>
             <Button alignment="CENTER" contentDisplay="CENTER" onAction="#deleteAccount" text="Delete Account" textAlignment="CENTER">
                 <font>
                     <Font size="18.0" />

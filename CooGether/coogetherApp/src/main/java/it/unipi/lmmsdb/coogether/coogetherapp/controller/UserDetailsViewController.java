@@ -175,4 +175,10 @@ public class UserDetailsViewController implements Initializable {
             Utils.changeScene("user-details-view.fxml", ae);
         }
     }
+
+    @FXML private void logout(ActionEvent actionEvent){
+        User u=null;
+        SessionUtils.setUserLogged(u);
+        Utils.changeScene("hello-view.fxml", actionEvent);
+    }
 }
