@@ -34,6 +34,7 @@ public class UsersViewController implements Initializable {
     @FXML private TextField filterUsername;
     @FXML private ChoiceBox ChoseAnalytics;
     @FXML private ChoiceBox KAnalytics;
+    @FXML private VBox userName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,6 +51,11 @@ public class UsersViewController implements Initializable {
 
         if(logged!=null){
             followedUsers= neo4j.getFollowingUsers(logged);
+            Label uName = new Label(logged.getUsername());
+            Font bold = new Font("System Bold", 18);
+            uName.setFont(bold);
+
+            userName.getChildren().add(uName);
         }
 
         for(User u: users){

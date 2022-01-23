@@ -23,9 +23,16 @@ public class FollowersViewController  implements Initializable {
     private ArrayList<User> followedUsers;
     @FXML
     private VBox usersContainer;
+    @FXML private VBox userName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Label uName = new Label(logged.getUsername());
+        Font bold = new Font("System Bold", 18);
+        uName.setFont(bold);
+
+        userName.getChildren().add(uName);
         showUsers();
     }
 

@@ -27,12 +27,18 @@ public class UserDetailsViewController implements Initializable {
     @FXML private VBox userInfoBox;
     @FXML private PasswordField newPass;
     @FXML private PasswordField confPass;
+    @FXML private VBox userName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         User user = SessionUtils.getUserLogged();
 
+        Label uName = new Label(user.getUsername());
         Font bold = new Font("System Bold", 18);
+        uName.setFont(bold);
+
+        userName.getChildren().add(uName);
+
         Font size = new Font(14);
 
         HBox containerName = new HBox();
@@ -156,5 +162,17 @@ public class UserDetailsViewController implements Initializable {
     @FXML
     public void addRecipe(ActionEvent actionEvent) {
         Utils.changeScene("add-recipe.fxml", actionEvent);
+    }
+
+    @FXML
+    private void log(MouseEvent mouseEvent) {
+        //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
+        ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
+        User logged =SessionUtils.getUserLogged();
+        if(logged==null){
+            Utils.changeScene("login-view.fxml", ae);
+        }else{
+            Utils.changeScene("user-details-view.fxml", ae);
+        }
     }
 }
