@@ -487,23 +487,23 @@ public class Neo4jDriver{
         return recipes;
     }
 
-    public int getMaxUId() {
-        AtomicInteger maxId = new AtomicInteger();
-        try(Session session= driver.session()){
-            session.readTransaction(tx->{
-                Result result = tx.run("match (u:User) return max(u.id) as maxId");
-                Record r= result.next();
-
-                maxId.set(r.get("maxId").asInt());
-                return maxId;
-            });
-            return maxId.get();
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return 0;
-        }
-
-    }
+//    public int getMaxUId() {
+//        AtomicInteger maxId = new AtomicInteger();
+//        try(Session session= driver.session()){
+//            session.readTransaction(tx->{
+//                Result result = tx.run("match (u:User) return max(u.id) as maxId");
+//                Record r= result.next();
+//
+//                maxId.set(r.get("maxId").asInt());
+//                return maxId;
+//            });
+//            return maxId.get();
+//        }catch(Exception ex){
+//            ex.printStackTrace();
+//            return 0;
+//        }
+//
+//    }
 
     public ArrayList<String> getAllCategories(){
         ArrayList<String> cat=new ArrayList<>();
