@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UpdateRecipeViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UpdateRecipeViewController">
+
+    <HBox>
+        <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@img/icon.jpeg" />
+            </image>
+        </ImageView>
+        <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Update the recipe" textAlignment="CENTER" wrappingWidth="471.1054992675781">
+            <font>
+                <Font name="Avenir" size="36.0" />
+            </font>
+        </Text>
+        <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0" onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
+            <image>
+                <Image url="@img/user.png" />
+            </image>
+            <BorderPane.margin>
+                <Insets left="20.0" />
+            </BorderPane.margin>
+        </ImageView>
+        <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@img/back.png" />
+            </image>
+        </ImageView>
+    </HBox>
 
 </AnchorPane>
