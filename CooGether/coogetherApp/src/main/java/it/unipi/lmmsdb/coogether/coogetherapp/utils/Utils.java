@@ -94,4 +94,16 @@ public class Utils {
         return false;
     }
 
+    public static boolean deleteRecipe(Recipe r){
+        if(MongoDBDriver.deleteRecipe(r)) {
+            if (Neo4jDriver.getInstance().deleteRecipe(r))
+                return true;
+            else {
+                MongoDBDriver.addRecipe(r);
+                return false;
+            }
+        }
+        return false;
+    }
+
 }

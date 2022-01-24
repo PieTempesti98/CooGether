@@ -114,7 +114,6 @@ public class Neo4jDriver{
                                 "WHERE r.id=$id " +
                                 "DETACH DELETE r",
                         Values.parameters( "id", r.getRecipeId()) );
-                closeConnection();
                 return null;
             });
             return true;

@@ -117,7 +117,7 @@ public class RecipeViewController implements Initializable {
         logged = SessionUtils.getUserLogged();
 
         if(logged!= null) {
-            if (recipeAuthorName.equals(logged.getUsername()) || logged.getRole()==1) {
+            if (recipe.getAuthorId() == logged.getUserId() || logged.getRole()==1) {
                 //metto un button per poter modificare la ricetta e uno per eliminarla
                 VBox container = new VBox();
 
@@ -127,8 +127,8 @@ public class RecipeViewController implements Initializable {
                 container.getChildren().add(update);
 
                 Button delete = new Button();
-                update.setText("Delete Recipe");
-                update.setOnAction(actionEvent -> deleteRecipe(actionEvent, recipe));
+                delete.setText("Delete Recipe");
+                delete.setOnAction(actionEvent -> deleteRecipe(actionEvent, recipe));
                 container.getChildren().add(delete);
 
                 boxUpdate.getChildren().add(container);
@@ -224,7 +224,7 @@ public class RecipeViewController implements Initializable {
 
     private void deleteRecipe(ActionEvent actionEvent, Recipe r){
         //elimino la ricetta
-        if(MongoDBDriver.deleteRecipe(r)){
+        if(Utils.deleteRecipe(r)){
             Utils.showInfoAlert("Recipe successfully deleted");
             Utils.changeScene("hello-view.fxml", actionEvent);
         }else
