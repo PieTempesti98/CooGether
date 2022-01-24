@@ -120,7 +120,17 @@ public class MongoDBDriver{
             doc.append("image", r.getImage());
             doc.append("recipeCategory", r.getCategory());
             doc.append("ingredients", r.getIngredients());
-            doc.append("comments", r.getComments());
+            ArrayList<Document> commentsToAdd = new ArrayList<>();
+            for(Comment c: r.getComments()){
+                Document d = new Document("commentId", c.getCommentId())
+                        .append("authorId", c.getAuthorId())
+                        .append("rating", c.getRating())
+                        .append("authorName", c.getAuthorName())
+                        .append("comment", c.getText())
+                        .append("dateSubmitted", c.getDatePublished());
+                commentsToAdd.add(d);
+            }
+            doc.append("comments", commentsToAdd);
             if(r.getCalories()!=-1)
                 doc.append("calories", r.getCalories());
             if(r.getFatContent()!=-1)
@@ -185,15 +195,22 @@ public class MongoDBDriver{
         openConnection();
         System.out.println(r.getRecipeId());
         try{
-            Document com = new Document("reviewId", c.getCommentId())
+            Document com = new Document("commentId", c.getCommentId())
                     .append("authorId", c.getAuthorId())
                     .append("rating", c.getRating())
                     .append("authorName", c.getAuthorName())
                     .append("comment", c.getText())
-                    .append("datePublished", c.getDatePublished());
+                    .append("dateSubmitted", c.getDatePublished());
 
             Bson filter = Filters.eq( "recipeId", r.getRecipeId() ); //get the parent-document
-            Bson setUpdate = Updates.push("comments", com);
+            Bson setUpdate;
+            if(r.getComments() != null && r.getComments().size() > 0)
+                setUpdate = Updates.push("comments", com);
+            else {
+                ArrayList<Document> comList = new ArrayList<>();
+                comList.add(com);
+                setUpdate = Updates.set("comments", comList);
+            }
 
             collection.updateOne(filter, setUpdate);
 

@@ -155,17 +155,23 @@ public class AddRecipeController implements Initializable {
                     return;
                 }
             }
+            String imageUrl;
+
+            if(recipeImg.getText().isEmpty() || recipeImg.getText().equals(""))
+                imageUrl = null;
+            else
+                imageUrl = recipeImg.getText();
 
             int id = MongoDBDriver.getMaxRecipeId() +1 ;
 
             int authorId = SessionUtils.getUserLogged().getUserId();
             String authorName= SessionUtils.getUserLogged().getUsername();
 
-            ArrayList<String> ing= (ArrayList<String>) Arrays.asList(recipeIngredients.getText().split(","));
-            ArrayList<String> inst= (ArrayList<String>) Arrays.asList(recipeInstructions.getText().split(","));
+            ArrayList<String> ing= new ArrayList<>(Arrays.asList(recipeIngredients.getText().split(",")));
+            ArrayList<String> inst= new ArrayList<>(Arrays.asList(recipeInstructions.getText().split(",")));
 
             Recipe r= new Recipe(id, recipeName.getText(), authorId, authorName, cook, prep, date, recipeDescription.getText(),
-                    recipeImg.getText(), recipeCategory.getText(), ing, kal, fat, sod, prot, serv, inst);
+                    imageUrl, recipeCategory.getText(), ing, kal, fat, sod, prot, serv, inst);
 
             Neo4jDriver neo4j = Neo4jDriver.getInstance();
             if(neo4j.addRecipe(r))

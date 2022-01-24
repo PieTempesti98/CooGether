@@ -63,18 +63,24 @@ public class Neo4jDriver{
     //ogni volta che si elimina un nodo, ricordarsi di eliminare anche i relativi archi
 
     public boolean addRecipe(Recipe r){
-        openConnection();
+
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
-                tx.run("match (u:User) where u.id=$usId CREATE (r:Recipe {id:$recId, name:$title}), (u)-[:ADDS]->(r)",
-                        Values.parameters("usId", r.getAuthorId(),"recId", r.getRecipeId(), "title", r.getName()));
+                tx.run("match (u:User) where u.id=$usId CREATE (r:Recipe {id:$recId, name:$title, category:$recCat, datePublished:$datePublished}), (u)-[:ADDS]->(r)",
+                        Values.parameters(
+                                "usId", r.getAuthorId(),
+                                "recId", r.getRecipeId(),
+                                "title", r.getName(),
+                                "recCat", r.getCategory(),
+                                "datePublished", r.getDatePublished().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                );
 
                 return null;
             });
         }catch(Exception ex){
             ex.printStackTrace();
-            closeConnection();
+
             return false;
         }
         closeConnection();
@@ -83,7 +89,7 @@ public class Neo4jDriver{
 
     //change the title of one recipe
     public boolean updateRecipe(Recipe r){
-        openConnection();
+
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx ->{
@@ -98,12 +104,11 @@ public class Neo4jDriver{
             closeConnection();
             return false;
         }
-        closeConnection();
+
         return true;
     }
 
     public boolean deleteRecipe(Recipe r){
-        openConnection();
         try(Session session= driver.session()){
 
             session.writeTransaction((TransactionWork<Void>) tx -> {
@@ -114,7 +119,6 @@ public class Neo4jDriver{
                 closeConnection();
                 return null;
             });
-            closeConnection();
             return true;
 
         }catch(Exception ex){
@@ -130,7 +134,6 @@ public class Neo4jDriver{
                                 "WHERE u.id=$id " +
                                 "DETACH DELETE r",
                         Values.parameters( "id", u.getUserId()) );
-                closeConnection();
                 return null;
             });
         }catch(Exception ex){
@@ -471,8 +474,13 @@ public class Neo4jDriver{
                     Record r= result.next();
                     int id = r.get("r.id").asInt();
                     String name = r.get("r.name").asString();
-                    Date date = java.util.Date.from(r.get("r.datePublished").asLocalDate()
+                    Date date;
+                    if(!r.get("r.datePublished").isNull()){
+                        date = java.util.Date.from(r.get("r.datePublished").asLocalDate()
                             .atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                    }
+                    else
+                        date = new Date();
                     String category = r.get("r.category").asString();
                     Recipe recipe= new Recipe(id, name, date, category);
                     recipes.add(recipe);
