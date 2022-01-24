@@ -171,27 +171,14 @@ public class RecipeViewController implements Initializable {
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
             HBox box = new HBox();
             Text author = new Text();
-            author.setText(c.getAuthorName());
+            StringBuilder starString = new StringBuilder();
+            for(int i=0; i< c.getRating(); i++){
+                starString.append("☆");
+            }
+            author.setText(c.getAuthorName() + "     " + starString);
             bold = new Font("System Bold", 12);
             author.setFont(bold);
             box.getChildren().add(author);
-            HBox stars=new HBox();
-            stars.setStyle("-fx-padding: 0 0 0 10;");
-            int star = c.getRating();
-            System.out.println(star);
-            for (int i=0; i< star; i++){
-                //ImageView imgViewStar = new ImageView();
-                String currentDir = System.getProperty("user.dir");
-                System.out.println("Current dir using System:" +currentDir);
-                Image imgStar = new Image("file:CooGether\\coogetherApp\\src\\main\\resources\\it\\unipi\\lmmsdb\\coogether\\coogetherapp\\img\\star.png");
-                //imgViewStar.setImage(imgStar);
-                ImageView imgViewStar = new ImageView(imgStar);
-                imgViewStar.setFitHeight(20);
-                imgViewStar.setFitWidth(20);
-                stars.getChildren().add(imgViewStar);
-
-            }
-            box.getChildren().add(stars);
             Text text = new Text();
             text.setText(c.getText());
             oneComment.getChildren().addAll(box,text);
