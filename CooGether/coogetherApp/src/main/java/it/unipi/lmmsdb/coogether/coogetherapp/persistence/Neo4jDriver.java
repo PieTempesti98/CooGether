@@ -83,7 +83,6 @@ public class Neo4jDriver{
 
             return false;
         }
-        closeConnection();
         return true;
     }
 
@@ -101,7 +100,6 @@ public class Neo4jDriver{
 
         }catch(Exception ex){
             ex.printStackTrace();
-            closeConnection();
             return false;
         }
 
@@ -296,19 +294,19 @@ public class Neo4jDriver{
         ArrayList<User> users= new ArrayList<>();
 
         try(Session session= driver.session()){
-
+            String[] sName= name.split(" ");
             session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) " +
-                                          "where u.fullname=$name " +
-                                          "return u.id, u.email, u.username, u.fullname"
-                        , Values.parameters("fullname", name));
+                                          "where u.firstName = $fName and u.lastName=$lName " +
+                                          "return u.id, u.email, u.username, u.firstName, u.lastName"
+                        , Values.parameters("fName", sName[0], "lName", sName[1]));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u.id").asInt();
                     String username = r.get("u.username").asString();
                     String email = r.get("u.email").asString();
-                    String fullName = r.get("u.fullname").asString();
+                    String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
                     User user= new User(id, username, fullName, email);
                     users.add(user);
                 }

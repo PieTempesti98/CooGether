@@ -295,18 +295,18 @@ public class UsersViewController implements Initializable {
         }else if (!name.equals("")){
             //get users by fullname
             ArrayList<User>users = neo4j.getUsersFromFullname(name);
-            if(users.isEmpty()){
-                Utils.showErrorAlert("No users find");
+            if(users == null || users.isEmpty()){
+                Utils.showErrorAlert("No users found");
             }else{
                 showFilteredUsers(users);
             }
         }else if(!username.equals("")){
             //get user by username
-            User u= neo4j.getUsersFromUnique(username);
-            ArrayList<User> users= new ArrayList();
+            User u = neo4j.getUsersFromUnique(username);
+            ArrayList<User> users= new ArrayList<>();
             users.add(u);
             if(u==null)
-                Utils.showErrorAlert("No users find");
+                Utils.showErrorAlert("No users found");
             else
                 showFilteredUsers(users);
         }else{

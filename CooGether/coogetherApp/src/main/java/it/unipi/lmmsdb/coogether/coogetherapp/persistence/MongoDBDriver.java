@@ -266,11 +266,14 @@ public class MongoDBDriver{
     //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
 
     public static boolean deleteRecipesOfAUser(User u){
+        openConnection();
         try{
-
+            collection.deleteMany(Filters.eq("authorId", u.getUserId()));
         }catch(Exception ex){
+            closeConnection();
             return false;
         }
+        closeConnection();
         return true;
     }
 
