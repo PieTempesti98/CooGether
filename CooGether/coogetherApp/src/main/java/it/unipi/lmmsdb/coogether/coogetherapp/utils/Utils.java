@@ -158,4 +158,8 @@ public class Utils {
         } else
             return false;
     }
+
+    public static void closeApp(){
+        Neo4jDriver.getInstance().closeConnection();
+    }
 }

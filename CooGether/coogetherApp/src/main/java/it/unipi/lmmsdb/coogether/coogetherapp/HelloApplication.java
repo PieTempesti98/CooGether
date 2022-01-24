@@ -4,6 +4,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.MongoDBDriver;
 import it.unipi.lmmsdb.coogether.coogetherapp.persistence.Neo4jDriver;
+import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         stage.setTitle("CooGether");
         stage.setScene(scene);
+        stage.setOnCloseRequest(windowEvent -> Utils.closeApp());
         stage.show();
     }
 

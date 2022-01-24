@@ -40,9 +40,37 @@ public class AddRecipeController implements Initializable {
     @FXML private TextField recipeProt;
     @FXML private TextArea recipeInstructions;
     @FXML private ImageView goBack;
+    private Recipe recipe;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         goBack.setOnMouseClicked(mouseEvent -> goBack(mouseEvent));
+        recipe = SessionUtils.getRecipeToShow();
+        if(recipe != null){
+            recipeName.setText(recipe.getName());
+            recipeCategory.setText(recipe.getCategory());
+            recipeDescription.setText(recipe.getDescription());
+            if(recipe.getImage() != null)
+                recipeImg.setText(recipe.getDescription());
+            recipeCook.setText(String.valueOf(recipe.getCookTime()));
+            recipePrep.setText(String.valueOf(recipe.getPrepTime()));
+            recipeKal.setText(String.valueOf(recipe.getCalories()));
+            recipeFat.setText(String.valueOf(recipe.getFatContent()));
+            recipeServ.setText(String.valueOf(recipe.getRecipeServings()));
+            recipeSod.setText(String.valueOf(recipe.getSodiumContent()));
+            recipeProt.setText(String.valueOf(recipe.getProteinContent()));
+            StringBuilder ing = new StringBuilder();
+            for(String s: recipe.getIngredients()) {
+                ing.append(s);
+                ing.append("\n");
+            }
+            recipeIngredients.setText(ing.toString());
+            StringBuilder proc = new StringBuilder();
+            for(String s: recipe.getRecipeInstructions()) {
+                proc.append(s);
+                proc.append("\n");
+            }
+            recipeInstructions.setText(proc.toString());
+        }
     }
 
     private void clearAllFields()
@@ -62,12 +90,12 @@ public class AddRecipeController implements Initializable {
         recipeDescription.setText("");
     }
 
-    @FXML private void addRecipe(ActionEvent ae) throws JsonProcessingException {
+    @FXML private void addRecipe(ActionEvent ae){
         if(recipeName.getText().isEmpty() || recipeCategory.getText().isEmpty() || recipeIngredients.getText().isEmpty()
                 || recipeInstructions.getText().isEmpty()){
             Utils.showErrorAlert("Title, Category, Ingredients and Instructions are mandatory fields");
         }else{
-            Date date = new Date(System.currentTimeMillis());
+
 
             double kal=0;
             double fat=0;
@@ -162,23 +190,45 @@ public class AddRecipeController implements Initializable {
             else
                 imageUrl = recipeImg.getText();
 
-            int id = MongoDBDriver.getMaxRecipeId() +1 ;
-
-            int authorId = SessionUtils.getUserLogged().getUserId();
-            String authorName= SessionUtils.getUserLogged().getUsername();
-
-            ArrayList<String> ing= new ArrayList<>(Arrays.asList(recipeIngredients.getText().split(",")));
-            ArrayList<String> inst= new ArrayList<>(Arrays.asList(recipeInstructions.getText().split(",")));
+            ArrayList<String> ing= new ArrayList<>(Arrays.asList(recipeIngredients.getText().split("\n")));
+            ArrayList<String> inst= new ArrayList<>(Arrays.asList(recipeInstructions.getText().split("\n")));
+            int id, authorId;
+            String authorName;
+            Date date;
+            if(recipe == null) { //New recipe
+                id = MongoDBDriver.getMaxRecipeId() + 1;
+                date = new Date(System.currentTimeMillis());
+                authorId = SessionUtils.getUserLogged().getUserId();
+                authorName = SessionUtils.getUserLogged().getUsername();
+            }
+            else { //Updated recipe
+                id = recipe.getRecipeId();
+                date = recipe.getDatePublished();
+                authorId = recipe.getAuthorId();
+                authorName = recipe.getAuthorName();
+            }
 
             Recipe r= new Recipe(id, recipeName.getText(), authorId, authorName, cook, prep, date, recipeDescription.getText(),
                     imageUrl, recipeCategory.getText(), ing, kal, fat, sod, prot, serv, inst);
 
-            if(Utils.addRecipe(r)) {
-                clearAllFields();
-                SessionUtils.setRecipeToShow(r);
-                MongoDBDriver.setMaxRecipeId(r.getRecipeId());
-                Utils.changeScene("recipe-view.fxml", ae);
+            System.out.println(r.getRecipeId());
+            if(recipe != null)
+                System.out.println(recipe.getRecipeId());
+            if(recipe == null){
+                if(Utils.addRecipe(r)) {
+                    clearAllFields();
+                    SessionUtils.setRecipeToShow(r);
+                    MongoDBDriver.setMaxRecipeId(r.getRecipeId());
+                    Utils.changeScene("recipe-view.fxml", ae);
+                }
             }
+            else
+                if(Utils.updateRecipe(r)){
+                    clearAllFields();
+                    SessionUtils.setRecipeToShow(r);
+                    MongoDBDriver.setMaxRecipeId(r.getRecipeId());
+                    Utils.changeScene("recipe-view.fxml", ae);
+                }
         }
     }
 

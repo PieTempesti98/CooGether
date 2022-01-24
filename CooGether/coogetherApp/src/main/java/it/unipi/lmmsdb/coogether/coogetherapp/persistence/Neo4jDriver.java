@@ -47,7 +47,7 @@ public class Neo4jDriver{
         }
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         try{
             driver.close();
         }catch (Exception ex){
@@ -88,22 +88,19 @@ public class Neo4jDriver{
 
     //change the title of one recipe
     public boolean updateRecipe(Recipe r){
-
-        try(Session session= driver.session()){
-
-            session.writeTransaction((TransactionWork<Void>) tx ->{
-                tx.run("match(r:Recipe {id:$recId}) set r.name=$newName",
-                        Values.parameters("recId", r.getRecipeId(), "newName", r.getName()));
-
-                return null;
-            });
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return false;
+        Recipe old = getRecipeFromId(r.getRecipeId());
+        if(deleteRecipe(r)){
+            if(addRecipe(r))
+                return true;
+            else{
+                addRecipe(old);
+                return false;
+            }
         }
+        else
+            return false;
 
-        return true;
+
     }
 
     public boolean deleteRecipe(Recipe r){
@@ -503,6 +500,45 @@ public class Neo4jDriver{
             return null;
         }
         return recipes;
+    }
+
+    public Recipe getRecipeFromId(int id){
+        ArrayList<Recipe> recipes= new ArrayList<>();
+
+        try(Session session= driver.session()){
+
+            session.readTransaction(tx->{
+                Result result = tx.run("match (r:Recipe) where r.id = $id " +
+                                "return r.id, r.name, r.datePublished, r.category order by r.datePublished desc " +
+                                "limit 1"
+                        , Values.parameters("id", id));
+
+                while(result.hasNext()){
+                    Record r= result.next();
+                    int rid = r.get("r.id").asInt();
+                    String name = r.get("r.name").asString();
+                    Date date;
+                    if(!r.get("r.datePublished").isNull()){
+                        date = java.util.Date.from(r.get("r.datePublished").asLocalDate()
+                                .atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                    }
+                    else
+                        date = new Date();
+                    String category = r.get("r.category").asString();
+                    Recipe recipe= new Recipe(rid, name, date, category);
+                    recipes.add(recipe);
+                }
+                return recipes;
+            });
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+        if(recipes.size() > 0)
+            return recipes.get(0);
+        else
+            return null;
     }
 
 //    public int getMaxUId() {

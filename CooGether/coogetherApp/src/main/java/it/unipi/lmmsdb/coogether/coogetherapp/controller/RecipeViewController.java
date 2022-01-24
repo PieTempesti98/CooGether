@@ -49,7 +49,7 @@ public class RecipeViewController implements Initializable {
     private User logged;
     @FXML private HBox boxUpdate;
 
-    Recipe recipe;
+    private Recipe recipe;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -204,9 +204,11 @@ public class RecipeViewController implements Initializable {
         //mostra i dati dello user se questo è loggato, altrimenti ad una pagina per fare il login
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         logged =SessionUtils.getUserLogged();
+        SessionUtils.setRecipeToShow(null);
         if(logged==null){
             Utils.changeScene("login-view.fxml", ae);
         }else{
+
             Utils.changeScene("user-details-view.fxml", ae);
         }
     }
@@ -214,17 +216,20 @@ public class RecipeViewController implements Initializable {
     @FXML
     private void goBack(MouseEvent mouseEvent) {
         //torna alla hello page
+        SessionUtils.setRecipeToShow(null);
         ActionEvent ae = new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget());
         Utils.changeScene("hello-view.fxml", ae);
     }
 
     private void updateRecipe(ActionEvent actionEvent, Recipe r){
-        Utils.changeScene("update-recipe-view.fxml", actionEvent);
+        SessionUtils.setRecipeToShow(r);
+        Utils.changeScene("add-recipe.fxml", actionEvent);
     }
 
     private void deleteRecipe(ActionEvent actionEvent, Recipe r){
         //elimino la ricetta
         if(Utils.deleteRecipe(r)){
+            SessionUtils.setRecipeToShow(null);
             Utils.showInfoAlert("Recipe successfully deleted");
             Utils.changeScene("hello-view.fxml", actionEvent);
         }else
