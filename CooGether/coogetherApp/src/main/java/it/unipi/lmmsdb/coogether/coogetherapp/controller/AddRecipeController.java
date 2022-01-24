@@ -173,25 +173,12 @@ public class AddRecipeController implements Initializable {
             Recipe r= new Recipe(id, recipeName.getText(), authorId, authorName, cook, prep, date, recipeDescription.getText(),
                     imageUrl, recipeCategory.getText(), ing, kal, fat, sod, prot, serv, inst);
 
-            Neo4jDriver neo4j = Neo4jDriver.getInstance();
-            if(neo4j.addRecipe(r))
-            {
-                //If neo is ok, perform mongo
-                if(!MongoDBDriver.addRecipe(r))
-                {
-                    // if mongo is not ok, remove the previously added recipe
-                    neo4j.deleteRecipe(r);
-                    Utils.showErrorAlert("Error in adding the recipe");
-                }
-                else
-                {
-                    Utils.showInfoAlert("Recipe succesfully added");
-                }
+            if(Utils.addRecipe(r)) {
+                clearAllFields();
+                SessionUtils.setRecipeToShow(r);
+                MongoDBDriver.setMaxRecipeId(r.getRecipeId());
+                Utils.changeScene("recipe-view.fxml", ae);
             }
-            clearAllFields();
-            SessionUtils.setRecipeToShow(r);
-            MongoDBDriver.setMaxRecipeId(r.getRecipeId());
-            Utils.changeScene("recipe-view.fxml", ae);
         }
     }
 

@@ -55,6 +55,8 @@ public class UsersViewController implements Initializable {
             Font bold = new Font("System Bold", 18);
             uName.setFont(bold);
 
+            if(userName.getChildren().size() == 2)
+                userName.getChildren().remove(userName.getChildren().size() -1);
             userName.getChildren().add(uName);
         }
 
@@ -182,17 +184,18 @@ public class UsersViewController implements Initializable {
     private void createButtonDelete(User u, VBox box){
         Button delete= new Button();
         delete.setText("Delete user");
-        delete.setOnAction(actionEvent -> delete(u, box));
+        delete.setOnAction(actionEvent -> delete(u));
         box.getChildren().add(delete);
     }
 
-    private void delete(User u, VBox box){
+    private void delete(User u){
         Neo4jDriver neo4j= Neo4jDriver.getInstance();
         if(neo4j.deleteUser(u)){
-            Utils.showInfoAlert("User followed correctly");
+            Utils.showInfoAlert("User deleted correctly");
+            skip = 0;
+            usersContainer.getChildren().clear();
             ArrayList<User> users;
             users= neo4j.getUsers(skip, 20);
-            int more=1;
             showUsers(users, 1);
         }else
             Utils.showErrorAlert("Error in delete this user");

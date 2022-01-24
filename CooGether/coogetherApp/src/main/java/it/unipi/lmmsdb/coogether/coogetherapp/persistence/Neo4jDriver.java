@@ -268,7 +268,7 @@ public class Neo4jDriver{
             User user;
             user = session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) where u.username=$name or u.email=$name " +
-                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName",
+                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName, u.role",
                         Values.parameters("name", unique));
 
                 if (result.hasNext()){
@@ -278,7 +278,13 @@ public class Neo4jDriver{
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
                     String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
-                    return new User(id, username, fullName, password, email);
+                    int role;
+                    if(!r.get("u.role").isNull()) {
+                        role = r.get("u.role").asInt();
+                    }
+                    else
+                        role = 0;
+                    return new User(id, username, fullName, password, email, role);
                 }
                 return null;
             });
@@ -326,7 +332,7 @@ public class Neo4jDriver{
             User user;
             user = session.readTransaction(tx->{
                 Result result = tx.run("match (u:User) where u.id = $id " +
-                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName",
+                                "return u.id, u.password, u.email, u.username, u.firstName, u.lastName, u.role",
                         Values.parameters("id", id));
 
                 if (result.hasNext()){
@@ -336,7 +342,14 @@ public class Neo4jDriver{
                     String password = r.get("u.password").asString();
                     String email = r.get("u.email").asString();
                     String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
-                    return new User(uid, username, fullName, password, email);
+                    int role;
+                    if(!r.get("u.role").isNull()) {
+                        System.out.println("role defined");
+                        role = r.get("u.role").asInt();
+                    }
+                    else
+                        role = 0;
+                    return new User(uid, username, fullName, password, email, role);
                 }
                 return null;
             });
@@ -536,8 +549,8 @@ public class Neo4jDriver{
     public Boolean makeAdmin( User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("match (u:User {u.id: $id})" +
-                        "set u.role=1" +
+                Result r = tx.run ("match (u:User {id:$id}) " +
+                        "set u.role=1 " +
                         "return u.role", Values.parameters("id", u.getUserId()));
                 return null;
             } );
@@ -552,8 +565,8 @@ public class Neo4jDriver{
     public boolean makeNotAdmin( User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                tx.run ("match (u:User {u.id: $id})" +
-                        "set u.role=0" +
+                tx.run ("match (u:User {id: $id}) " +
+                        "set u.role=0 " +
                         "return u.role", Values.parameters("id", u.getUserId()));
                 return null;
             } );
@@ -633,7 +646,7 @@ public class Neo4jDriver{
         ArrayList<User> users = new ArrayList<>();
 
         try(Session session = driver.session()){
-            session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe)" +
+            session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe) " +
                           			                                  "return user.id, user.username,  count(x) " +
                             			                              "order by count(x)" +
                            				                              "limit $k",

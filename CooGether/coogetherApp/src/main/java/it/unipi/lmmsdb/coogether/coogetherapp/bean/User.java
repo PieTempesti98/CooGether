@@ -40,6 +40,14 @@ public class User {
 
     }
 
+    public User(int id, String username, String fullName, String password, String email, int role){
+        this.userId = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.role = role;
+    }
     public User(int id, String name, String full, String email, String pass, int followers, int following, int role){
         this.userId=id;
         this.username=name;

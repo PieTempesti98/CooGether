@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.neo4j.driver.internal.InternalPath;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,11 +85,20 @@ public class Utils {
 
     public static boolean deleteAccount(User user) {
         Neo4jDriver neo4j = Neo4jDriver.getInstance();
-        if(neo4j.deleteRecipesOfAUser(user)) {
-            System.out.println("neo recipes deleted");
-            if (MongoDBDriver.deleteRecipesOfAUser(user)) {
-                System.out.println("mongo recipes deleted");
-                return neo4j.deleteUser(user);
+        ArrayList<Recipe> recipesToDelete = MongoDBDriver.getRecipesFromAuthorName(user.getUsername());
+        if (MongoDBDriver.deleteRecipesOfAUser(user)) {
+            if (neo4j.deleteRecipesOfAUser(user))
+                if (neo4j.deleteUser(user))
+                    return true;
+                else {
+                    for (Recipe r : recipesToDelete)
+                        addRecipe(r);
+                    return false;
+                }
+            else {
+                for (Recipe r : recipesToDelete)
+                    MongoDBDriver.addRecipe(r);
+                return false;
             }
         }
         return false;
@@ -106,4 +116,46 @@ public class Utils {
         return false;
     }
 
+    public static boolean addRecipe(Recipe r){
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        if(MongoDBDriver.addRecipe(r))
+        {
+            //If neo is ok, perform mongo
+            if(!neo4j.addRecipe(r))
+            {
+                // if mongo is not ok, remove the previously added recipe
+                MongoDBDriver.deleteRecipe(r);
+                showErrorAlert("Error in adding the recipe");
+                return false;
+            }
+            else
+            {
+                Utils.showInfoAlert("Recipe succesfully added");
+                return true;
+            }
+        } else
+            return false;
+    }
+
+    public static boolean updateRecipe(Recipe r){
+        Recipe old = MongoDBDriver.getRecipesFromId(r.getRecipeId());
+        Neo4jDriver neo4j = Neo4jDriver.getInstance();
+        if(MongoDBDriver.updateRecipe(r))
+        {
+            //If neo is ok, perform mongo
+            if(!neo4j.updateRecipe(r))
+            {
+                // if mongo is not ok, remove the previously added recipe
+                MongoDBDriver.updateRecipe(old);
+                showErrorAlert("Error updating the recipe");
+                return false;
+            }
+            else
+            {
+                Utils.showInfoAlert("Recipe succesfully updated");
+                return true;
+            }
+        } else
+            return false;
+    }
 }

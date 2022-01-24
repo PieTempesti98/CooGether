@@ -56,7 +56,7 @@
         </AnchorPane>
         </ScrollPane>
         <VBox alignment="CENTER">
-            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analitics" textAlignment="CENTER" wrappingWidth="410.1054992675781">
+            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analytics" textAlignment="CENTER" wrappingWidth="410.1054992675781">
                 <font>
                     <Font name="Avenir" size="36.0" />
                 </font>

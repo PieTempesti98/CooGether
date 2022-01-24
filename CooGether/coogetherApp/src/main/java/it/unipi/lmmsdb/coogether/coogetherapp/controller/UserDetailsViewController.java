@@ -73,7 +73,7 @@ public class UserDetailsViewController implements Initializable {
         Label role = new Label("Role:");
         role.setFont(bold);
         String r;
-        if (user.getRole()== 1)
+        if (user.getRole() == 1)
             r= "Admin";
         else
             r= "Normal User";

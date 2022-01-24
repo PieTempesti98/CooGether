@@ -63,6 +63,9 @@ public class HelloController implements Initializable {
 
             userName.getChildren().add(uName);
         }
+        if(SessionUtils.getUserLogged() != null && SessionUtils.getUserLogged().getRole() == 1){
+            ChoseAnalytics.getItems().add("Top highest lifespan");
+        }
         // retrieve first 20 recipes
         showRecipes();
     }
@@ -220,10 +223,6 @@ public class HelloController implements Initializable {
         String catAnalytics=(String) AnalyticsCategory.getValue();
         String kAnalytics=(String) KAnalytics.getValue();
 
-        if(SessionUtils.getUserLogged()!= null && SessionUtils.getUserLogged().getRole()==1){
-            ChoseAnalytics.getItems().add("Top highiest lifespan");
-        }
-
         if(!typeAnalytics.equals("Select") && !catAnalytics.equals("Categories") && !kAnalytics.equals("How many"))
         {
             //chiamare analytics
@@ -246,7 +245,7 @@ public class HelloController implements Initializable {
             {
                 ArrayList<Recipe> recipes=MongoDBDriver.searchFewestIngredientsRecipes(catAnalytics, Integer.parseInt(kAnalytics));
                 showFilteredRecipes(recipes);
-            }else if(typeAnalytics.equals("Top highiest lifespan")){
+            }else if(typeAnalytics.equals("Top highest lifespan")){
                 ArrayList<Recipe> recipes=MongoDBDriver.searchHighestLifespanRecipes(Integer.parseInt(kAnalytics));
                 showFilteredRecipes(recipes);
             }
