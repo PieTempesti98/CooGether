@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane prefHeight="1120.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
    <children>
        <VBox>
@@ -193,9 +195,19 @@
                         <Label text="Add a comment" />
                         <HBox>
                             <Label text="Add a rating from 0 to 5:" />
-                            <Spinner fx:id="starSpinner" editable="true" />
+                            <ChoiceBox fx:id="starSpinner" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="How many">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1" />
+                                        <String fx:value="2" />
+                                        <String fx:value="3" />
+                                        <String fx:value="4" />
+                                        <String fx:value="5" />
+                                    </FXCollections>
+                                </items>
+                            </ChoiceBox>
                         </HBox>
-                        <TextArea layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
+                        <TextArea fx:id="textNewComment" layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
                         <Button layoutX="68.0" layoutY="177.0" mnemonicParsing="false" onAction="#addComment" text="Add" textAlignment="CENTER" textFill="#596cc2" />
                     </VBox>
                 </VBox>

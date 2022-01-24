@@ -20,7 +20,7 @@ public class Recipe{
     private String image;
     private String category;
     private ArrayList<String> ingredients;
-    private ArrayList<Comment> comments;
+    private ArrayList<Comment> comments=new ArrayList<>();
     private double calories;
     private double fatContent;
     private double sodiumContent;

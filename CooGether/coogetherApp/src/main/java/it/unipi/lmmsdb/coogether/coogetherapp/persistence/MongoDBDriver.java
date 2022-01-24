@@ -183,8 +183,8 @@ public class MongoDBDriver{
 
     public static boolean addComment(Recipe r, Comment c){
         openConnection();
+        System.out.println(r.getRecipeId());
         try{
-
             Document com = new Document("reviewId", c.getCommentId())
                     .append("authorId", c.getAuthorId())
                     .append("rating", c.getRating())

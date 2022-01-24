@@ -10,9 +10,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +23,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -45,7 +44,7 @@ public class RecipeViewController implements Initializable {
     @FXML private Text recipeProtein;
     @FXML private VBox recipeInstructions;
     @FXML private VBox comments;
-    @FXML private Spinner starSpinner;
+    @FXML private ChoiceBox starSpinner;
     @FXML private TextArea textNewComment;
     private User logged;
     @FXML private HBox boxUpdate;
@@ -139,6 +138,7 @@ public class RecipeViewController implements Initializable {
    @FXML
     private void addComment(ActionEvent actionEvent) {
         //deve controllare se lo user e loggato prima di aggiungere il commento
+       String star=(String) starSpinner.getValue();
        logged =SessionUtils.getUserLogged();
        if(logged == null){
            Utils.showErrorAlert("You have to log in in order to add comments");
@@ -149,15 +149,20 @@ public class RecipeViewController implements Initializable {
        c.setAuthorName(logged.getUsername());
        c.setDatePublished(new Date(System.currentTimeMillis()));
        c.setText(textNewComment.getText());
-       c.setRating((Integer) starSpinner.getValue());
+       c.setRating(Integer.parseInt(star));
        c.setCommentId(MongoDBDriver.getMaxCommentId() + 1);
        MongoDBDriver.setMaxCommentId(c.getCommentId());
-       MongoDBDriver.addComment(SessionUtils.getRecipeToShow(), c);
+       MongoDBDriver.addComment(recipe, c);
+       recipe.addComments(c);
        showComment();
     }
 
     private void showComment() {
         comments.getChildren().clear();
+        Label comm=new Label("Comments:");
+        Font bold=new Font("System Bold", 18);
+        comm.setFont(bold);
+        comments.getChildren().add(comm);
         for (Comment c : recipe.getComments()){
             VBox oneComment=new VBox();
             oneComment.setStyle("-fx-border-style: solid inside;"
@@ -166,7 +171,7 @@ public class RecipeViewController implements Initializable {
             HBox box = new HBox();
             Text author = new Text();
             author.setText(c.getAuthorName());
-            Font bold = new Font("System Bold", 12);
+            bold = new Font("System Bold", 12);
             author.setFont(bold);
             box.getChildren().add(author);
             HBox stars=new HBox();
