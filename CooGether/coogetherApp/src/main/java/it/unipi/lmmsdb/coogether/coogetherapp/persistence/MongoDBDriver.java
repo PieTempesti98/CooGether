@@ -210,24 +210,6 @@ public class MongoDBDriver{
         return true;
     }
 
-    public static boolean deleteComment(Recipe r, Comment c){
-        openConnection();
-        try{
-
-            Bson studentFilter = Filters.eq( "recipeId", r.getRecipeId() );
-            Bson delete = Updates.pull("comments", new Document("reviewId", c.getCommentId()));
-            collection.updateOne(studentFilter, delete);
-
-        }catch(Exception ex){
-            closeConnection();
-            return false;
-        }
-        closeConnection();
-        return true;
-    }
-
-    //decidere se quando viene eliminato un utente devono essere eliminate tutte le sue ricette
-
     public static boolean deleteRecipesOfAUser(User u){
         openConnection();
         try{
@@ -382,9 +364,7 @@ public class MongoDBDriver{
     //******************************************************************************************************************
 
     public static ArrayList<Recipe> searchTopKHealthiestRecipes(String category, int k){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson m = Aggregates.match(Filters.eq("recipeCategory", category));
@@ -504,9 +484,7 @@ public class MongoDBDriver{
     }
 
     public static ArrayList<Recipe> searchHighestLifespanRecipes(int k){
-        ArrayList<Recipe>recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson unwind_comments = unwind("$comments");
