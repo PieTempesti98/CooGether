@@ -136,6 +136,7 @@ public class UsersViewController implements Initializable {
                     createButtonAdmin(u, userBox);
                 }
             }
+
         }
 
         if(more==1){
@@ -231,8 +232,20 @@ public class UsersViewController implements Initializable {
             a.setFollowing(i+1);
             int j = b.getFollowers();
             b.setFollowers(j+1);
-            box.getChildren().remove(box.getChildren().size() - 1);
-            createButtonUnfollow(a, b, box);
+            if(SessionUtils.getUserLogged().getRole()==1)
+            {
+                box.getChildren().remove(box.getChildren().size() - 3);
+                box.getChildren().remove(box.getChildren().size() - 2);
+                box.getChildren().remove(box.getChildren().size() - 1);
+                createButtonUnfollow(a, b, box);
+                createButtonDelete(b, box);
+                createButtonAdmin(b, box);
+            }
+            else
+            {
+                box.getChildren().remove(box.getChildren().size() - 1);
+                createButtonUnfollow(a, b, box);
+            }
         }else
             Utils.showErrorAlert("Error in follow this user");
 
@@ -246,8 +259,21 @@ public class UsersViewController implements Initializable {
             a.setFollowing(i-1);
             int j = b.getFollowers();
             b.setFollowers(j-1);
-            box.getChildren().remove(box.getChildren().size()-1);
-            createButtonFollow(a, b, box);
+            if(SessionUtils.getUserLogged().getRole()==1)
+            {
+                box.getChildren().remove(box.getChildren().size() - 3);
+                box.getChildren().remove(box.getChildren().size() - 2);
+                box.getChildren().remove(box.getChildren().size() - 1);
+                createButtonFollow(a, b, box);
+                createButtonDelete(b, box);
+                createButtonAdmin(b, box);
+            }
+            else
+            {
+                box.getChildren().remove(box.getChildren().size() - 1);
+                createButtonFollow(a, b, box);
+            }
+
         }else
             Utils.showErrorAlert("Error in unfollow user");
 

@@ -87,16 +87,20 @@ public class FollowersViewController  implements Initializable {
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
 
             usersContainer.getChildren().add(userBox);
-
+            Boolean find=false;
             if (!followedUsers.isEmpty()) {
+                System.out.println(followedUsers);
                 for (User following : followedUsers) {
                     if (following.getUserId() == u.getUserId()) {
                         //aggiungo un button unfollow
                         createButtonUnfollow(logged, u, userBox);
-                    } else {
-                        //aggiungo un button follow
-                        createButtonFollow(logged,u, userBox);
+                        find=true;
                     }
+                }
+                if(!find)
+                {
+                    //aggiungo un button follow
+                    createButtonFollow(logged,u, userBox);
                 }
             }else{
                 //aggiungo un button follow
