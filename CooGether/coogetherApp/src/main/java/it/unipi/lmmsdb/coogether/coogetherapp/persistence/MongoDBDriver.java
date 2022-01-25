@@ -1,25 +1,17 @@
 package it.unipi.lmmsdb.coogether.coogetherapp.persistence;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.mongodb.client.model.*;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Comment;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.Recipe;
 import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import com.mongodb.client.*;
 import com.mongodb.ConnectionString;
-
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
-
-
 import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
 import it.unipi.lmmsdb.coogether.coogetherapp.pojo.RecipePojo;
 import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
@@ -27,12 +19,8 @@ import org.bson.BsonArray;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 public class MongoDBDriver{
 
@@ -222,31 +210,6 @@ public class MongoDBDriver{
         return true;
     }
 
-    //delete the comment and add the modified comment
-    public static boolean updateComment(Recipe r, Comment c){
-        openConnection();
-        try{
-            boolean res=deleteComment(r,c);
-            if(!res)
-            {
-                System.out.println("A problem has occurred in modify comment");
-                return false;
-            }
-            res=addComment(r,c);
-            if(!res)
-            {
-                System.out.println("A problem has occurred in modify comment");
-                return false;
-            }
-
-        }catch(Exception ex){
-            closeConnection();
-            return false;
-        }
-        closeConnection();
-        return true;
-    }
-
     public static boolean deleteComment(Recipe r, Comment c){
         openConnection();
         try{
@@ -279,7 +242,7 @@ public class MongoDBDriver{
 
     public static Recipe getRecipesFromId( int id){
         openConnection();
-        Recipe recipe= null;
+        Recipe recipe;
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ArrayList<Document> myDoc = new ArrayList<>();
@@ -299,21 +262,8 @@ public class MongoDBDriver{
         }
     }
 
-    public static ArrayList<Recipe> getAllRecipes(){
-        openConnection();
-        Bson sort = sort(Sorts.descending("datePublished"));
-        Bson proj = Aggregates.project(fields(excludeId(), include("recipeId", "name", "authorName","category", "datePublished")));
-
-        ArrayList<Document> results = collection.aggregate(Arrays.asList(sort,proj)).into(new ArrayList<>());
-
-        closeConnection();
-        return getRecipesFromDocuments(results);
-    }
-
     public static ArrayList<Recipe> getRecipesFromAuthorName(String username){
-        ArrayList<Recipe> recipes = new ArrayList<>();
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("authorName", username));
@@ -328,9 +278,7 @@ public class MongoDBDriver{
     }
 
     public static ArrayList<Recipe> getRecipesFromCategory(String category){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
-        Gson gson = new Gson();
 
         openConnection();
         Bson myMatch = Aggregates.match(Filters.eq("recipeCategory", category));
@@ -344,7 +292,6 @@ public class MongoDBDriver{
     }
 
     public static ArrayList<Recipe> getRecipesFromTwoIngredients(String ing1, String ing2){
-        ArrayList<Recipe> recipes;
         ArrayList<Document> results;
 
         openConnection();
@@ -589,20 +536,5 @@ public class MongoDBDriver{
         return getRecipesFromDocuments(recipeValues);
     }
 
-//    public static void createMaxIdCollection(){
-//        int maxRecipe = getMaxRecipeId();
-//        int maxComment = getMaxCommentId();
-//        int maxUser = Neo4jDriver.getInstance().getMaxUId();
-//
-//        openUtilConnection();
-//        Document doc = new Document();
-//        doc.append("name", "maxID");
-//        doc.append("recipe", maxRecipe);
-//        doc.append("comment", maxComment);
-//        doc.append("user", maxUser);
-//        collection.insertOne(doc);
-//        closeConnection();
-//
-//    }
 
 }

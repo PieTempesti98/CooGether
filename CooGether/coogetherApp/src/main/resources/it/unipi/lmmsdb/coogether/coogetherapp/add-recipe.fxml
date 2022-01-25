@@ -6,224 +6,262 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.AddRecipeController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.AddRecipeController">
 
-    <VBox>
-    <HBox>
+    <HBox AnchorPane.leftAnchor="250">
         <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@img/icon.jpeg" />
-            </image>
+            <Image url="@img/icon.png"/>
         </ImageView>
-        <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Add your recipe" textAlignment="CENTER" wrappingWidth="471.1054992675781">
+        <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Recipe editor"
+              textAlignment="CENTER" wrappingWidth="471.1054992675781">
             <font>
-                <Font name="Avenir" size="36.0" />
+                <Font name="Avenir" size="36.0"/>
             </font>
         </Text>
-        <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0"  onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
-            <image>
-                <Image url="@img/user.png" />
-            </image>
+        <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0" onMouseClicked="#log"
+                   pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
             <BorderPane.margin>
-                <Insets left="20.0" />
+                <Insets left="20.0"/>
             </BorderPane.margin>
+            <Image url="@img/user.png"/>
         </ImageView>
-        <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-            <image >
-                <Image url="@img/back.png" />
-            </image>
+        <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true"
+                   BorderPane.alignment="CENTER">
+            <Image url="@img/back.png"/>
         </ImageView>
     </HBox>
-        <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" >
-            <VBox>
-    <HBox spacing="10.0">
-        <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Title (*):">
-            <font>
-                <Font size="18.0" />
-            </font></Label>
-        <TextField fx:id="recipeName" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-            <HBox.margin>
-                <Insets left="5.0" />
-            </HBox.margin></TextField>
+    <ScrollPane AnchorPane.topAnchor="120" prefHeight="680.0" prefWidth="1200.0">
+        <VBox alignment="CENTER">
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Title (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeName" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-        <padding>
-            <Insets top="10.0" />
-        </padding>
-    </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Category (*):">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipeCategory" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Category (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeCategory" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Description:">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipeDescription" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Description:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeDescription" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="500.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Ingredients (*):">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-         <TextArea fx:id="recipeIngredients" editable="true" prefHeight="200.0" prefWidth="200.0" >
-            <HBox.margin>
-                <Insets left="5.0" />
-            </HBox.margin>
-         </TextArea>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Ingredients (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextArea fx:id="recipeIngredients" prefHeight="200.0" prefWidth="500.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextArea>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Image:">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipeImg" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Image:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeImg" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Cook Time:">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipeCook" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Cook Time:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeCook" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Preparation Time:">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipePrep" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Preparation Time:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipePrep" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Recipe Servings:">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextField fx:id="recipeServ" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Recipe Servings:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeServ" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Calories:">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
-                    <TextField fx:id="recipeKal" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Calories:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeKal" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Fat content:">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
-                    <TextField fx:id="recipeFat" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Fat content:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeFat" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Sodium Content:">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
-                    <TextField fx:id="recipeSod" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Sodium Content:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeSod" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Protein Content:">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
-                    <TextField fx:id="recipeProt" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Protein Content:">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="recipeProt" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="300.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-        <HBox spacing="10.0">
-            <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Instructions (*):">
-                <font>
-                    <Font size="18.0" />
-                </font></Label>
-            <TextArea fx:id="recipeInstructions" editable="true" prefHeight="200.0" prefWidth="200.0" >
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            </TextArea>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Instructions (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextArea fx:id="recipeInstructions" prefHeight="200.0" prefWidth="500.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextArea>
 
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-        </HBox>
-                <Button fx:id="submit" alignment="CENTER" onAction="#addRecipe" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
-            </VBox>
-        </AnchorPane>
-        </ScrollPane>
-    </VBox>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <Button alignment="CENTER" onAction="#addRecipe" contentDisplay="CENTER" layoutX="291.0"
+                    layoutY="360.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" maxWidth="200">
+                <VBox.margin>
+                    <Insets top="20" bottom="20"/>
+                </VBox.margin>
+            </Button>
+        </VBox>
+
+    </ScrollPane>
 </AnchorPane>

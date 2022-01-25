@@ -7,115 +7,126 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RegistrationViewController">
-    <Pane prefHeight="116.0" prefWidth="640.0">
-        <children>
-            <VBox>
-                <HBox>
-                    <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@img/icon.jpeg" />
-                        </image>
-                    </ImageView>
-                    <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Registration page" textAlignment="CENTER" wrappingWidth="471.1054992675781">
-                        <font>
-                            <Font name="Avenir" size="36.0" />
-                        </font>
-                    </Text>
-                    <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                        <image>
-                            <Image url="@img/back.png" />
-                        </image>
-                    </ImageView>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="First Name (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
-                    <TextField fx:id="fName" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
+<AnchorPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RegistrationViewController">
+        <VBox AnchorPane.leftAnchor="300" alignment="CENTER" spacing="10">
+            <HBox>
+                <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@img/icon.png"/>
+                </ImageView>
+                <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Registration page"
+                      textAlignment="CENTER" wrappingWidth="471.1054992675781">
+                    <font>
+                        <Font name="Avenir" size="36.0"/>
+                    </font>
+                </Text>
+                <ImageView fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true"
+                           preserveRatio="true" BorderPane.alignment="CENTER">
+                    <Image url="@img/back.png"/>
+                </ImageView>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="First Name (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="fName" layoutX="300.0" layoutY="55.0" prefHeight="26.0" prefWidth="118.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
 
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Last Name (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Last Name (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
 
-                    <TextField fx:id="lName" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="TOP_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Email (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
+                <TextField fx:id="lName" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="TOP_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Email (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
 
-                    <TextField fx:id="email" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Username (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
+                <TextField fx:id="email" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Username (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
 
-                    <TextField fx:id="username" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></TextField>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0" text="Password (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
+                <TextField fx:id="username" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </TextField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="300.0"
+                       text="Password (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
 
-                    <PasswordField fx:id="password" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></PasswordField>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-                <HBox spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="299.0" text="Confirm Password (*):">
-                        <font>
-                            <Font size="18.0" />
-                        </font></Label>
+                <PasswordField fx:id="password" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </PasswordField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <HBox spacing="10.0">
+                <Label alignment="CENTER_RIGHT" layoutX="172.0" layoutY="54.0" prefHeight="27.0" prefWidth="299.0"
+                       text="Confirm Password (*):">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
 
-                    <PasswordField fx:id="conPassword" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
-                        <HBox.margin>
-                            <Insets left="5.0" />
-                        </HBox.margin></PasswordField>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </HBox>
-            </VBox>
-        </children>
-    </Pane>
-   <Button fx:id="submit" alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="360.0" mnemonicParsing="false" onAction="#register" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
-   <Line endX="100.0" layoutX="320.0" layoutY="344.0" startX="-100.0" stroke="#596cc2" />
-
+                <PasswordField fx:id="conPassword" layoutX="300.0" layoutY="55.0" prefHeight="25.0" prefWidth="115.0">
+                    <HBox.margin>
+                        <Insets left="5.0"/>
+                    </HBox.margin>
+                </PasswordField>
+                <padding>
+                    <Insets top="10.0"/>
+                </padding>
+            </HBox>
+            <Line endX="300.0" layoutX="320.0" layoutY="344.0" startX="-300.0" stroke="#596cc2" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#register" text="SUBMIT" textAlignment="CENTER" textFill="#596cc2" />
+        </VBox>
 </AnchorPane>

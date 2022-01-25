@@ -8,217 +8,242 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="1120.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
-   <children>
-       <VBox>
-       <HBox>
-       <ImageView fitHeight="123.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-           <image>
-               <Image url="@img/icon.jpeg" />
-           </image>
-           <BorderPane.margin>
-               <Insets left="20.0" />
-           </BorderPane.margin>
-       </ImageView>
-      <ToolBar layoutX="124.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="123.0" prefWidth="651.0">
-        <items>
-            <ImageView fitHeight="65.0" fitWidth="63.0" onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <image>
-                    <Image url="@img/user.png" />
-                </image>
+<AnchorPane prefHeight="1120.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.RecipeViewController">
+
+    <HBox AnchorPane.leftAnchor="250" AnchorPane.rightAnchor="250">
+        <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@img/icon.png"/>
+        </ImageView>
+        <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="Recipe details"
+              textAlignment="CENTER" wrappingWidth="471.1054992675781">
+            <font>
+                <Font name="Avenir" size="36.0"/>
+            </font>
+        </Text>
+        <VBox>
+            <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0" onMouseClicked="#log"
+                       pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
                 <BorderPane.margin>
-                    <Insets left="20.0" />
+                    <Insets right="50"/>
                 </BorderPane.margin>
+                <Image url="@img/user.png"/>
             </ImageView>
-              <ImageView fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                  <image>
-                      <Image url="@img/back.png" />
-                  </image>
-                  <BorderPane.margin>
-                      <Insets left="20.0" />
-                  </BorderPane.margin>
-              </ImageView>
-          </items>
-      </ToolBar>
-       </HBox>
-       <HBox fx:id="boxUpdate">
-      <ScrollPane layoutX="-3.0" layoutY="135.0" prefHeight="630.0" prefWidth="800.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0">
-                <VBox>
-              <Text fx:id="recipeTitle" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                <font>
-                    <Font size="46.0" />
-                </font>
-            </Text>
+        </VBox>
+        <ImageView fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true"
+                   preserveRatio="true" BorderPane.alignment="CENTER">
+            <Image url="@img/back.png"/>
+        </ImageView>
+    </HBox>
+    <VBox AnchorPane.topAnchor="110">
+        <HBox fx:id="boxUpdate" spacing="25">
+            <ScrollPane prefHeight="680.0" prefWidth="1050.0">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10"/>
+                </padding>
+                <VBox spacing="20">
                     <HBox>
-                        <Label text="Author Username:">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font></Label>
-                        <Text fx:id="recipeAuthorName" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
-                    </HBox>
-                    <HBox>
-              <ImageView fx:id="recipeImg" fitHeight="147.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                  <image>
-                      <!--<Image fx:id="imgRecipe" /> -->
-                  </image>
-                  <BorderPane.margin>
-                      <Insets left="20.0" />
-                  </BorderPane.margin>
-              </ImageView>
-                        <VBox>
-                            <HBox>
-                            <Label text="Category:">
+                        <VBox spacing="10">
+                            <Text fx:id="recipeTitle" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="800">
                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                </font></Label>
-                            <Text fx:id="recipeCategory" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                                <font>
-                                    <Font size="16.0" />
+                                    <Font size="46.0"/>
                                 </font>
-                            </Text></HBox>
+                            </Text>
+                            <HBox spacing="20">
+                                <Label text="Author: ">
+                                    <font>
+                                        <Font name="System Bold" size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Text fx:id="recipeAuthorName" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                      strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="300">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Text>
+                            </HBox>
+                            <HBox spacing="20">
+                                <Label text="Category:">
+                                    <font>
+                                        <Font name="System Bold" size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Text fx:id="recipeCategory" focusTraversable="true" layoutX="14.0"
+                                      layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      wrappingWidth="300">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Text>
+                            </HBox>
                             <Label text="Description:">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font></Label>
-                        <Text fx:id="recipeDescription" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeDescription" focusTraversable="true" layoutX="14.0"
+                                  layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="800">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </VBox>
+                        <ImageView fx:id="recipeImg" fitHeight="147.0" fitWidth="186.0"
+                                   preserveRatio="true">
+                        </ImageView>
+                    </HBox>
+                    <HBox spacing="10" maxWidth="1000">
+                        <VBox maxWidth="500" spacing="10">
+
                             <VBox fx:id="recipeIngredients">
-                            <Label text="Ingredients:">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font></Label>
+                                <Label text="Ingredients:">
+                                    <font>
+                                        <Font name="System Bold" size="18.0"/>
+                                    </font>
+                                </Label>
                             </VBox>
                         </VBox>
+                        <VBox maxWidth="200">
+
+                        </VBox>
                     </HBox>
-                <VBox>
-                    <HBox>
-                        <Label text="Cook Time:">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font></Label>
-                        <Text fx:id="recipeCookTime" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
-                    </HBox>
-                    <HBox>
-                        <Label text="Preparation Time:">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font></Label>
-                        <Text fx:id="recipePrep" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
-                    </HBox>
-                    <HBox>
-                        <Label text="Servings:">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font></Label>
-                        <Text fx:id="recipeServings" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
-                    </HBox>
-                    <HBox>
-                    <Label text="Calories:">
-                        <font>
-                            <Font name="System Bold" size="18.0" />
-                        </font></Label>
-                    <Text fx:id="recipeKal" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                        <font>
-                            <Font size="16.0" />
-                        </font>
-                    </Text>
-                    </HBox>
-                    <HBox>
-                    <Label text="Fat Content:">
-                        <font>
-                            <Font name="System Bold" size="18.0" />
-                        </font></Label>
-                    <Text fx:id="recipeFat" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                        <font>
-                            <Font size="16.0" />
-                        </font>
-                    </Text>
-                    </HBox>
-                    <HBox>
-                    <Label text="Sodium Content:">
-                        <font>
-                            <Font name="System Bold" size="18.0" />
-                        </font></Label>
-                    <Text fx:id="recipeSodium" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                        <font>
-                            <Font size="16.0" />
-                        </font>
-                    </Text>
-                    </HBox>
-                    <HBox>
-                        <Label text="Protein Content:">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font></Label>
-                        <Text fx:id="recipeProtein" focusTraversable="true" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Text>
-                    </HBox>
-                    <VBox fx:id="recipeInstructions">
-                    <Label text="Instructions:">
-                        <font>
-                            <Font name="System Bold" size="18.0" />
-                        </font></Label>
+                    <VBox>
+                        <HBox spacing="20">
+                            <Label text="Cook Time:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeCookTime" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Preparation Time:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipePrep" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Servings:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeServings" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Calories:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeKal" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Fat Content:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeFat" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Sodium Content:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeSodium" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <HBox spacing="20">
+                            <Label text="Protein Content:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                            <Text fx:id="recipeProtein" focusTraversable="true" layoutX="14.0" layoutY="64.0"
+                                  strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="494.0">
+                                <font>
+                                    <Font size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <VBox fx:id="recipeInstructions">
+                            <Label text="Instructions:">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+                        </VBox>
                     </VBox>
-                </VBox>
                     <VBox fx:id="comments">
                         <Label text="Comments:">
                             <font>
-                                <Font name="System Bold" size="18.0" />
+                                <Font name="System Bold" size="18.0"/>
                             </font>
                         </Label>
                     </VBox>
-                    <VBox>
-                        <Label text="Add a comment" />
-                        <HBox>
-                            <Label text="Add a rating from 0 to 5:" />
-                            <ChoiceBox fx:id="starSpinner" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="How many">
+                    <VBox spacing="10">
+                        <Label text="Add a comment">
+                            <font>
+                                <Font name="System Bold" size="18.0"/>
+                            </font>
+                        </Label>
+                        <HBox spacing="20">
+                            <Label text="Add a rating from 0 to 5: "/>
+                            <ChoiceBox fx:id="starSpinner" prefHeight="18.0"
+                                       prefWidth="100.0" value="How many">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="1" />
-                                        <String fx:value="2" />
-                                        <String fx:value="3" />
-                                        <String fx:value="4" />
-                                        <String fx:value="5" />
+                                        <String fx:value="1"/>
+                                        <String fx:value="2"/>
+                                        <String fx:value="3"/>
+                                        <String fx:value="4"/>
+                                        <String fx:value="5"/>
                                     </FXCollections>
                                 </items>
                             </ChoiceBox>
                         </HBox>
-                        <TextArea fx:id="textNewComment" layoutX="96.0" layoutY="14.0" prefHeight="25.0" prefWidth="115.0" />
-                        <Button layoutX="68.0" layoutY="177.0" mnemonicParsing="false" onAction="#addComment" text="Add" textAlignment="CENTER" textFill="#596cc2" />
+                        <TextArea fx:id="textNewComment" prefHeight="25.0"
+                                  prefWidth="1000" maxWidth="1000"/>
+                        <Button mnemonicParsing="false" onAction="#addComment"
+                                text="Add" textAlignment="CENTER" textFill="#596cc2" prefWidth="200"/>
                     </VBox>
                 </VBox>
-
-            </AnchorPane>
-        </content>
-          <padding>
-              <Insets bottom="10" left="10" right="5" top="5" />
-          </padding>
-      </ScrollPane>
-       </HBox>
-       </VBox>
-   </children>
+            </ScrollPane>
+        </HBox>
+    </VBox>
 </AnchorPane>

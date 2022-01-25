@@ -5,11 +5,9 @@ import it.unipi.lmmsdb.coogether.coogetherapp.bean.User;
 import it.unipi.lmmsdb.coogether.coogetherapp.config.ConfigurationParameters;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.*;
-
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Neo4jDriver{
@@ -415,15 +413,15 @@ public class Neo4jDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u1:User)-[f:FOLLOWS]->(u2:User) " +
                                           "where u1.id = $userId "+
-                                           "return u2.id, u2.username, u2.fullname, u2.email", Values.parameters("userId", u.getUserId()));
+                                           "return u2.id, u2.username, u2.fisrtName, u2.lastName, u2.email", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u2.id").asInt();
                     String username = r.get("u2.username").asString();
                     String email = r.get("u2.email").asString();
-                    String fullname= r.get("u2.fullname").asString();
-                    User user= new User(id, username, fullname, email);
+                    String fullName = r.get("u2.firstName").asString() + " " + r.get("u2.lastName").asString();
+                    User user= new User(id, username, fullName, email);
                     users.add(user);
                 }
                 return users;
@@ -444,15 +442,15 @@ public class Neo4jDriver{
             session.readTransaction(tx->{
                 Result result = tx.run("match (u1:User)<-[f:FOLLOWS]-(u2:User) " +
                         "where u1.id = $userId "+
-                        "return u2.id, u2.username, u2.fullname, u2.email", Values.parameters("userId", u.getUserId()));
+                        "return u2.id, u2.username, u2.firstName, u2.lastName, u2.email", Values.parameters("userId", u.getUserId()));
 
                 while(result.hasNext()){
                     Record r= result.next();
                     int id = r.get("u2.id").asInt();
                     String username = r.get("u2.username").asString();
                     String email = r.get("u2.email").asString();
-                    String fullname= r.get("u2.fullname").asString();
-                    User user= new User(id, username, fullname, email);
+                    String fullName = r.get("u2.firstName").asString() + " " + r.get("u2.lastName").asString();
+                    User user= new User(id, username, fullName, email);
                     users.add(user);
                 }
                 return users;
@@ -541,24 +539,6 @@ public class Neo4jDriver{
             return null;
     }
 
-//    public int getMaxUId() {
-//        AtomicInteger maxId = new AtomicInteger();
-//        try(Session session= driver.session()){
-//            session.readTransaction(tx->{
-//                Result result = tx.run("match (u:User) return max(u.id) as maxId");
-//                Record r= result.next();
-//
-//                maxId.set(r.get("maxId").asInt());
-//                return maxId;
-//            });
-//            return maxId.get();
-//        }catch(Exception ex){
-//            ex.printStackTrace();
-//            return 0;
-//        }
-//
-//    }
-
     public ArrayList<String> getAllCategories(){
         ArrayList<String> cat=new ArrayList<>();
         try(Session session=driver.session()){
@@ -585,7 +565,7 @@ public class Neo4jDriver{
     public Boolean makeAdmin( User u){
         try(Session session= driver.session()){
             session.writeTransaction((TransactionWork<Void>) tx -> {
-                Result r = tx.run ("match (u:User {id:$id}) " +
+                tx.run ("match (u:User {id:$id}) " +
                         "set u.role=1 " +
                         "return u.role", Values.parameters("id", u.getUserId()));
                 return null;
@@ -654,19 +634,20 @@ public class Neo4jDriver{
 
         try ( Session session = driver.session() ) {
             session.readTransaction( tx -> {Result result = tx.run("match (u:User)<-[f:FOLLOWS]-(:User) " +
-                                                                      "return u.id, u.username, count(DISTINCT f) as follower " +
+                                                                      "return u.id, u.username, u.email, u.firstName, u.lastName, count(DISTINCT f) as follower " +
                                                                       "order by follower desc " +
                                                                       "limit $l",
                                                             Values.parameters( "l", limit) );
 
                 while(result.hasNext()){
                     Record r = result.next();
-                    int id= r.get("u.id").asInt();
-                    String name= r.get("u.username").asString();
-                    int followers= r.get("follower").asInt();
-                    User u= new User(id, name, followers);
+                    int id = r.get("u.id").asInt();
+                    String username = r.get("u.username").asString();
+                    String email = r.get("u.email").asString();
+                    String fullName = r.get("u.firstName").asString() + " " + r.get("u.lastName").asString();
+                    User user= new User(id, username, fullName, email);
 
-                    users.add(u);
+                    users.add(user);
                 }
 
                 return users;
@@ -683,7 +664,7 @@ public class Neo4jDriver{
 
         try(Session session = driver.session()){
             session.readTransaction( tx -> {Result result = tx.run("match (user:User) --> (x:Recipe) " +
-                          			                                  "return user.id, user.username,  count(x) " +
+                          			                                  "return user.id, user.username, user.email, user.firstName, user.lastName, count(x) " +
                             			                              "order by count(x)" +
                            				                              "limit $k",
                 			                                Values.parameters("k", k) );
@@ -691,9 +672,11 @@ public class Neo4jDriver{
                 while(result.hasNext()){
                     Record r = result.next();
                     int id = r.get("user.id").asInt();
-               		String username = r.get("user.username").asString();
-                    User u = new User(id, username);
-               		users.add(u);
+                    String username = r.get("user.username").asString();
+                    String email = r.get("user.email").asString();
+                    String fullName = r.get("user.firstName").asString() + " " + r.get("user.lastName").asString();
+                    User user= new User(id, username, fullName, email);
+               		users.add(user);
                 }
            		return users;
             });

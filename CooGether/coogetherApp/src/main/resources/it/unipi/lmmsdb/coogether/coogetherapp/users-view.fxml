@@ -8,92 +8,91 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController">
-
-    <VBox>
-        <HBox>
-            <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@img/icon.jpeg" />
-                </image>
-            </ImageView>
-            <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="List of Users" textAlignment="CENTER" wrappingWidth="471.1054992675781">
-                <font>
-                    <Font name="Avenir" size="36.0" />
-                </font>
-            </Text>
-            <VBox fx:id="userName">
-            <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0"  onMouseClicked="#log" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
-                <image>
-                    <Image url="@img/user.png" />
-                </image>
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unipi.lmmsdb.coogether.coogetherapp.controller.UsersViewController">
+    <HBox AnchorPane.leftAnchor="250">
+        <ImageView fitHeight="104.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@img/icon.png"/>
+        </ImageView>
+        <Text fill="#596cc2" fontSmoothingType="LCD" layoutX="99.0" layoutY="72.0" text="List of Users"
+              textAlignment="CENTER" wrappingWidth="471.1054992675781">
+            <font>
+                <Font name="Avenir" size="36.0"/>
+            </font>
+        </Text>
+        <VBox fx:id="userName">
+            <ImageView fitHeight="65.0" fitWidth="63.0" layoutX="700.0" layoutY="20.0" onMouseClicked="#log"
+                       pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER_RIGHT">
                 <BorderPane.margin>
-                    <Insets left="20.0" />
+                    <Insets left="20.0"/>
                 </BorderPane.margin>
+                <Image url="@img/user.png"/>
             </ImageView>
+        </VBox>
+        <ImageView fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true"
+                   preserveRatio="true" BorderPane.alignment="CENTER">
+            <Image url="@img/back.png"/>
+        </ImageView>
+    </HBox>
+    <VBox AnchorPane.topAnchor="110">
+        <HBox spacing="10">
+            <TextField fx:id="filterFullName" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0"
+                       promptText="Full Name"/>
+            <TextField fx:id="filterUsername" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0"
+                       promptText="Username"/>
+            <Button layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter"
+                    textFill="#596cc2"/>
+            <padding>
+                <Insets bottom="10" left="5" right="5" top="5"/>
+            </padding>
+        </HBox>
+        <HBox spacing="25">
+            <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="650.0" prefWidth="1000.0">
+
+                    <VBox fx:id="usersContainer" alignment="CENTER_LEFT" spacing="10">
+
+                    </VBox>
+            </ScrollPane>
+            <VBox alignment="CENTER">
+                <Text fill="#596cc2" fontSmoothingType="LCD" text="Analytics" textAlignment="CENTER">
+                    <font>
+                        <Font name="Avenir" size="36.0"/>
+                    </font>
+                </Text>
+                <HBox alignment="CENTER">
+                    <ChoiceBox fx:id="ChoseAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0"
+                               value="Select">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Top active users"/>
+                                <String fx:value="Top followed users"/>
+                                <String fx:value="User ranking system"/>
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+                    <padding>
+                        <Insets bottom="10" top="20"/>
+                    </padding>
+                </HBox>
+                <HBox alignment="CENTER">
+                    <ChoiceBox fx:id="KAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0"
+                               value="How many">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="10"/>
+                                <String fx:value="20"/>
+                                <String fx:value="30"/>
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+                    <padding>
+                        <Insets bottom="10"/>
+                    </padding>
+                </HBox>
+                <Button fx:id="goAnalitics" mnemonicParsing="false" onAction="#AnalyticsFunction" text="GO"
+                        textFill="#596cc2"/>
             </VBox>
-            <ImageView fx:id="goBack" fitHeight="59.0" fitWidth="61.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <image>
-                    <Image url="@img/back.png" />
-                </image>
-            </ImageView>
-        </HBox>
-        <HBox>
-            <TextField fx:id="filterFullName" layoutX="277.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Full Name" />
-            <TextField fx:id="filterUsername" layoutX="407.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" promptText="Username" />
-            <Button fx:id="goFilter" layoutX="550.0" layoutY="98.0" mnemonicParsing="false" onAction="#filterFunction" text="Filter" textFill="#596cc2" />
-            <padding>
-                <Insets bottom="10" left="5" right="5" top="5" />
-            </padding>
-        </HBox>
-        <HBox>
-        <ScrollPane layoutX="12.0" layoutY="128.0" prefHeight="400.0" prefWidth="500.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0">
-
-        <VBox fx:id="usersContainer" alignment="CENTER_LEFT" spacing="10">
-
-        </VBox>
-        </AnchorPane>
-        </ScrollPane>
-        <VBox alignment="CENTER">
-            <Text fill="#596cc2" fontSmoothingType="LCD" text="Analytics" textAlignment="CENTER" wrappingWidth="410.1054992675781">
-                <font>
-                    <Font name="Avenir" size="36.0" />
-                </font>
-            </Text>
-            <HBox alignment="CENTER">
-                <ChoiceBox fx:id="ChoseAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="Select">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Top active users" />
-                            <String fx:value="Top followed users" />
-                            <String fx:value="User ranking system" />
-                        </FXCollections>
-                    </items>
-                </ChoiceBox>
-                <padding>
-                    <Insets bottom="10" top="20" />
-                </padding>
-            </HBox>
-            <HBox alignment="CENTER">
-                <ChoiceBox fx:id="KAnalytics" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="122.0" value="How many">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="10" />
-                            <String fx:value="20" />
-                            <String fx:value="30" />
-                        </FXCollections>
-                    </items>
-                </ChoiceBox>
-                <padding>
-                    <Insets bottom="10" />
-                </padding>
-            </HBox>
-            <Button fx:id="goAnalitics" mnemonicParsing="false" onAction="#AnalyticsFunction" text="GO" textFill="#596cc2" />
-            <padding>
-                <Insets bottom="10" left="5" right="5" top="20" />
-            </padding>
-        </VBox>
         </HBox>
     </VBox>
 </AnchorPane>

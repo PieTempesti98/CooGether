@@ -73,61 +73,36 @@ public class RecipeViewController implements Initializable {
         for (String s : recipe.getIngredients()){
             Text text = new Text();
             text.setText(s);
+            text.setWrappingWidth(1000);
             recipeIngredients.getChildren().add(text);
         }
 
         for (String s : recipe.getRecipeInstructions()){
             Text text = new Text();
+            text.setWrappingWidth(1000);
             text.setText(s);
             recipeInstructions.getChildren().add(text);
         }
 
         if(recipe.getComments() != null)
             showComment();
-//        for (Comment c : recipe.getComments()){
-//            VBox oneComment=new VBox();
-//            oneComment.setStyle("-fx-border-style: solid inside;"
-//                    + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
-//                    + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");
-//            HBox box = new HBox();
-//            Text author = new Text();
-//            author.setText(c.getAuthorName());
-//            Font bold = new Font("System Bold", 12);
-//            author.setFont(bold);
-//            box.getChildren().add(author);
-//            HBox stars=new HBox();
-//            stars.setStyle("-fx-padding: 0 0 0 10;");
-//            int star = c.getRating();
-//            for (int i=0; i< star; i++){
-//                //ImageView imgViewStar = new ImageView();
-//                Image imgStar = new Image("file:CooGether\\coogetherApp\\src\\main\\resources\\it\\unipi\\lmmsdb\\coogether\\coogetherapp\\img\\star.png");
-//                //imgViewStar.setImage(imgStar);
-//                ImageView imgViewStar = new ImageView(imgStar);
-//                imgViewStar.setFitHeight(20);
-//                imgViewStar.setFitWidth(20);
-//                stars.getChildren().add(imgViewStar);
-//
-//            }
-//            box.getChildren().add(stars);
-//            Text text = new Text();
-//            text.setText(c.getText());
-//            oneComment.getChildren().addAll(box,text);
-//            comments.getChildren().addAll(oneComment);
-//        }
         logged = SessionUtils.getUserLogged();
 
         if(logged!= null) {
             if (recipe.getAuthorId() == logged.getUserId() || logged.getRole()==1) {
                 //metto un button per poter modificare la ricetta e uno per eliminarla
                 VBox container = new VBox();
+                container.setSpacing(15);
 
                 Button update = new Button();
                 update.setText("Update Recipe");
+                update.setMaxWidth(100);
                 update.setOnAction(actionEvent -> updateRecipe(actionEvent, recipe));
                 container.getChildren().add(update);
 
                 Button delete = new Button();
                 delete.setText("Delete Recipe");
+                delete.setMaxWidth(100);
                 delete.setOnAction(actionEvent -> deleteRecipe(actionEvent, recipe));
                 container.getChildren().add(delete);
 
@@ -166,6 +141,7 @@ public class RecipeViewController implements Initializable {
         comments.getChildren().add(comm);
         for (Comment c : recipe.getComments()){
             VBox oneComment=new VBox();
+            oneComment.setMaxWidth(1000);
             oneComment.setStyle("-fx-border-style: solid inside;"
                     + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                     + "-fx-border-radius: 5;" + "-fx-border-color: #596cc2;");

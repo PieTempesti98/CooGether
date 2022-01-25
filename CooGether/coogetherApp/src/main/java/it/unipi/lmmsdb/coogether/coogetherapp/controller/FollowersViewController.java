@@ -7,6 +7,7 @@ import it.unipi.lmmsdb.coogether.coogetherapp.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -50,7 +51,7 @@ public class FollowersViewController  implements Initializable {
 
         for(User u: users) {
             VBox userBox = new VBox();
-
+            userBox.setAlignment(Pos.CENTER);
             Font bold = new Font("System Bold", 18);
             Font size = new Font(14);
 
