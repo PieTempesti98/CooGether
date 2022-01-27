@@ -598,11 +598,10 @@ public class Neo4jDriver{
     //                              ANALYTICS
     //******************************************************************************************************************
 
-    public ArrayList<Recipe> searchSuggestedRecipes(int skip, int howMany, String userId){
+    public ArrayList<Recipe> searchSuggestedRecipes(int skip, int howMany, int userId){
         ArrayList<Recipe> recipes= new ArrayList<>();
 
         try(Session session= driver.session()){
-
             session.readTransaction(tx->{
                 Result result = tx.run("match (u:User)-[f:FOLLOWS]->(u2:User) " +
                                 "match (r:Recipe)<-[a:ADDS]-(u2) " +
@@ -615,7 +614,15 @@ public class Neo4jDriver{
                     Record r= result.next();
                     int id= r.get("r.id").asInt();
                     String name = r.get("r.name").asString();
-                    Recipe rec= new Recipe(id, name);
+                    String category = r.get("r.category").asString();
+                    Date date;
+                    if(!r.get("r.datePublished").isNull()){
+                        date = java.util.Date.from(r.get("r.datePublished").asLocalDate()
+                                .atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                    }
+                    else
+                        date = new Date();
+                    Recipe rec= new Recipe(id, name, date, category);
                     recipes.add(rec);
                 }
                 return recipes;

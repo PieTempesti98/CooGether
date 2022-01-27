@@ -91,7 +91,7 @@ public class HelloController implements Initializable {
         if(logged == null)
             recipes = neo4j.getRecipes(skip, 20);
         else {
-            recipes = neo4j.searchSuggestedRecipes(skip, 20, logged.getUsername());
+            recipes = neo4j.searchSuggestedRecipes(skip, 20, logged.getUserId());
             if(recipes == null || recipes.size() == 0)
                 recipes = neo4j.getRecipes(skip, 20);
         }
